@@ -1,0 +1,73 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        // date picker
+        $(".tanggal").datepicker({
+            yearRange: '-50:+0',
+            changeMonth: true,
+            changeYear: true,
+            showOn: 'both',
+            buttonImage: '{$BASEURL}/resource/doc/images/icon/calendar.gif',
+            buttonImageOnly: true,
+            dateFormat: 'yy-mm-dd'
+        });
+		
+    });
+	
+</script>
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <small>Reset</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('home/welcome')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" /> Back to Login</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="sub-nav-content">
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+    <div class="sub-content">
+        <form action="{$config->site_url('member/registration/reset_process')}" method="post" enctype="multipart/form-data">
+            <table class="table-input" width="100%">
+                <tr class="headrow">
+                    <th colspan="4">Reset Password</th>
+                </tr>
+                <tr>
+                    <td width="150">Email</td>
+                    <td>
+						{if $user_mail neq ''}
+						<input name="user_mail" type="text" value="{$user_mail}" size="30" maxlength="50" />
+						{else}
+						<input name="user_mail" type="text" value="{$result.user_mail|default:''}" size="30" maxlength="50" />
+                        {/if}
+						<em>* wajib diisi</em>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {$captcha.image|default:''}
+                    </td>
+					<td>
+                        <b>Masukkan kode </b>
+                        <br>
+                        <input type="text" name="captcha" size="20" maxlength="10" style="background-color:#CDD0D9" />
+                    </td>
+				</tr>
+				<tr class="submit-box">
+                    <td colspan="4">
+						</br>
+                        <input type="submit" name="save" value="Simpan" class="submit-button" />
+                        <input type="reset" name="save" value="Reset" class="reset-button" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,74 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Task Manager</a><span></span>
+        <a href="{$config->site_url({'task/pembayaran_aunb/'})}">Pembayaran AUNB</a><span></span>
+        <small>Invoice</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('task/pembayaran_aunb/cetak_invoice/'|cat:$result.payment_invoice|default:'')}"><img src="{$BASEURL}resource/doc/images/icon/download-icon.png" alt="" /> Cetak</a></li>
+            <li><a href="{$config->site_url('task/pembayaran_aunb/')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" /> Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="2">Nota Pembayaran</th>
+        </tr>
+        <tr>
+            <td width="20%"><b>Nomor Nota Pembayaran</b></td>
+            <td>: {$result.payment_invoice|default:''}</td>
+        </tr>
+        <tr>
+            <td><b>Batas Pembayaran</b></td>
+            <td>: {$dtm->get_full_date($result.payment_due_date|default:'')}</td>
+        </tr>
+        <tr>
+            <td><b>Waktu Dibayar</b></td>
+            <td>: {$dtm->get_full_date($result.payment_date|default:'')}</td>
+        </tr>
+        <tr>
+            <td><b>Petugas</b></td>
+            <td>: {$result.operator_name|default:''}</td>
+        </tr>
+    </table>
+    <table class="table-view" width="100%">
+        <tr>
+            <th width='4%'>No</th>
+            <th width='20%'>Nomor FA</th>
+            <th width='16%'>Tipe Pesawat</th>
+            <th width='20%'>Nomor Penerbangan</th>
+            <th width='20%'>Rute</th>
+            <th width='20%'>remark</th>
+        </tr>
+        {$no = 1}
+        {foreach from=$rs_id item=result}
+        <input type="hidden" name="data_id[]" value="{$result.data_id|default:''}">
+        <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+            <td align="center">{$no++}.</td>
+            <td align="center">{$result.published_no}</td>
+            <td align="center">{$result.aircraft_type|upper}</td>
+            <td align="center">{$result.flight_no|upper}</td>
+            <td align="center">{$result.rute_all|upper}</td>
+            <td align="center">{$result.services_nm|upper}</td>
+        </tr>
+        {foreachelse}
+        <tr>
+            <td colspan="5">Data not found!</td>
+        </tr>
+        {/foreach}
+    </table>
+
+<script type="text/javascript">
+    function cek_invoice() {
+        var payment = document.forms["payment"]["payment_invoice"].value;
+        if (payment == null || payment == "") {
+            alert("Nomor nota pembayaran belum diisi!");
+            return false;
+        }
+    }
+</script>

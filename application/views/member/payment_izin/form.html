@@ -1,0 +1,84 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Penagihan dan Pembayaran</a><span></span>
+        <a href="{$config->site_url('member/payment_izin')}">Izin Rute Penerbangan</a><span></span>
+        <small>Konfirmasi Tagihan</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('member/payment_izin/payment_process')}" method="post" name="payment" onsubmit="return cek_invoice()">
+    <input type="hidden" name="virtual_account" value="{$result.virtual_account|default:''}" />
+    <div class="content-dashboard">
+        <h4>Daftar Tagihan Pembayaran Permohonan Izin Rute</h4>
+        
+        <p>Berikut adalah daftar tagihan pembayaran permohonan Izin Rute
+           mohon dipastikan kembali Nomer Izin Rute berikut jumlah pembayaran sebelum membuat invoice</p>
+        <p>Jika anda yakin, tekan tombol Proses untuk membuat invoice</p>
+        </ul>
+    </div>
+    <table class="table-view" width="100%">
+            <tr>
+                <th width='4%'>No</th>
+                <th width='10%'>No.Surat</th>
+                <th width='15%'>Group</th>
+                <th width='15%'>Operator</th>
+                <th width='15%'>Tanggal<br/>Permohonan</th>
+                <th width='5%'>DOS</th>
+                <th width='10%'>Batas Bayar</th>
+                <th width='13%'>Jumlah Tagihan</th>
+            </tr>
+            {$no = 1}
+            {foreach from=$rs_id item=result}
+            <input type="hidden" name="izin_id[]" value="{$result.registrasi_id|default:''}">
+            <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+                <td align="center">{$no++}.</td>
+                <td align="left">{$result.izin_request_letter|upper}</td>
+                <td align="left">{$result.group_nm|upper}</td>
+                <td><b>{$result.airlines_nm|upper}</b></td>
+                <td align="center">
+                    {$dtm->get_full_date($result.izin_request_date)}
+                </td>
+                <td align="center">
+                    {$result.dos}
+                </td>
+                <td align="center">{$dtm->get_full_date($result.payment_due_date|default:'-')|upper}</td>
+                <td align="right">
+                    {$result.amount|default:0|number_format:0:",":"."}<br/>
+                </td>
+            </tr>
+            {foreachelse}
+            <tr>
+                <td colspan="10">Data not found!</td>
+            </tr>
+            {/foreach}
+        </table>
+    <table width="100%" class="table-form">
+        <tbody><tr class="submit-box">
+                <td align="right">
+                    <h2>TOTAL : {$total|default:0|number_format:0:",":"."}</h2>
+                </td>
+            </tr>
+        </tbody>
+    </table><br/>
+    <table width="100%" class="table-form">
+        <tbody><tr class="submit-box">
+                <td align="right">
+                    <input type="submit" class="submit-button" value="Proses" name="save">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+
+<script type="text/javascript">
+    function cek_invoice() {
+        var payment = document.forms["payment"]["payment_invoice"].value;
+        if (payment == null || payment == "") {
+            alert("Nomor nota payment belum diisi!");
+            return false;
+        }
+    }
+</script>

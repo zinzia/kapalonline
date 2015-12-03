@@ -1,0 +1,39 @@
+<div class="breadcrum">
+    <p><a href="#">Account Settings</a><span></span><small>Edit Account</small></p>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('stakeholder/account_settings/process_update_account')}" method="post">
+    <table class="table-input" width="100%">
+        <tr>
+            <th colspan="2">Edit Account</th>
+        </tr>
+        <tr>
+            <td width='25%'>Username</td>
+            <td width='75%'>
+                <input type="hidden" name="user_name_old" value="{$result.user_name|default:''}" />
+                <input type="text" name="user_name" value="{$result.user_name|default:''}" size="20" maxlength="30" />
+            </td>
+        </tr>
+        <tr>
+            <td>Old Password</td>
+            <td><input type="password" name="user_pass_old" value="{$result.user_pass_old|default:''}" size="20" maxlength="30" /></td>
+        </tr>
+        <tr>
+            <td>New Password</td>
+            <td><input type="password" name="user_pass_new" value="{$result.user_pass_new|default:''}" size="20" maxlength="30" /></td>
+        </tr>
+        <tr>
+            <td>Confirm New Password</td>
+            <td><input type="password" name="user_pass_confirm" value="{$result.user_pass_confirm|default:''}" size="20" maxlength="30" /></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input name="save[insert]" value="Simpan" class="submit-button" type="submit"/>
+                <input name="save[reset]" value="Reset" class="reset-button" type="reset"/>
+            </td>
+        </tr>
+    </table>
+</form>

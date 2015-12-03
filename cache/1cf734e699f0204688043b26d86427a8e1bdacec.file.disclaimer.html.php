@@ -1,0 +1,95 @@
+<?php /* Smarty version Smarty-3.0.7, created on 2015-09-22 06:31:50
+         compiled from "application/views\member/registration_internasional/disclaimer.html" */ ?>
+<?php /*%%SmartyHeaderCode:285265600d9b618b0b4-47933187%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+$_smarty_tpl->decodeProperties(array (
+  'file_dependency' => 
+  array (
+    '1cf734e699f0204688043b26d86427a8e1bdacec' => 
+    array (
+      0 => 'application/views\\member/registration_internasional/disclaimer.html',
+      1 => 1441883439,
+      2 => 'file',
+    ),
+  ),
+  'nocache_hash' => '285265600d9b618b0b4-47933187',
+  'function' => 
+  array (
+  ),
+  'has_nocache_code' => false,
+)); /*/%%SmartyHeaderCode%%*/?>
+<div class="breadcrum">
+    <p>
+        <a href="#">Pendaftaran</a><span></span>
+        <a href="#">Rute Luar Negeri</a><span></span>
+        <small><?php echo ((mb_detect_encoding($_smarty_tpl->getVariable('group')->value['group_nm'], 'UTF-8, ISO-8859-1') === 'UTF-8') ? mb_strtoupper($_smarty_tpl->getVariable('group')->value['group_nm'],SMARTY_RESOURCE_CHAR_SET) : strtoupper($_smarty_tpl->getVariable('group')->value['group_nm']));?>
+</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="<?php echo $_smarty_tpl->getVariable('config')->value->site_url('member/registration_internasional/');?>
+"><img src="<?php echo $_smarty_tpl->getVariable('BASEURL')->value;?>
+resource/doc/images/icon/back-icon.png" alt="" />Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+<?php $_template = new Smarty_Internal_Template("base/templates/notification.html", $_smarty_tpl->smarty, $_smarty_tpl, $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, null, null);
+ echo $_template->getRenderedTemplate();?><?php unset($_template);?>
+<!-- end of notification template-->
+<div class="dashboard-welcome">
+    <div class="dashboard-profile">
+        <div class="dashboard-profile-disclaimer">
+            <h4>SYARAT DAN KETENTUAN PERMOHONAN <?php echo ((mb_detect_encoding($_smarty_tpl->getVariable('group')->value['group_nm'], 'UTF-8, ISO-8859-1') === 'UTF-8') ? mb_strtoupper($_smarty_tpl->getVariable('group')->value['group_nm'],SMARTY_RESOURCE_CHAR_SET) : strtoupper($_smarty_tpl->getVariable('group')->value['group_nm']));?>
+ <?php echo ((mb_detect_encoding($_smarty_tpl->getVariable('group')->value['data_flight'], 'UTF-8, ISO-8859-1') === 'UTF-8') ? mb_strtoupper($_smarty_tpl->getVariable('group')->value['data_flight'],SMARTY_RESOURCE_CHAR_SET) : strtoupper($_smarty_tpl->getVariable('group')->value['data_flight']));?>
+</h4>
+            <div class="list">
+                <div>
+                    <?php  $_smarty_tpl->tpl_vars['data'] = new Smarty_Variable;
+ $_from = $_smarty_tpl->getVariable('rs_id')->value; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array');}
+if ($_smarty_tpl->_count($_from) > 0){
+    foreach ($_from as $_smarty_tpl->tpl_vars['data']->key => $_smarty_tpl->tpl_vars['data']->value){
+?>
+                    <p>
+                        <a><?php echo ((mb_detect_encoding((($tmp = @$_smarty_tpl->tpl_vars['data']->value['disclaimer_content'])===null||$tmp==='' ? '' : $tmp), 'UTF-8, ISO-8859-1') === 'UTF-8') ? mb_strtoupper((($tmp = @$_smarty_tpl->tpl_vars['data']->value['disclaimer_content'])===null||$tmp==='' ? '' : $tmp),SMARTY_RESOURCE_CHAR_SET) : strtoupper((($tmp = @$_smarty_tpl->tpl_vars['data']->value['disclaimer_content'])===null||$tmp==='' ? '' : $tmp)));?>
+</a>
+                    </p>
+                    <?php }} ?>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <form action="<?php echo $_smarty_tpl->getVariable('config')->value->site_url('member/registration_internasional/disclaimer_process');?>
+" method="post">
+            <input type="hidden" name="group_id" value="<?php echo $_smarty_tpl->getVariable('group')->value['group_id'];?>
+" />
+            <table class="table-input" width="100%">
+                <tr>
+                    <td>
+                        <?php echo (($tmp = @$_smarty_tpl->getVariable('captcha')->value['image'])===null||$tmp==='' ? '' : $tmp);?>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>Masukkan kode diatas</b>
+                        <br>
+                        <input type="text" name="captcha" size="20" maxlength="10" style="background-color:#CDD0D9" />
+                    </td>
+                </tr>
+                <tr>
+                    <td><h4><input type="checkbox" name="agree" /> Saya setuju dengan persyaratan yang ada pada aplikasi flight approval</h4></td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit" name="save" value="Lanjutkan" class="submit-button" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <div class="clear"></div>
+    </div>
+</div>

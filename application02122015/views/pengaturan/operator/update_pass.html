@@ -1,0 +1,28 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <a href="{$config->site_url('pengaturan/operator')}">Operator</a><span></span>
+        <small>Test</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('pengaturan/operator')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" /> Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('pengaturan/operator/update_pass_process')}" method="post" enctype="multipart/form-data">
+    <table class="table-input" width="100%">
+        <tr>
+            <td>
+                <input type="submit" name="save" value="update">
+            </td>
+        </tr>
+    </table>
+</form>

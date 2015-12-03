@@ -1,0 +1,54 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Web Management</a><span></span>
+        <a href="{$config->site_url('web/faq')}">FAQ</a><span></span>
+        <small>Edit Data</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('web/faq/')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" /> Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('web/faq/edit_process')}" method="post" enctype="multipart/form-data">
+    <input name="category_id" type="hidden" value="{$result.category_id|default:''}" />
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="2">Add Item</th>
+        </tr>
+        <tr>
+            <td width='20%'>Kategori</td>
+            <td width='80%'>
+                <input name="category_nm" type="text" size="50" maxlength="100" value="{$result.category_nm|default:''}" />
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr>
+            <td>Deskripsi</td>
+            <td>
+                <input name="category_desc" type="text" size="100" maxlength="150" value="{$result.category_desc|default:''}" />
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr>
+            <td>Urutan</td>
+            <td>
+                <input name="category_seq" type="text" size="3" maxlength="11" value="{$result.category_seq|default:''}" />
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="2">
+                <input type="submit" name="save" value="Simpan" class="submit-button" />
+                <input type="reset" name="save" value="Reset" class="reset-button" />
+            </td>
+        </tr>
+    </table>
+</form>

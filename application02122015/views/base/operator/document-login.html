@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <!-- head -->
+    <head>
+        <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+        <meta name='description' content="{$site.meta_desc|default:''}" />
+        <meta name='keywords' content="{$site.meta_keyword|default:''}" />
+        <meta name='robots' content='index,follow' />
+        <title>Login - {$site.site_title|default:''}</title>
+        <link href="{$BASEURL}/resource/doc/images/logo/logo.png" rel="SHORTCUT ICON" />
+        <!-- themes style -->
+        <link rel="stylesheet" type="text/css" href="{$THEMESPATH}" media="screen" />
+        <!-- other style -->
+        {$LOAD_STYLE}
+    </head>
+    <!-- body -->
+    <body class="common">
+        <!-- load javascript -->
+        {$LOAD_JAVASCRIPT}
+        <!-- end of javascript	-->
+        <div class="login-wrap">
+            <div class="login-head">
+                <img src="{$BASEURL}resource/doc/images/logo/logo.png" alt="" />
+                <h1></h1>
+                <h2></h2>
+                <div class="clear"></div>
+            </div>
+            <!-- content -->
+            <div class="login-body">
+                <h4 align="center"><b>Login Operator Pendaftaran kapal</b></h4>
+                <!-- content -->
+                {include file="$template_content"}
+                <!-- end of content -->
+            </div>            
+            <!-- end of content -->
+            <div class="login-footer"></div>
+        </div>
+    </body>
+    <!-- end body -->
+</html>

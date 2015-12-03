@@ -1,0 +1,59 @@
+<div class="head-content">
+    <h3>Navigation - {$portal.portal_nm|default:''}</h3>
+    <div class="head-content-nav">
+        <ul>
+            <li><a href="#" class="active">Hapus Data</a></li>
+            <li><a href="{$config->site_url('settings/adminmenu/add/'|cat:$portal.portal_id)}"><img src="{$BASEURL}resource/doc/images/icon/add-icon.png" alt="" /> Add Menu</a></li>
+            <li><a href="{$config->site_url('settings/adminmenu/navigation/'|cat:$portal.portal_id)}">List Menu</a></li>
+            <li><a href="{$config->site_url('settings/adminmenu')}">Web Portal</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('settings/adminmenu/process_delete')}" method="post">
+    <input type="hidden" name="portal_id" value="{$portal.portal_id|default:''}" />
+    <input type="hidden" name="nav_id" value="{$result.nav_id|default:''}" />
+    <input type="hidden" name="nav_icon" value="{$result.nav_icon|default:''}" />
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="2">Hapus Menu</th>
+        </tr>
+        <tr>
+            <th colspan="2">Apakah anda yakin akan menghapus data dibawah ini?</th>
+        </tr>
+        <tr>
+            <td width="25%">Judul Menu</td>
+            <td width="75%">{$result.nav_title|default:''}</td>
+        </tr>
+        <tr>
+            <td>Deskripsi</td>
+            <td>{$result.nav_desc|default:''}</td>
+        </tr>
+        <tr>
+            <td>Alamat Menu</td>
+            <td>{$result.nav_url|default:''}</td>
+        </tr>
+        <tr>
+            <td>Urutan</td>
+            <td>{$result.nav_no|default:''}</td>
+        </tr>
+        <tr>
+            <td>Digunakan</td>
+            <td>{$result.active_st|default:''}</td>
+        </tr>
+        <tr>
+            <td>Ditampilkan</td>
+            <td>{$result.display_st|default:''}</td>
+        </tr>
+        <tr>
+            <td>Navigation Icon</td>
+            <td colspan="3"><img src="{$BASEURL}{$nav_icon}" alt="" /></td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="submit" name="save" value="Hapus" class="edit-button" /> </td>
+        </tr>
+    </table>
+</form>

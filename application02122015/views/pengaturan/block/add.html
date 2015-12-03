@@ -1,0 +1,66 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        // --
+        $("#airlines").select2({
+            placeholder: "-- Operator Penerbangan --",
+            width: 'resolve',
+            allowClear: true
+        });
+    });
+</script>
+<style type="text/css">
+    .select2-choice {
+        width: 407px !important;
+    }
+</style>
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <a href="{$config->site_url('pengaturan/block')}">Block Airlines</a><span></span>
+        <small>Add Data</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('pengaturan/block')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" /> Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('pengaturan/block/add_process')}" method="post">
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="4">Lock Registration for Airlines</th>
+        </tr>
+        <tr>
+            <td width="20%">Alasan</td>
+            <td width="80%">
+                <textarea name="block_reason" cols="100" rows="5">{$result.block_reason|default:''}</textarea>
+                <br />
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr>
+            <td>Operator / Airlines</td>
+            <td colspan="3">
+                <select name="airlines_id" id="airlines">
+                    {foreach from=$rs_airlines item=data}
+                    <option value="{$data.airlines_id}" {if $data.airlines_id eq $result.airlines_id}selected="selected"{/if}>{$data.airlines_nm|upper} ({$data.airlines_iata_cd|upper})</option>
+                    {/foreach}
+                </select>
+                <em>* wajib diisi</em>
+            </td>
+        </tr> 
+        <tr class="submit-box">
+            <td colspan="2">
+                <input type="submit" name="save" value="Simpan" class="submit-button" />
+                <input type="reset" name="save" value="Reset" class="reset-button" />
+            </td>
+        </tr>
+    </table>
+</form>

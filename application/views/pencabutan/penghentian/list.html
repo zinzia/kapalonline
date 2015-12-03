@@ -1,0 +1,184 @@
+<script type="text/javascript">
+    $(document).ready(function () {
+        /*
+         * COMBO BOX
+         */
+        $("#combobox").select2({
+            placeholder: "Pilih Nomor Izin Rute Yang Terdaftar",
+            allowClear: true,
+        });
+        // rute
+        $('#combobox').change(function () {
+            var airlines_id = $('#airlines_id').val();
+            var izin_rute_start = $(this).val();
+            var izin_flight = $('#izin_flight').val();
+            // ajax loader
+            $("#loader-validate").show();
+            // ajax
+            $.ajax({
+                type: 'POST',
+                data: 'izin_rute_start=' + izin_rute_start + '&airlines_id=' + airlines_id + '&izin_flight=' + izin_flight,
+                url: '{$config->site_url("pencabutan/penghentian/get_rute_all_by_rute")}',
+                complete: function () {
+                    $("#loader-validate").hide();
+                },
+                success: function (result) {
+                    data = JSON.parse(result);
+                    $('#input_izin_rute_end').val(data.izin_rute_end);
+                    $('#input_pax_cargo').val(data.pax_cargo);
+                    $('#str_pax_cargo').html(data.pax_cargo);
+                }
+            });
+        });
+    });
+</script>
+<div class="breadcrum">
+    <p>
+        <a href="#">Pencabutan Izin Rute Penerbangan</a><span></span>
+        <small>{$detail.izin_flight|upper}</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('pencabutan/'|cat:$detail.izin_flight)}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" />Back to Draft List</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="step-box">
+    <ul>
+        <li>
+            <a href="{$config->site_url('pencabutan/penghentian/index/'|cat:$detail.registrasi_id)}"><b>Step 1</b><br />Pilih Operator Penerbangan</a>
+        </li>
+        <li>
+            <a href="{$config->site_url('pencabutan/penghentian/list_rute/'|cat:$detail.registrasi_id)}" class="active"><b>Step 2</b><br />Pilih Rute Penerbangan</a>
+        </li>
+        <li>
+            <a href="#" class="normal"><b>Step 3</b><br />Upload File Attachment</a>
+        </li>
+        <li>
+            <a href="#" class="normal"><b>Step 4</b><br />Review Permohonan</a>
+        </li>
+    </ul>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('pencabutan/penghentian/list_rute_process')}" method="post">
+    <input type="hidden" name="registrasi_id" value="{$detail.registrasi_id|default:''}" />
+    <input type="hidden" name="airlines_id" value="{$detail.airlines_id|default:''}" id="airlines_id" />
+    <input type="hidden" name="izin_rute_end" value="{$result.izin_rute_end|upper|default:''}" id="input_izin_rute_end" />
+    <input type="hidden" name="input_pax_cargo" value="{$result.input_pax_cargo|upper|default:''}" id="input_pax_cargo" />
+    <input type="hidden" name="input_masa_berlaku" value="{$result.input_masa_berlaku|default:''}" id="input_masa_berlaku" />
+    <input type="hidden" name="izin_flight" value="{$detail.izin_flight|default:''}" id="izin_flight" />
+    <table class="table-form" width="100%">
+        <tr>
+            <td width='20%'>
+                <span style="text-decoration: underline;">Rute Penerbangan</span><br /><i>Routes</i>
+            </td>
+            <td width='30%'>
+                <select name="izin_rute_start" id="combobox">
+                    <option value=""></option>
+                    {foreach from=$rs_rute item=data}
+                    <option value="{$data.izin_rute_start|default:''}" {if $result.izin_rute_start|default:'' eq $data.izin_rute_start|default:''}selected="selected"{/if}>{$data.izin_rute_start|upper} / {$data.izin_rute_end|upper}</option>
+                    {/foreach}
+                </select>    
+            </td>
+            <td width='20%'>
+                <span style="text-decoration: underline;">Jenis Penerbangan</span><br /><i>Flight Type</i>
+            </td>
+            <td width='30%'>
+                <label id="str_pax_cargo">{$result.input_pax_cargo|upper}</label>
+            </td>
+            <td align="right"><input type="submit" name="save" value="Pilih" class="submit-button" /></td>
+        </tr>
+    </table>
+</form>
+<table class="table-view" width="100%">
+    <tr style="font-weight: bold;">
+        <td width="5%" align='center'>No</td>
+        <td width="10%" align='center'>Rute</td>
+        <td width="9%" align='center'>Tipe<br />Pesawat</td>
+        <td width="9%" align='center'>Nomor<br />Penerbangan</td>
+        <td width="10%" align='center'>ETD <br />(waktu lokal)</td>
+        <td width="10%" align='center'>ETA <br />(waktu lokal)</td>
+        <td width="8%" align='center'>Hari <br />Operasi</td>
+        <td width="8%" align='center'>RON</td>
+        <td width="8%" align='center'>Frekuensi</td>
+        <td width="11%" align='center'>Tanggal <br />Mulai</td>
+        <td width="12%" align='center'>Tanggal <br />Berakhir</td>
+    </tr>
+    {foreach from=$rs_id key=no item=rute}
+    {$i = 1}
+    {$rowspan = $rute|count}
+    {foreach from=$rute item=data}
+    <tr>
+        {if $rowspan <= 1}
+        <td align="center">{$no}.</td>
+        {elseif $i eq 1}
+        <td align="center" rowspan="{$rowspan}">{$no}.</td>
+        {/if}
+        <td align="center">{$data.rute_all|default:'-'}</td>
+        <td align="center">{$data.tipe|default:'-'}</td>
+        <td align="center">{$data.flight_no|default:'-'}</td>
+        <td align="center">{$data.etd|default:'-'|substr:0:5}</td>
+        <td align="center">{$data.eta|default:'-'|substr:0:5}</td>   
+        <td align="center">{$data.doop|default:'-'}</td>
+        <td align="center">{$data.roon|default:'-'}</td>
+        <td align="center">{$data.frekuensi}X</td>
+        <td align="center">{$dtm->get_full_date($data.start_date, 'ins')|upper}</td>
+        <td align="center">{$dtm->get_full_date($data.end_date, 'ins')|upper}</td>
+    </tr>
+    {$i = $i + 1}
+    {foreachelse}
+    <tr>
+        <td colspan="11">
+            <span style="color: red;">-</span>
+        </td>
+    </tr>
+    {/foreach}
+    <tr>
+        <td colspan="8" align="right">Perhitungan Jumlah Frekuensi / Minggu</td>
+        <td align="center">
+            <b>
+                {$frekuensi[$data.izin_id]}X
+            </b>
+        </td>
+        <td align="center"></td>
+        <td align="center"></td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="11">
+            <span style="color: red;">-</span>
+        </td>
+    </tr>
+    {/foreach}
+    <tr>
+        <td colspan="8" align="right">Perhitungan Total Jumlah Frekuensi / Minggu Yang Di Cabut</td>
+        <td align="center">
+            <b style="color: red;">
+                {$total.frekuensi}X
+            </b>
+        </td>
+        <td align="center"></td>
+        <td align="center"></td>
+    </tr>
+</table>
+<form action="{$config->site_url('pencabutan/penghentian/list_rute_next_process')}" method="post">
+    <input type="hidden" name="registrasi_id" value="{$detail.registrasi_id|default:''}">
+    <input type="hidden" name="airlines_id" value="{$detail.airlines_id|default:''}">
+    <table class="table-form" width='100%'>
+        <tr class="submit-box">
+            <td>
+                Pastikan data yang anda masukkan adalah data yang benar!
+            </td>
+            <td align='right'>
+                <input type="submit" name="save" value="Simpan dan Lanjutkan" class="submit-button" />
+            </td>
+        </tr>
+    </table>
+</form>

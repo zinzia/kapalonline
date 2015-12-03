@@ -1,0 +1,50 @@
+<script type="text/javascript">
+    function delete_data() {
+        if (confirm("Apakah anda yakin akan menghapus data ini?")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+</script>
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <small>Services Code</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('pengaturan/services_code/svc_add/')}"><img src="{$BASEURL}resource/doc/images/icon/add-icon.png" alt="" /> Add Data</a></li>
+        </ul>
+        <div class="clear"></div>
+    </div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width="5%">No</th>
+        <th width="10%">Kode</th>
+        <th width="70%">Nama</th>
+        <th width="15%"></th>
+    </tr>
+    {foreach from=$rs_id key=no item=result}
+    <tr {if ($no % 2) <> 0}class="blink-row"{/if}>
+        <td align='center'>{$no + 1}.</td>
+        <td align='center'>{$result.services_cd}</td>
+        <td>{$result.services_nm}</td>
+        <td align="center">
+            <a href="{$config->site_url('pengaturan/services_code/svc_edit/'|cat:$result.services_cd)}" class="button-edit">Edit</a>
+            <a href="{$config->site_url('pengaturan/services_code/svc_hapus_process/'|cat:$result.services_cd)}" class="button-hapus" onclick="return delete_data();">Hapus</a>
+        </td>
+    </tr>    
+    {foreachelse}
+    <tr>
+        <td colspan="4">Data tidak ditemukan!</td>
+    </tr>
+    {/foreach}
+</table>

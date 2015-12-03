@@ -1,0 +1,52 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Registration</a><span></span>
+        <small>Flight Approval Angkutan Udara Niaga Tidak Berjadwal</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<div class="dashboard-welcome">
+    <div class="dashboard-profile">
+        <div class="dashboard-profile-disclaimer">
+            <h4>DISCLAIMER</h4>
+            <div class="list">
+                <div>
+                    {foreach from=$rs_id item=data}
+                    <p>
+                        <a>{$data.disclaimer_content|default:''|upper}</a>
+                    </p>
+                    {/foreach}
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <form action="{$config->site_url('member/registration_unscheduled/disclaimer_process')}" method="post">
+            <table class="table-input" width="100%">
+                <tr>
+                    <td>
+                        {$captcha.image|default:''}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>Masukkan kode diatas</b>
+                        <br>
+                        <input type="text" name="captcha" size="20" maxlength="10" style="background-color:#CDD0D9" />
+                    </td>
+                </tr>
+                <tr>
+                    <td><h4><input type="checkbox" name="agree" /> Saya setuju dengan persyaratan yang ada pada aplikasi flight approval</h4></td>
+                </tr>
+                <tr class="submit-box">
+                    <td colspan="4">
+                        <input type="submit" name="save" value="Lanjutkan" class="submit-button" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <div class="clear"></div>
+    </div>
+</div>

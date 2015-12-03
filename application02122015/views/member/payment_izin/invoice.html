@@ -1,0 +1,74 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Penagihan dan Pembayaran</a><span></span>
+        <small>Izin Rute Penerbangan</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="sub-nav-content">
+    <ul>
+        <li><a href="{$config->site_url('member/payment_izin')}" class="active">CREATE INVOICES</a></li>
+        <li><a href="{$config->site_url('member/payment_izin/pending')}">Waiting for Payment</a></li>
+        <li><a href="{$config->site_url('member/payment_izin/failed')}">Payment Failed</a></li>
+        <li><a href="{$config->site_url('member/payment_izin/success')}">Payment Success</a></li>
+    </ul>
+</div>
+<div class="clear"></div>
+<div class="sub-content">
+    <div class="navigation">
+        <div class="navigation-button">
+            <ul> 
+                <li><a href="{$config->site_url('member/payment_izin/')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" /> Back</a></li>
+                <li><a href="{$config->site_url('member/payment_izin/cetak_invoice/'|cat:$result.virtual_account|default:'')}"><img src="{$BASEURL}resource/doc/images/icon/print-icon.png" alt="" /> Cetak Penagihan</a></li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="content-dashboard">
+        <h4>Terima kasih, tagihan pembayaran permohonan Ijin Rute Penerbangan berhasil dibuat</h4>
+        <p>Silakan selesaikan transaksi pembayaran anda sesuai dengan informasi dibawah ini.</p>
+    </div>
+    <table class="table-form" width="100%">
+        <tr>
+            <td width="20%">Kode Billing</td>
+            <td>: <b>{$result.virtual_account|default:''}</b></td>
+        </tr>
+        <tr>
+            <td>Tanggal Penagihan</td>
+            <td>: <b>{$dtm->get_full_date($result.inv_date|default:'')}</b></td>
+        </tr>
+    </table>
+    <table class="table-view" width="100%">
+        <tr>
+            <td width='4%' align="center">No</td>
+            <td width='20%' align="center">No Surat Izin</td>
+            <td width='15%' align="center">Group</td>
+            <td width='15%' align="center">Tanggal<br/>Permohonan</td>
+            <td width='10%' align="center">Batas Bayar</td>
+            <td width='10%' align="center">Jumlah Tagihan</td>
+        </tr>
+        {$no = 1}
+        {foreach from=$rs_id item=data}
+        <input type="hidden" name="izin_id[]" value="{$data.registrasi_id|default:''}">
+        <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+            <td align="center">{$no++}.</td>
+            <td align="center">{$data.izin_published_letter}</td>
+            <td align="center">{$data.group_nm|upper}</td>
+            <td align="center">{$dtm->get_full_date($data.izin_request_date, 'ins')|upper}</td>
+            <td align="center">{$dtm->get_full_date($data.payment_due_date, 'ins')|upper}</td>
+            <td align="right">{$data.total_invoice|default:0|number_format:0:",":"."}</td>
+        </tr>
+        {foreachelse}
+        <tr>
+            <td colspan="8">Data not found!</td>
+        </tr>
+        {/foreach}
+    </table>
+    <table width="100%" class="table-form">
+        <tr class="submit-box">
+            <td align="right">
+                <h2>TOTAL : {$result.inv_total|number_format:2:",":"."}</h2>
+            </td>
+        </tr>
+    </table>
+</div>

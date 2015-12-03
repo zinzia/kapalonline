@@ -1,0 +1,162 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        // date picker
+        $(".tanggal_from").datepicker({
+            showOn: 'both',
+            buttonImage: '{$BASEURL}/resource/doc/images/icon/calendar.gif',
+            buttonImageOnly: true,
+            dateFormat: 'yy-mm-dd',
+            onClose: function( selectedDate ) {
+                $( ".tanggal_to" ).datepicker( "option", "minDate", selectedDate );
+            }
+        }).datepicker("setDate", "{$search.tanggal_from|default:'new Date()'}");
+        $(".tanggal_to").datepicker({
+            showOn: 'both',
+            buttonImage: '{$BASEURL}/resource/doc/images/icon/calendar.gif',
+            buttonImageOnly: true,
+            dateFormat: 'yy-mm-dd',
+        }).datepicker("setDate", "{$search.tanggal_to|default:'new Date()'}");
+        // --
+        $(".data_flight").select2({
+            placeholder: "-- Semua --",
+            width: 170,
+            allowClear: true
+        });
+        $(".payment_st").select2({
+            placeholder: "-- Semua --",
+            width: 140,
+            allowClear: true
+        });
+    });
+</script>
+<style type="text/css">
+    .data_flight .select2-choice {
+        width: 160px !important;
+        font-weight: bold;
+    }
+    .data_flight .select2-default {
+        width: 160px !important;
+        font-weight: bold;
+    }
+    .payment_st .select2-choice {
+        width: 130px !important;
+        font-weight: bold;
+    }
+    .payment_st .select2-default {
+        width: 130px !important;
+        font-weight: bold;
+    }
+</style>
+<div class="breadcrum">
+    <p>
+        <a href="#">Published Request</a><span></span>
+        <small>Flight Approval</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="search-box">
+    <h3><a href="#">Search</a></h3>
+    <form action="{$config->site_url('member/published/proses_cari')}" method="post">
+        <table class="table-search" width="100%" border="0">
+            <tr>
+                <td width="10%">Periode</td>
+                <td width="40%">
+                    <input name="tanggal_from" type="text" value="{$search.tanggal_from|default:''}" size="15" class="tanggal_from" style="text-align:center;" />
+                    s/d
+                    <input name="tanggal_to" type="text" value="{$search.tanggal_to|default:''}" size="15" class="tanggal_to" style="text-align:center;" />
+                </td>
+                <td width="10%">Nomor Document/FA</td>
+                <td width="20%">
+                    <input name="published_no" type="text" value="{$search.published_no|default:''}" size="30" />
+                </td>
+                <td align='right' rowspan="2">
+                    <input name="save" type="submit" value="Tampilkan" />
+                    <input name="save" type="submit" value="Reset" />
+                </td>
+            </tr>
+            <tr>
+                <td>Jenis Penerbangan</td>
+                <td>
+                    <select name="data_type" class="data_flight">
+                        <option value=""></option>
+                        <option value="berjadwal" {if $search.data_type|default:'' eq 'berjadwal'}selected="selected"{/if}>BERJADWAL</option>
+                        <option value="tidak berjadwal" {if $search.data_type|default:'' eq 'tidak berjadwal'}selected="selected"{/if}>TIDAK BERJADWAL</option>
+                        <option value="bukan niaga" {if $search.data_type|default:'' eq 'bukan niaga'}selected="selected"{/if}>BUKAN NIAGA</option>
+                    </select>
+                    <select name="data_flight" class="data_flight">
+                        <option value=""></option>
+                        <option value="domestik" {if $search.data_flight|default:'' eq 'domestik'}selected="selected"{/if}>DOMESTIK</option>
+                        <option value="internasional" {if $search.data_flight|default:'' eq 'internasional'}selected="selected"{/if}>INTERNASIONAL</option>
+                    </select>
+                </td>
+                <td>Status Bayar</td>
+                <td>
+                    <select name="payment_st" class="payment_st">
+                        <option value=""></option>
+                        <option value="00" {if $search.payment_st|default:'' eq '00'}selected="selected"{/if}>Belum Lunas</option>
+                        <option value="01" {if $search.payment_st|default:'' eq '01'}selected="selected"{/if}>Kurang Bayar</option>
+                        <option value="02" {if $search.payment_st|default:'' eq '02'}selected="selected"{/if}>Bayar Lebih</option>
+                        <option value="11" {if $search.payment_st|default:'' eq '11'}selected="selected"{/if}>Lunas</option>
+                        <option value="22" {if $search.payment_st|default:'' eq '22'}selected="selected"{/if}>Tidak Bayar</option>
+                    </select>  
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info">Total&nbsp;<strong>{$pagination.total|default:0}</strong>&nbsp;Record&nbsp;</li>
+                {$pagination.data|default:''}
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('member/published/print_out')}"><img src="{$BASEURL}resource/doc/images/icon/print-icon.png" alt="" /> Cetak Laporan</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width='5%'>No</th>
+        <th width='10%'>Nomor FA</th>
+        <th width='10%'>Jenis <br />Penerbangan</th>
+        <th width='15%'>Tanggal</th>
+        <th width='15%'>Rute</th>
+        <th width='15%'>Remark</th>
+        <th width='10%'>Call Sign</th>
+        <th width='10%'>Status<br /> Pembayaran</th>
+        <th width='10%'></th>
+    </tr>
+    {foreach from=$rs_id item=result}
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+        <td align="center">{$no++}.</td>
+        <td align="center">{$result.published_no|upper}</td>
+        <td align="center">{$result.data_type|upper} {$result.data_flight|upper}</td>
+        <td align="center">
+            {$result.date_start|date_format:"%d%b%y"|upper} / {$result.date_end|date_format:"%d%b%y"|upper}
+        </td>
+        <td align="center">{$result.rute_all|upper}</td>
+        <td align="center">{$result.services_nm|upper}</td>
+        <td align="center">{$result.registration|upper} {$result.flight_no|upper}</td>
+        <td align="center">{if $result.payment_st eq '00'}Belum Bayar{elseif $result.payment_st eq '01'}Kurang Bayar{elseif $result.payment_st eq '02'}Bayar Lebih{elseif $result.payment_st eq '11'}Lunas{else}Tidak Bayar{/if}</td>
+        <td align="center">
+            <a href="{$config->site_url('member/published/download/'|cat:$result.data_id|default:'')}" class="button">
+                Download
+            </a>
+        </td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="9">Data not found!</td>
+    </tr>
+    {/foreach}
+</table>

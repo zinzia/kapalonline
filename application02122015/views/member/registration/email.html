@@ -1,0 +1,58 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        // date picker
+        $(".tanggal").datepicker({
+            yearRange: '-50:+0',
+            changeMonth: true,
+            changeYear: true,
+            showOn: 'both',
+            buttonImage: '{$BASEURL}/resource/doc/images/icon/calendar.gif',
+            buttonImageOnly: true,
+            dateFormat: 'yy-mm-dd'
+        });
+		
+    });
+	
+</script>
+<div class="breadcrum">
+    <p>
+        <a href="#">Register</a><span></span>
+        <small>Register User</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li> </li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="sub-nav-content">
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+    <div class="sub-content">
+            <table class="table-input" width="100%">
+                <tr class="headrow">
+					<th>Terima Kasih</th>
+				</tr>
+				<tr><td>
+				</br>Terimakasih telah melakukan registrasi akun pada SIM Pendaftaran Kapal, 
+				Silahkan cek email anda dan masukkan kode konfirmasi ke dalam halaman konfirmasi sebelum 12 jam dari sekarang . 
+					</br></br>
+				</td>
+				</tr>
+            </table>
+    </div>
+</div>
+
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li align="left"><a href="{$config->site_url('member/registration/confirmation')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" /> Halaman Konfirmasi</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>

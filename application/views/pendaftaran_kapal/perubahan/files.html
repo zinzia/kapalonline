@@ -1,0 +1,125 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Pendaftaran Izin Rute</a><span></span>
+        <small>{$detail.group_nm}</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('member/registration_domestik/')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" />Back to Draft List</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="step-box">
+    <ul>
+        <li>
+            <a href="{$config->site_url('izin_domestik/perubahan/index/'|cat:$detail.registrasi_id)}" class="normal"><b>Step 1</b><br />Data Permohonan</a>
+        </li>
+        <li>
+            <a href="{$config->site_url('izin_domestik/perubahan/list_rute/'|cat:$detail.registrasi_id)}" class="normal"><b>Step 2</b><br />Data Rute Penerbangan</a>
+        </li>
+        <li>
+            <a href="{$config->site_url('izin_domestik/perubahan/list_slot/'|cat:$detail.registrasi_id)}"><b>Step 3</b><br />Slot Clearance</a>
+        </li>
+        <li>
+            <a href="{$config->site_url('izin_domestik/perubahan/list_files/'|cat:$detail.registrasi_id)}" class="active"><b>Step 4</b><br />File Attachment</a>
+        </li>
+        <li>
+            <a href="#" class="normal"><b>Step 5</b><br />Review Permohonan</a>
+        </li>
+    </ul>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info">
+                    Surat Permohonan : <span style="text-decoration: underline;">{$detail.izin_request_letter|default:'-'}</span>, 
+                    <br />
+                    Tanggal : <span style="text-decoration: underline;">{$dtm->get_full_date($detail.izin_request_letter_date)|default:'-'}</span>, ( For {$detail.izin_season} )
+                    <br />
+                    Rute : <b>{$detail.izin_rute_start} / {$detail.izin_rute_end}</b>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('izin_domestik/perubahan/list_slot/'|cat:$detail.registrasi_id)}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" />Previous Step</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="clear"></div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('izin_domestik/perubahan/files_process')}" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="registrasi_id" value="{$detail.registrasi_id|default:''}">
+    <table class="table-form" width="100%">
+        <tr>
+            <th colspan="5">File Attachment</th>
+        </tr>
+        <tr>
+            <td colspan="5">
+                File persyaratan yang wajib di sertakan adalah sebagai berikut :
+            </td>
+        </tr>
+        {$no = 1}
+        {foreach from=$rs_files item=data}
+        <tr>
+            <td width='5%' align="center">
+                {$no++}.
+            </td>
+            <td width='30%'>
+                {$data.ref_name}
+            </td>
+            <td width='20%'>
+                <input type="file" name="{$data.ref_field}" />
+            </td>
+            <td width='15%'>
+                <small style="color: #999;">Maksimal {$data.ref_size}KB ({$data.ref_allowed|upper})</small>
+            </td>
+            <td width="30%">
+                {if $data.ref_id|in_array:$file_uploaded}
+                <a href="{$config->site_url('izin_domestik/perubahan/files_download/'|cat:$detail.registrasi_id|cat:'/'|cat:$data.ref_id)}" style="font-size: 9px;">{$name_uploaded[$data.ref_id]}</a>
+                {else}
+                {if $data.ref_required eq '1'}
+                <span style="color: red">Belum ada file yang di upload!</span>
+                {else}
+                <span style="color: blue;">* Optional atau sesuai arahan dari regulator</span>
+                {/if}
+                {/if}
+            </td>
+        </tr>
+        {/foreach}
+        <tr>
+            <td colspan="5"></td>
+        </tr>
+        <tr>
+            <td colspan="5" align="center">
+                <input type="submit" name="save" value="Upload Berkas" class='button-upload' />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="5"></td>
+        </tr>
+    </table>
+</form>
+<form action="{$config->site_url('izin_domestik/perubahan/files_next')}" method="post">
+    <input type="hidden" name="registrasi_id" value="{$detail.registrasi_id|default:''}">
+    <table class="table-form" width='100%'>
+        <tr class="submit-box">
+            <td>
+                Semua file dengan tanda khusus wajib di upload!
+            </td>
+            <td align='right'>
+                <input type="submit" name="save" value="Lanjutkan" class="submit-button" />
+            </td>
+        </tr>
+    </table>
+</form>

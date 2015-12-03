@@ -1,0 +1,78 @@
+<script language="javascript" type="text/javascript">
+    /*
+     * Ajax
+     */
+    $(document).ready(function () {
+        /*
+         * process save perihal
+         */
+        $('#form-perihal').submit(function (event) {
+            // --
+            event.preventDefault();
+            // --
+            $(document).ajaxStart(function () {
+                $("#ajax-loader-perihal").show();
+            });
+            $(document).ajaxStop(function () {
+                $("#ajax-loader-perihal").hide();
+            });
+            // process ajax
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                data: $(this).serialize(),
+                url: '{$config->site_url("task/izin_rute/save_perihal")}',
+                success: function (result) {
+                    $('#txt-perihal').val(result.perihal);
+                    $('#txt-perihal-label')[0].innerHTML = result.perihal;
+                }
+            });
+            // --
+            return false;
+        });
+        /*
+         * MEMO
+         */
+        // delete memo
+        $('.delete_memo').click(function () {
+            var memo = $(this);
+            // --
+            var memo_id = $(this).attr('title');
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                data: 'memo_id=' + memo_id,
+                url: '{$config->site_url("task/izin_rute/delete_memo/")}',
+                success: function (result) {
+                    if (result.success === '1') {
+                        memo.closest('li').remove();
+                    }
+                }
+            });
+            // --
+            return false;
+        });
+        /*
+         * TEMBUSAN
+         */
+        // delete delete_tembusan
+        $('.delete_tembusan').click(function () {
+            var tembusan = $(this);
+            // --
+            var tembusan_id = $(this).attr('title');
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                data: 'tembusan_id=' + tembusan_id,
+                url: '{$config->site_url("task/izin_rute/delete_tembusan/")}',
+                success: function (result) {
+                    if (result.success === '1') {
+                        tembusan.closest('li').remove();
+                    }
+                }
+            });
+            // --
+            return false;
+        });
+    });
+</script>

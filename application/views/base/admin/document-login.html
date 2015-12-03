@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <!-- head -->
+    <head>
+        <meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1' />
+        <meta name='description' content="{$site.meta_desc|default:''}" />
+        <meta name='keywords' content="{$site.meta_keyword|default:''}" />
+        <meta name='robots' content='index,follow' />
+        <title>Login - {$site.site_title|default:''}</title>
+        <link href="{$BASEURL}/resource/doc/images/icon/favicon.jpg" rel="SHORTCUT ICON" />
+        <!-- themes style -->
+        <link rel="stylesheet" type="text/css" href="{$THEMESPATH}" media="screen" />
+        <!-- other style -->
+        {$LOAD_STYLE}
+    </head>
+    <!-- body -->
+    <body class="login-common">
+        <!-- load javascript -->
+        {$LOAD_JAVASCRIPT}
+        <!-- end of javascript	-->
+        <!-- layout -->
+        <div class="loginWrapper">
+            <div class="loginBox-head">
+                <h1>{$site.site_title|default:''}</h1>
+            </div>
+            <!-- content -->
+            {include file="$template_content"}
+            <!-- end of content -->
+        </div>
+        <div class="footer">
+            <p>{$site.site_title|default:''} &copy;2011</p>
+        </div>
+        <!-- end of layout	-->
+    </body>
+    <!-- end body -->
+</html>

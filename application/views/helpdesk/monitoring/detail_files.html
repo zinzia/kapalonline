@@ -1,0 +1,65 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Data Monitoring</a><span></span>
+        <a href="{$config->site_url('helpdesk/monitoring/')}">Flight Approval</a><span></span>
+        <small>{$result.document_no|default:''}</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('helpdesk/monitoring')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" /> Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="step-box">
+    <ul>
+        <li>
+            <a href="{$config->site_url('helpdesk/monitoring/detail/'|cat:$result.data_id)}" class="normal"><b>Step 1</b><br />Preview Monitoring</a>
+        </li>
+        <li>
+            <a href="{$config->site_url('helpdesk/monitoring/form/'|cat:$result.data_id)}"><b>Step 2</b><br />Flight Approval</a>
+        </li>
+        <li>
+            <a href="{$config->site_url('helpdesk/monitoring/files/'|cat:$result.data_id)}" class="active"><b>Step 3</b><br />File Attachment</a>
+        </li>
+    </ul>
+    <div class="clear"></div>
+</div>
+
+<table class="table-form" width="100%">
+    <tr>
+        <th colspan="4">File Attachment</th>
+    </tr>
+    <tr>
+        <td colspan="4">
+            File persyaratan yang wajib di sertakan adalah sebagai berikut :
+        </td>
+    </tr>
+    {$no = 1}
+    {foreach from=$rs_files item=data}
+    <tr>
+        <td width='5%' align="center">
+            {$no++}.
+        </td>
+        <td width='35%'>
+            {$data.ref_name}
+        </td>
+        <td width='1%'>
+            :
+        </td>
+        <td width="59%">
+            {if $data.ref_id|in_array:$file_uploaded}
+            <a href="{$config->site_url('helpdesk/monitoring/files_download/'|cat:$result.data_id|cat:'/'|cat:$data.ref_id)}" class="button">{$name_uploaded[$data.ref_id]}</a>
+            {else}
+            Tidak Ada File
+            {/if}
+        </td>
+    </tr>
+    {/foreach}
+    <tr>
+        <td colspan="4"></td>
+    </tr>
+</table>

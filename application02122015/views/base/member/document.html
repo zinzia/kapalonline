@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <!-- head -->
+    <head>
+        <meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1' />
+        <meta name='description' content="{$site.meta_desc|default:''}" />
+        <meta name='keywords' content="{$site.meta_keyword|default:''}" />
+        <meta name='robots' content='index,follow' />
+        <title>{$page.nav_title|default:'Home'} - {$site.site_title|default:''}</title>
+        <link href="{$BASEURL}/resource/doc/images/logo/logo.png" rel="SHORTCUT ICON" />
+        <!-- themes style -->
+        <link rel="stylesheet" type="text/css" href="{$THEMESPATH}" media="screen" />
+        <!-- other style -->
+        {$LOAD_STYLE}
+    </head>
+    <!-- body -->
+    <body class="common">
+        <!-- load javascript -->
+        {$LOAD_JAVASCRIPT}
+        <!-- end of javascript	-->
+        <script type="text/javascript">
+            $(document).ready(function() {
+                // dropdown menu
+                $(".parent").click(function() {
+                    $(this).toggleClass('down');
+                    $(this).siblings().slideToggle(100);
+                    return false;
+                });
+            });
+        </script>
+        <!-- layout -->
+        <div class="page">
+            <div class="header">
+                <img src="{$BASEURL}resource/doc/images/logo/logo.png" alt="" />
+                <div class="header-title">
+                    <h1>DIREKTORAT PERKAPALAN DAN KEPELAUTAN</h1>
+                    <h2>Pendaftaran Kapal Online</h2>
+                </div>
+                <div class="header-link">
+                    <ul class="languages">
+                        <li class="info">
+                            {$date_now}
+                        </li>
+                    </ul>
+                    <ul>
+                        <li><a href="{$config->site_url('home/welcome/logout_process')}" class="logout">Logout</a></li>
+                        <li><a href="{$config->site_url('member/account_settings/user_account')}">Edit Account</a></li>
+                        <li><a href="{$config->site_url('member/account_settings/data_pribadi')}"><b>{$com_user.operator_name}, </b>JAKARTA (Pst)</a></li>
+                    </ul>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="main-content">
+                <div class="sidebar">
+                    {include file="$template_sidebar"}
+                </div>
+                <div class="content">
+                    {include file="$template_content"}
+                </div>
+                <div class="clear"></div>
+            </div>
+            <br />
+        </div>
+        <!-- end of layout	-->
+    </body>
+    <!-- end body -->
+</html>

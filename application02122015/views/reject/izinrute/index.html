@@ -1,0 +1,104 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Permohonan Ditolak</a><span></span>
+        <small>Izin Rute</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="search-box">
+    <h3><a href="#">Search</a></h3>
+    <form action="{$config->site_url('reject/izinrute/proses_cari')}" method="post">
+        <table class="table-search" width="100%" border="0">
+            <tr>    
+                <td width="10%">Periode</td>
+                <td width="10%">
+                    <select name="bulan">
+                        {foreach from=$rs_bulan key=i item=bulan}
+                        <option value="{$i}" {if $search.bulan|default:'' eq $i}selected="selected"{/if}>{$bulan|upper}</option>
+                        {/foreach}
+                    </select>
+                </td>
+                <td width="10%">
+                    <select name="tahun">
+                        {foreach from=$rs_tahun item=tahun}
+                        <option value="{$tahun.tahun}" {if $search.tahun|default:'' eq $tahun.tahun}selected="selected"{/if}>{$tahun.tahun}</option>
+                        {/foreach}
+                    </select>
+                </td>
+                <td width="15%">
+                    <select name="data_flight" class="data_flight">
+                        <option value="">-- semua --</option>
+                        <option value="domestik" {if $search.data_flight|default:'' eq 'domestik'}selected="selected"{/if}>DOMESTIK</option>
+                        <option value="internasional" {if $search.data_flight|default:'' eq 'internasional'}selected="selected"{/if}>INTERNASIONAL</option>
+                    </select>  
+                </td>
+                <td width="15%">Status Bayar</td>
+                <td width="15%">
+                    <select name="payment_st" class="payment_st">
+                        <option value="">-- semua --</option>
+                        <option value="00" {if $search.payment_st|default:'' eq '00'}selected="selected"{/if}>BELUM BAYAR</option>
+                        <option value="11" {if $search.payment_st|default:'' eq '11'}selected="selected"{/if}>SUDAH BAYAR</option>
+                        <option value="22" {if $search.payment_st|default:'' eq '22'}selected="selected"{/if}>TIDAK BAYAR</option>
+                    </select>  
+                </td>
+                <td width='25%' align='right' rowspan="2">
+                    <input name="save" type="submit" value="Tampilkan" />
+                    <input name="save" type="submit" value="Reset" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info">Total&nbsp;<strong>{$pagination.total|default:0}</strong>&nbsp;Record&nbsp;</li>
+                {$pagination.data|default:''}
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width='4%'>No</th>
+        <th width='20%'>Surat<br />Permohonan</th>
+        <th width='10%'>Tanggal</th>
+        <th width='10%'>Jenis<br />Penerbangan</th>
+        <th width='26%'>Perihal</th>
+        <th width='18%'>Pemohon</th>
+        <th width='12%'></th>
+    </tr>
+    {foreach from=$rs_id item=result}
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+        <td align="center">{$no++}.</td>
+        <td align="center">{$result.izin_request_letter|upper}</td>
+        <td align="center">{$dtm->get_full_date($result.izin_request_letter_date, 'ins')|upper}</td>
+        <td align="center">{$result.izin_flight|upper}</td>
+        <td>{$result.group_nm|upper}</td>
+        <td align="center">
+            <span style="text-decoration: underline;">{$result.operator_name}</span>
+            <br />
+            {$dtm->get_full_date($result.izin_request_date)}
+        </td>
+        <td align="center">
+            {if $result.payment_st eq '11' || $result.payment_st eq '22'}
+            <a href="{$config->site_url('reject/izinrute/'|cat:$result.group_alias|cat:'/'|cat:$result.registrasi_id|default:'')}" class="button-approve">
+                Download
+            </a>
+            {else}
+            <img src="{$BASEURL}resource/doc/images/icon/icon.waiting.png" alt="" /> Belum Bayar
+            {/if}
+        </td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="9">Data not found!</td>
+    </tr>
+    {/foreach}
+</table>

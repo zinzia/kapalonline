@@ -1,0 +1,121 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        // date picker
+        $(".tanggal").datepicker({
+            yearRange: '-50:+0',
+            changeMonth: true,
+            changeYear: true,
+            showOn: 'both',
+            buttonImage: '{$BASEURL}/resource/doc/images/icon/calendar.gif',
+            buttonImageOnly: true,
+            dateFormat: 'yy-mm-dd'
+        });
+		
+    });
+	
+</script>
+<div class="breadcrum">
+    <p>
+        <a href="#">Register</a><span></span>
+        <small>Registration User</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('home/welcome')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" /> Back to Login</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="sub-nav-content">
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+    <div class="sub-content">
+        <form action="{$config->site_url('member/registration/add_process')}" method="post" enctype="multipart/form-data">
+            <table class="table-input" width="100%">
+                <tr class="headrow">
+                    <th colspan="4">Data Pribadi</th>
+                </tr>
+                <tr>
+                    <td width="15%">Nama Lengkap</td>
+                    <td width="35%">
+                        <input name="operator_name" type="text" value="{$result.operator_name|default:''}" size="35" maxlength="50" />
+                        <em>* wajib diisi</em>
+                    </td>
+                    <td width="15%">Alamat</td>
+                    <td width="35%">
+                        <input name="operator_address" type="text" value="{$result.operator_address|default:''}" size="45" maxlength="100" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Tempat Lahir</td>
+                    <td>
+                        <input name="operator_birth_place" type="text" value="{$result.operator_birth_place|default:''}" size="25" maxlength="50" />
+                    </td>
+                    <td>Nomor Telepon</td>
+                    <td>
+                        <input name="operator_phone" type="text" value="{$result.operator_phone|default:''}" size="15" maxlength="30" />
+                        <em>* wajib diisi</em>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Tanggal Lahir</td>
+                    <td>
+                        <input name="operator_birth_day" type="text" value="{$result.operator_birth_day|default:''}" size="10" maxlength="10" class="tanggal" style="text-align: center;" readonly='readonly' />
+                    </td>
+                    <td>Email</td>
+                    <td>
+                        <input name="user_mail" type="text" value="{$result.user_mail|default:''}" size="30" maxlength="50" />
+                        <em>* wajib diisi</em>
+                    </td>
+                </tr>
+				<tr>
+					<td>Jenis Kelamin</td>
+                    <td>
+                        <label><input type="radio" name="operator_gender" value="L" {if {$result.operator_gender|default:''} eq 'L'}checked="checked"{/if} />LAKI - LAKI</label>
+                        <label><input type="radio" name="operator_gender" value="P" {if {$result.operator_gender|default:''} eq 'P'}checked="checked"{/if} />PEREMPUAN</label>
+                    </td>
+				</tr>	
+                <tr class="headrow">
+                    <th colspan="4">User Account</th>
+                </tr>
+                <tr>
+                    <td>Username </td>
+                    <td>
+                        <input name="user_name" type="text" value="{$result.user_name|default:''}" size="20" maxlength="30" />
+                        <em>* wajib diisi</em>
+                    </td>
+                    <td>Foto</td>
+                    <td><input type="file" name="operator_photo" size="30" /></td>
+                </tr>
+				<tr>
+                    <td>Password</td>
+                    <td colspan="3">
+                        <input name="user_pass" type="password" value="{$result.user_pass|default:''}" size="20" maxlength="30" />
+                        <em>* wajib diisi</em>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {$captcha.image|default:''}
+                    </td>
+					<td>
+                        <b>Masukkan kode </b>
+                        <br>
+                        <input type="text" name="captcha" size="20" maxlength="10" style="background-color:#CDD0D9" />
+                    </td>
+				</tr>
+                <tr class="submit-box">
+                    <td colspan="4">
+						</br>
+                        <input type="submit" name="save" value="Simpan" class="submit-button" />
+                        <input type="reset" name="save" value="Reset" class="reset-button" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,42 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Web Management</a><span></span>
+        <small>Web Content</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info"><strong>{$total} Records</strong></li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width="4%">No</th>
+        <th width="90%">Judul</th>
+        <th width="6%"></th>
+    </tr>
+    {$no = 1}
+    {foreach from=$rs_id item=result}
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+        <td align='center'>{$no++}.</td>
+        <td><b>{$result.content_title|upper}</b></td>
+        <td align="center">
+            <a href="{$config->site_url('web/content/web_content_lang/'|cat:$result.data_id)}" class="button-edit">Edit</a>
+        </td>
+    </tr>    
+    {foreachelse}
+    <tr>
+        <td colspan="3">Data not found!</td>
+    </tr>
+    {/foreach}
+</table>

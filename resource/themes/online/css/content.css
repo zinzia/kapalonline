@@ -1,0 +1,369 @@
+/* CSS Document */
+/* created by chow-2014 */
+
+/* content */
+
+.content {
+    margin: 0;
+    padding: 10px 0;
+    font-family: tahoma;
+}
+
+.content h4 {
+    margin: 0 0 10px 0;
+    padding: 0 0 10px 0;   
+    font-size: 12px;
+    border-bottom: 1px solid #D8EEFF;
+    color: #646464;
+    height: auto;
+}
+
+.content h5 {
+    margin: 0 0 10px 0;
+    padding: 0 0 10px 0;   
+    font-size: 12px;
+    border-bottom: 1px solid #D8EEFF;
+    color: #646464;
+}
+
+.content h5 a {
+    color: #64C0E7;
+    text-decoration: none;
+}
+
+.content p {
+    margin: 0 0 4px 0;
+    padding: 0;
+    color: #666;
+    font-size: 12px;
+    font-family: helvetica;
+    line-height: 20px;
+}
+
+.content p small {
+    margin: 0;
+    padding: 0;
+    font-size: 11px;
+    color: #999;
+}
+
+.content img {
+    float: left;
+    margin: 0 20px 10px 0;
+    padding: 0;
+}
+
+.content ul {
+    color: #666;
+    font-size: 12px;
+    font-family: tahoma;
+}
+
+.content ol {
+    color: #666;
+    font-size: 12px;
+    font-family: tahoma;
+}
+
+.content li {
+    margin: 0;
+    padding: 0;
+    line-height: 24px;
+}
+
+.content ul.list-news {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.content ul.list-news li {
+    margin: 0;
+    padding: 0;
+    line-height: 18px;
+}
+
+.content ul.list-news a {
+    display: block;
+    margin: 0;
+    padding: 10px;
+    text-decoration: none;
+    color: #DE8800;
+}
+
+.content ul.list-news a:hover {
+    background-color: #FEFFB6;
+}
+
+.content ul.list-news a small {
+    font-size: 11px;
+    color: #999;
+}
+
+.news-img {
+    margin: 0;
+    padding: 0;
+    width: 352px;
+}
+/* home */
+
+.content-home {
+    margin: 0;
+    padding: 20px 0;
+}
+
+/* banner */
+
+.banner {
+    float: right;
+    margin: 0 0 10px 0;
+    padding: 0;  
+    width: 700px;
+    height: 196px;
+    background-color: #fff;
+    text-align: center;
+}
+
+.banner img {
+    margin: 0;
+    padding: 0; 
+    width: 700px;
+    height: 196px;
+}
+
+.login-box {
+    float: left;
+    margin: 0 0 10px 0;
+    padding: 10px;
+    width: 228px;
+    border: 1px solid #CECECE;
+    background-color: #fff;
+}
+
+.login-box h4 {
+    margin: 0 0 5px 0;
+    padding: 0;
+    color: #333;
+    font-weight: normal;
+    font-size: 16px;
+}
+
+.login-box table{
+    margin: 0;
+    padding: 0;
+}
+
+.login-box table td{
+    margin: 0;
+    padding: 5px 0;
+    font-family: helvetica;
+    font-size: 12px;
+    color: #666;
+}
+
+.login-box table td input {
+    margin: 0 2px 0 0;
+    padding: 10px;
+    border: 1px solid #D9D9D9;
+    font-size: 16px;
+    font-family: arial;
+    background-color: #FFF;
+    color: #989898;
+}
+
+.login-box table td input.submit-button {
+    margin: 0;
+    background-color: #F97B0C;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.login-box table td a {
+    margin: 0;
+    padding: 0;
+    color: #000;
+    font-size: 12px;
+    font-family: helvetica;
+    text-decoration: underline;
+}
+
+.login-box table td a:hover {
+    text-decoration: underline;
+}
+
+.info-box {
+    float: right;
+    margin: 0 0 0 25px;
+    padding: 0;
+    width: 340px;
+}
+
+.info-box h4 {
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+    font-family: tahoma;
+    color: #666A6F;
+    background-color: #fff;
+}
+
+.info-box p {
+    color: #757575;
+    font-weight: normal;
+    margin: 0px;
+    padding: 0px;
+    font-family: tahoma;
+    font-size: 11px;
+    line-height: 18px;
+}
+
+.info-box strong {
+    color: #5c8cb7;
+    font-weight: normal;
+}
+
+.info-box img {
+    float: left;
+    margin: 0;
+    padding: 0 10px 5px 0;
+}
+
+.info-box ul {
+    border-top: 1px solid #e2e2e2;
+    list-style: none;
+    margin: 0;
+    padding: 0px;
+}
+
+.info-box li {
+    border-bottom: 1px solid #e2e2e2;
+    line-height: 16px;
+}
+
+.info-box li a {
+    font-family: tahoma;
+    font-size: 11px;
+    color: #5c8cb7;
+    display: block;
+    text-decoration: none;
+    margin: 0;
+    padding: 4px 6px;
+}
+
+.info-box li a:hover {
+    color: #207ccd;
+    text-decoration: none;
+}
+
+.info-box li a small {
+    font-size: 11px;
+    color: #aaa;
+}
+
+
+.info-box a.more-box {
+    background: url('../img/morebox-bg.gif') left top no-repeat;
+    color: #ffffff;
+    display: block;
+    float: right;
+    font-family: Arial, Tahoma, Helvetica, sans-serif;
+    font-size: 11px;
+    text-align: center;
+    text-decoration: none;
+    width: 42px;
+    margin: 10px 0px 0px 0px;
+    padding: 0px 0px 2px 0px;
+}
+
+.info-box a:hover.more-box {
+    color: #ffffff;
+    background: url('../img/morebox-bghover.gif') left top no-repeat;
+    text-decoration: none;
+}
+
+/* info-link */
+
+.info-link {
+    margin: 10px 0 0 0;
+    padding: 0;
+
+}
+
+.info-link img {
+    margin: 0;
+    padding: 0;
+    width: 950px;
+}
+
+/* sub nav content ==========================================================*/
+
+.sub-nav-content {
+    margin: 0;
+    padding: 10px;
+}
+
+.sub-nav-content ul {
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+
+.sub-nav-content li {
+    float: left;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sub-nav-content a {
+    margin: 0 2px 0 0;
+    padding: 5px 10px;
+    color: #79736A;
+    background-color: #F7ECBC;
+    text-decoration: none;
+    display: block;
+    border: 1px solid #F7ECBC;
+}
+
+.sub-nav-content a:hover {
+    background-color: #F7ECBC;
+    text-decoration: none;
+}
+
+.sub-nav-content a.active {
+    margin: 0 2px -5px 0;
+    padding: 5px 10px 7px;
+    background-image: none;
+    background-color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    color: #617da4;
+    border: 1px solid #d6e5f5;
+    border-bottom: #fff;
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+}
+
+.sub-nav-content img {
+    margin: 0 3px 0 0;
+    padding: 0;
+    border: none;
+    height: 12px;
+    vertical-align: middle;
+}
+
+.sub-content {
+    margin: 0;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #d6e5f5;
+}
+
+.sub-content h3 {
+    margin: 0 0 10px 0;
+    padding: 0;
+    font-size: 14px;
+}

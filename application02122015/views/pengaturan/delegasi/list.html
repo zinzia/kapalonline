@@ -1,0 +1,47 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <small>Delegasi Pelaksana Harian</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('pengaturan/delegasi/add')}"><img src="{$BASEURL}resource/doc/images/icon/add-icon.png" alt="" /> Add Data</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width="4%">No</th>
+        <th width="20%">Name</th>
+        <th width="20%">Sub Direktorat</th>
+        <th width="15%">Jabatan</th>
+        <th width="15%">E-mail</th>
+        <th width="13%">Phone Number</th>
+        <th width="12%"></th>
+    </tr>
+    {$no = 1}
+    {foreach from=$rs_id item=result}
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+        <td align="center">{$no++}.</td>
+        <td>{$result.operator_name|upper}</td>
+        <td>{$result.sub_direktorat|upper}</td>
+        <td>{$result.jabatan|upper}</td>
+        <td>{$result.user_mail}</td>
+        <td align="center">{$result.delegasi_phone}</td>
+        <td align="center">
+            <a href="{$config->site_url('pengaturan/delegasi/delete_process/'|cat:$result.field_id|default:''|cat:'/'|cat:$result.user_id|default:'')}" class="button-hapus" onclick="return confirm('Apakah anda yakin akan menghapus data ini?')">Hapus</a>
+        </td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="7">Data not found!</td>
+    </tr>
+    {/foreach}
+</table>

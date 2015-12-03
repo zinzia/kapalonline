@@ -1,0 +1,122 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Data Monitoring</a><span></span>
+        <small>Flight Approval</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('task/monitoring')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" /> Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="dashboard-info-box-full">
+    <table class="table-info" width="100%">
+        <tr>
+            <th colspan="4">{$result.group_nm|default:''|upper}</th>
+        </tr>
+        <tr>
+            <td width="20%">Nomor Dokumen</td>
+            <td width="30%"><b>{$result.document_no|upper|default:''}</b></td>
+            <td width="20%">Operator</td>
+            <td width="30%"><b>{$result.airlines_nm|upper|default:''}</b></td>
+        </tr>
+        <tr>
+            <td>Berjadwal / Tidak Berjadwal</td>
+            <td>{$result.data_type|upper|default:''}</td>
+            <td>Domestik / Internasional</td>
+            <td>{$result.data_flight|upper|default:''}</td>
+        </tr>
+        <tr>
+            <td colspan="4"><b>Pesawat Udara</b></td>
+        </tr>
+        <tr>
+            <td>Tipe</td>
+            <td>{$result.aircraft_type|upper|default:''}</td>
+            <td>Tanda Pendaftaran</td>
+            <td>{$result.registration|upper|default:''}</td>
+        </tr>
+        <tr>
+            <td>Nama Panggilan</td>
+            <td colspan="3">{$result.flight_no|upper|default:''}</td>
+        </tr>
+        <tr>
+            <td colspan="4"><b>Penerbangan</b></td>
+        </tr>
+        <tr>
+            <td>Tanggal</td>
+            <td>{$dtm->get_full_date($result.date_start|default:'')|upper} / {$dtm->get_full_date($result.date_end|default:'')|upper}</td>
+            <td>Waktu</td>
+            <td>{$result.waktu|default:''|substr:0:5}</td>
+        </tr>
+        <tr>
+            <td>Rute</td>
+            <td>{$result.rute_all|default:''|upper}</td>
+            <td>Pendaratan Teknis Di</td>
+            <td>{$result.technical_landing|default:''|upper}</td>
+        </tr>
+        <tr>
+            <td>Pendaratan Niaga Di</td>
+            <td>{$result.niaga_landing|default:''|upper}</td>
+            <td>Nama Pilot</td>
+            <td>{$result.flight_pilot|default:''|upper}</td>
+        </tr>
+        <tr>
+            <td>Awak Pesawat Udara Lain</td>
+            <td>{$result.flight_crew|default:''|upper}</td>
+            <td>Penumpang / Barang</td>
+            <td>{$result.flight_goods|default:''|upper}</td>
+        </tr>
+        <tr>
+            <td>Keterangan</td>
+            <td>{$result.catatan|default:''|upper}</td>
+            <td>Remark</td>
+            <td>{$result.services_nm|default:''|upper}</td>
+        </tr>
+    </table>
+</div>
+<!--Supplementary Information--> 
+<div class="dashboard-info-box">
+    <h3>General Information &amp Attachment</h3>
+    <div style="height: 150px; overflow: auto">
+        <table width='100%' class="table-input">
+            <tr>
+                <td width='42%'>Tanggal Pendaftaran</td>
+                <td width='58%'>{$dtm->get_full_date($result.mdd|default:'')|upper}</td>
+            </tr>
+            <tr>
+                <td>Didaftarkan Oleh</td>
+                <td>{$result.operator_name|default:''|upper}</td>
+            </tr>
+            <tr>
+                <td>File Attachment</td>
+                <td>
+                    <ol>
+                        {foreach from=$rs_files item=files}
+                        <li>
+                            <a href="{$config->site_url('task/manager/files_download/'|cat:$files.file_id|default:'')}">{$files.ref_name|default:''}</a>
+                        </li>
+                        {/foreach}
+                    </ol>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="dashboard-info-box right">
+    <h3>E-Monitoring</h3>
+    <div style="height: 150px; overflow: auto">
+        <table width='100%' class='table-view'>
+            {foreach from=$rs_process item=data}
+            <tr>
+                <td width='70%'>{$data.task_nm}, {if !empty($data.mdb_finish)}oleh <u>{$data.operator_name}{else}<b style="font-size: 11px;">{$data.role_nm}</b>{/if}</u></td>
+                <td align='center' width='30%'>{$dtm->get_short_date($data.mdd_finish)}</td>
+            </tr>
+            {/foreach}
+        </table>
+    </div>
+</div>
+<div class="clear"></div>

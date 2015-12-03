@@ -1,0 +1,337 @@
+<div class="breadcrum">
+    <p>
+        <a href="{$config->site_url('task/manager')}">Task Manager</a><span></span>
+        <small>{$task.task_nm|upper}</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('task/manager')}"><img src="{$BASEURL}resource/doc/images/icon/arrow-left.png" alt="" /> Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="dashboard-info-box-full">
+    <table class="table-form" width="100%">
+        <tr>
+            <td width='25%'>
+                <span style="text-decoration: underline;">Kementerian Perhubungan Republik Indonesia</span><br />
+                <i>Ministry of Transportation Of the Republic of Indonesia</i>
+            </td>
+            <td rowspan="3" width='45%' align='center'><b style="font-size: 24px;">FLIGHT APPROVAL</b></td>
+            <td width='30%'><b style="font-size: 14px;">{$result.data_type|upper}</b></td>
+        </tr>
+        <tr>
+            <td>
+                <span style="text-decoration: underline;">Direktorat Jenderal Perhubungan Udara </span><br />
+                <i>Directorate General of Civil Aviation</i>
+            </td>
+            <td><b style="font-size: 14px;">{$result.data_flight|upper}</b></td>
+        </tr>
+        <tr>
+            <td>
+                <span style="text-decoration: underline;">Persetujuan terbang untuk wilayah Indonesia</span><br />
+                <i>Flight Approval for Indonesia territory</i>
+            </td>
+            <td><b style="font-size: 14px;">No : {$result.document_no|upper}</b><br />( {$result.registration_total} Permohonan )</td>
+        </tr>
+    </table>
+    <table class="table-form" width='100%'>
+        <tr>
+            <td width='3%'>1.</td>
+            <td width='97%' colspan="6"><span style="text-decoration: underline;">Pesawat Udara</span> <br /><i>Aircraft</i></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td width='3%'>a)</td>
+            <td width='28%'><span style="text-decoration: underline;">Operator (Pemilik / Penyewa)</span><br /><i>Operator (Owner / Charterer)</i></td>
+            <td width='1%'>:</td>
+            <td width='65%' colspan="3"><b>{$result.airlines_nm|upper}</b></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>b)</td>
+            <td><span style="text-decoration: underline;">Tipe</span><br /><i>Type</i></td>
+            <td>:</td>
+            <td colspan="3"><b>{$result.aircraft_type|default:''|upper}</b></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>c)</td>
+            <td><span style="text-decoration: underline;">Tanda Pendaftaran dan Nama Panggilan</span><br /><i>Registrations and Call Signs</i></td>
+            <td>:</td>
+            <td colspan="3"><b>{$result.registration|default:''|upper} - {$result.flight_no|default:''|upper} / {$result.flight_no_2|default:''|upper}</b></td>
+        </tr>
+        <tr>
+            <td width='3%'>2.</td>
+            <td width='97%' colspan="6"><span style="text-decoration: underline;">Penerbangan </span> <br /><i>Flight</i></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>a)</td>
+            <td><span style="text-decoration: underline;">Rute</span><br /><i>Routes</i></td>
+            <td>:</td>
+            <td colspan="3"><b>
+            {$result.rute_all|default:''|upper}
+            </b></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>b)</td>
+            <td><span style="text-decoration: underline;">Tanggal Masuk Indonesia</span><br /><i>Date Entering Indonesia</i></td>
+            <td>:</td>
+            <td colspan="3">
+                {if $result.date_start|default:'' eq "0000-00-00"}
+                    <b>-</b>
+                {else}
+                    <b>{$result.date_start|date_format:"%d %b %y"|upper}</b>
+                {/if}
+                s/d&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                {if $result.date_start_upto|default:'' eq "0000-00-00"}
+                    <b>-</b>
+                {else}
+                    <b>{$result.date_start_upto|date_format:"%d %b %y"|upper}</b>
+                {/if}
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>c)</td>
+            <td><span style="text-decoration: underline;">Tanggal Keluar Indonesia</span><br /><i>Date Leaving Indonesia</i></td>
+            <td>:</td>
+            <td colspan="3">
+                {if $result.date_end|default:'' eq "0000-00-00"}
+                    <b>-</b>
+                {else}
+                    <b>{$result.date_end|date_format:"%d %b %y"|upper}</b>
+                {/if}
+                s/d&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                {if $result.date_end_upto|default:'' eq "0000-00-00"}
+                    <b>-</b>
+                {else}
+                    <b>{$result.date_end_upto|date_format:"%d %b %y"|upper}</b>
+                {/if}
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>d)</td>
+            <td><span style="text-decoration: underline;">Pendaratan Teknis di</span><br /><i>Technical Landing at</i></td>
+            <td>:</td>
+            <td colspan="3"><b>{$result.technical_landing|default:''}</b></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>e)</td>
+            <td><span style="text-decoration: underline;">Pendaratan Niaga di</span><br /><i>Commercial Landing at</i></td>
+            <td>:</td>
+            <td colspan="3"><b>{$result.niaga_landing|default:''}</b></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>f)</td>
+            <td><span style="text-decoration: underline;">Sifat/Tujuan Penerbangan</span><br /><i>Purpose Of The Flight</i></td>
+            <td>:</td>
+            <td colspan="3"><b>{$result.flight_purpose|default:''|upper}</b></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td width='3%'>g)</td>
+            <td width='28%'><span style="text-decoration: underline;">Nama Pilot </span><br /><i>Name of Pilot in Command</i></td>
+            <td width='1%'>:</td>
+            <td width='65%' colspan="3"><b>{$result.flight_pilot|default:''|upper}</b></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>h)</td>
+            <td><span style="text-decoration: underline;">Awak pesawat udara lainnya</span> *1)<br /><i>Other crew members</i></td>
+            <td>:</td>
+            <td colspan="3"><b>{$result.flight_crew|default:''|upper}</b></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>i)</td>
+            <td><span style="text-decoration: underline;">Penumpang/ Barang </span> *2)<br /><i>Passengers / Cargo</i></td>
+            <td>:</td>
+            <td colspan="3"><b>{$result.flight_goods|default:''|upper}</b></td>
+        </tr>
+        <tr>
+            <td width='3%'>3.</td>
+            <td colspan="2"><span style="text-decoration: underline;">Keterangan</span> <br /><i>Remark</i></td>
+            <td>:</td>
+            <td colspan="3"><b>{$result.services_nm|default:''|upper}</b></td>
+        </tr>
+        <tr>
+            <td colspan="4" style="vertical-align:top;">
+                <span style="color: red; border: 1px solid #ddd; padding: 10px; height: 100px; width: 90%; display: block;">
+                    {$result.catatan|default:''|upper|nl2br}
+                </span>
+            </td>
+            <td colspan="3">
+                <table style="margin-left:-10px;;">
+                {foreach from=$remark_field item=data}
+                <tr>
+                    <td>{$data.rules_name|default:''}</td>
+                    <td><b>{$result[$data.rules_field]|default:''}</b></td>
+                </tr>
+                {/foreach}
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4"></td>
+            <td colspan="3">
+                <span style="text-decoration: underline;">Berlaku untuk 1 (satu) kali penerbangan</span>
+                <br />
+                <i>Valid for one flight </i>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" rowspan="3" align='center' style="vertical-align:  top; text-align: left;">
+                <span style="border: 1px solid #ddd; padding: 10px; height: 100px; width: 90%; display: block;">
+                    {$result.remark_final|default:''}
+                </span>
+            </td>
+            <td rowspan="3" width='10%'>
+                <span style="text-decoration: underline;">Pemohon</span><br /><i>Applicant</i>
+            </td>
+            <td width='10%'> 
+                <span style="text-decoration: underline;">Tandatangan </span><br /><i>Signature</i>
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td> 
+                <span style="text-decoration: underline;">Nama  </span><br /><i>Name</i>
+            </td>
+            <td><b>{$result.applicant|default:''|upper}</b></td>
+        </tr>
+        <tr>
+            <td> 
+                <span style="text-decoration: underline;">Penunjukan  </span><br /><i>Designation</i>
+            </td>
+            <td><b>{$result.designation|default:''|upper}</b></td>
+        </tr>
+        <tr>
+            <td colspan="5" style="vertical-align: top;">
+                Nota :<br />
+                *1) dan *2) Nama-nama supaya dicantumkan / dilampirkan<br />
+                Pesawat udara, awak pesawat udara, penumpang, dan muatan berdasarkan pada istilah dari Konvensi Chicago serta mentaati peraturan-peraturan Indonesia mengenai penerbangan ini. Memiliki persetujuan terbang ini tidak membebaskan operator dari melaksanakan setiap aturan operasi teknis atau persyaratan kelaikan udara dari Direktorat Jenderal Perhubungan Udara. Persetujuan terbang ini dapat dicabut tanpa pemberitahuan terlebih dahulu. Apabila terjadi keterlambatan pada tanggal tersebut dalam butir 2a) diatas, maka penerbangan dianggap batal.    
+            </td>
+            <td colspan="2" style="vertical-align: top;">
+                Notes :<br />
+                *1) and *2) Names should be written/attached <br />
+                Aircraft, crew, passengers and load are subject to the terms of Chicago Convention and have to comply with the Indonesian Regulations, concerning this flight. Posession of this flight approval does not exempt an operator from compliance with any of the technical operations ruler or airworthines requirement of the Directorate General of Civil Aviation. This Flight approval can be withdrawn without previous notice. Should delay exceed the date as prescribed in point 2a) above this flight will be regarded as cancelled.
+            </td>
+        </tr>
+    </table>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<!--Supplementary Information--> 
+<div class="dashboard-info-box">
+    <h3>General Information &amp Attachment</h3>
+    <form action="{$config->site_url('task/fa_auntbln_direktur/remark_process/')}" method="post">
+        <input type="hidden" name="data_id" value="{$result.data_id}" />
+        <table width='100%' class="table-input">
+            <tr>
+                <td width='42%'>Tanggal Pendaftaran</td>
+                <td width='58%'>{$dtm->get_full_date($result.mdd|default:'')|upper}</td>
+            </tr>
+            <tr>
+                <td>Didaftarkan Oleh</td>
+                <td>{$result.operator_name|default:''|upper}</td>
+            </tr>
+            <tr>
+                <td>File Attachment</td>
+                <td>
+                    <ol>
+                        {foreach from=$rs_files item=files}
+                        <li>
+                            <a href="{$config->site_url('task/manager/files_download/'|cat:$files.file_id|default:'')}">{$files.ref_name|default:''}</a>
+                        </li>
+                        {/foreach}
+                    </ol>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <textarea name="catatan" rows="5" cols="80%" placeholder="Tidak ada tambahan informasi!">{$result.remark_final}</textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>Keterangan Oleh</td>
+                <td>
+                    {$result.user_remark|default:''}
+                </td>
+            </tr>
+            <tr>
+                <td>Keterangan Tanggal</td>
+                <td>
+                    {$dtm->get_full_date($result.remark_date|default:'')}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" name="save" value="Update Remark" class="submit-button" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="dashboard-info-box right">
+    <h3>E-Monitoring</h3>
+    <form action="{$config->site_url('task/fa_auntbln_direktur/catatan_process/')}" method="post">
+        <input type="hidden" name="data_id" value="{$result.data_id}" />
+        <input type="hidden" name="process_id" value="{$result.process_id}" />
+        <table width='100%' class='table-input'>
+            {foreach from=$rs_process item=data}
+            <tr>
+                <td width='60%'>
+                    {$data.task_nm}
+                </td>
+                <td width='40%'>
+                    {$data.role_nm}
+                </td>
+            </tr>
+            {if $data.catatan neq ''}
+            <tr>
+                <td colspan="2" style="color: red; background-color: #FFFCCA;">
+                    {$data.catatan}
+                </td>
+            </tr>
+            {/if}
+            {/foreach}
+            <tr>
+                <td colspan="2">
+                    <textarea name="notes" rows="5" cols="80%" placeholder="Tidak ada catatan dari saya!">{$result.notes}</textarea>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" name="save" value="Update My Notes" class="submit-button" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="clear"></div>
+<div class="navigation" style="background-color: #FFFCCA; padding: 10px;">
+    <div class="navigation-button" style="width: 850px;">
+        <ul>
+            {if $action.action_rollback eq '1'}
+            <li><a href="{$config->site_url('task/fa_auntbln_direktur/back_process/'|cat:$result.data_id|cat:'/'|cat:$result.process_id)}" onclick="return confirm('Apakah anda yakin akan mengirimkan data berikut ini ke {$prev.role_nm}?')"><img src="{$BASEURL}resource/doc/images/icon/arrow-left.png" alt="" /> Kirim ke {$prev.role_nm}</a></li>
+            {/if}
+            {if $action.action_reject eq '1'}
+            <li><a href="{$config->site_url('task/fa_auntbln_direktur/reject_process/'|cat:$result.data_id|cat:'/'|cat:$result.process_id)}" onclick="return confirm('Apakah anda yakin akan menolak data permohonan diatas?')"><img src="{$BASEURL}resource/doc/images/icon/icon.failed.png" alt="" /> Tolak Permohonan</a></li>
+            {/if}
+            {if $action.action_publish eq '1'}
+            <li><a href="{$config->site_url('task/fa_auntbln_direktur/finish_process/'|cat:$result.data_id|cat:'/'|cat:$result.process_id)}" onclick="return confirm('Apakah anda yakin akan menyetujui Permohonan Diatas?')"><img src="{$BASEURL}resource/doc/images/icon/icon.ok.png" alt="" /> Selesai / Publish FA</a></li>
+            {/if}
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>

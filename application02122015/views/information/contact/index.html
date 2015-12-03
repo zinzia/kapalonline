@@ -1,0 +1,72 @@
+<h3>{$contact_title}</h3>
+<div style="width: 470px; float: left;">
+    <div class="content">
+        <h4>{$contact_info}</h4>
+        <table class="table-info" width="100%">
+            <tr>
+                <td width="20%" rowspan="6" align="center">
+                    <img src="{$BASEURL}resource/doc/images/logo/contact.png" alt="" style="width: 128px;" />
+                </td>
+                <td width="20%">{$contact_phone}</td>
+                <td width="60%"><b>(021) 3503345</b></td>
+            </tr>
+            <tr>
+                <td>Fax</td>
+                <td><b>(021) 3506662</b></td>
+            </tr>
+            <tr>
+                <td>{$contact_email}</td>
+                <td><b>sisfo.dau@dephub.go.id</b></td>
+            </tr>
+            <tr>
+                <td>{$contact_address}</td>
+                <td><b>Jl. Medan Merdeka Barat No.8 Jakarta Pusat 10110</b></td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div style="width: 500px; float: right;">
+    <div class="content">
+        <h4>{$contact_message}</h4>
+    </div>
+    <div style="margin: 0 30px 0 0; padding: 0 10px 0 47px; font-family: tahoma; line-height: 18px;">
+        <!-- notification template -->
+        {include file="base/templates/notification.html"}
+        <!-- end of notification template-->
+    </div>
+    <form action="{$config->site_url('information/contact/add_process')}" method="post">
+        <table width="100%" class="table-contact">
+            <tr>
+                <td width="30%">Your name</td>
+                <td width="70%">
+                    <input type="text" name="contact_name" value="{$result.contact_name|default:''}" size="40" maxlength="50" />
+                </td>
+            </tr>
+            <tr>
+                <td>From</td>
+                <td>
+                    <input type="text" name="contact_from" value="{$result.contact_from|default:''}" size="40" maxlength="50" />
+                </td>
+            </tr>
+            <tr>
+                <td>Message</td>
+                <td>
+                    <textarea name="contact_message" cols="40" rows="5">{$result.contact_message|default:''}</textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>
+                    <input type="text" name="contact_email" value="{$result.contact_email|default:''}" size="40" maxlength="50" />
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" value="Send" class="submit-button" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="clear"></div>

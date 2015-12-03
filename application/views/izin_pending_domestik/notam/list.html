@@ -1,0 +1,171 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        // date picker
+        $(".tanggal").datepicker({
+            showOn: 'both',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: '1940:2015',
+            buttonImage: '{$BASEURL}/resource/doc/images/icon/calendar.gif',
+            buttonImageOnly: true,
+            dateFormat: 'yy-mm-dd',
+        });
+    });
+</script>
+<div class="breadcrum">
+    <p>
+        <a href="#">Pendaftaran Izin Rute</a><span></span>
+        <small>PERMOHONAN {$detail.group_nm|upper}</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('member/pending_izin/')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" />Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="step-box">
+    <ul>
+        <li>
+            <a href="{$config->site_url('izin_pending_domestik/notam/index/'|cat:$detail.registrasi_id)}"><b>Step 1</b><br />Data Permohonan</a>
+        </li>
+        <li>
+            <a href="{$config->site_url('izin_pending_domestik/notam/list_rute/'|cat:$detail.registrasi_id)}" class="active"><b>Step 2</b><br />Data Rute Penerbangan</a>
+        </li>
+        {if $airport.is_all_used_score neq 1}
+        <li>
+            <a href="#" class="normal"><b>Step 3</b><br />Slot Clearance</a>
+        </li>
+        <li>
+            <a href="#" class="normal"><b>Step 4</b><br />File Attachment</a>
+        </li>
+        <li>
+            <a href="#" class="normal"><b>Step 5</b><br />Review Permohonan</a>
+        </li>
+        {else}
+        <li>
+            <a href="#" class="normal"><b>Step 3</b><br />File Attachment</a>
+        </li>
+        <li>
+            <a href="#" class="normal"><b>Step 4</b><br />Review Permohonan</a>
+        </li>
+        {/if}
+    </ul>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('izin_pending_domestik/notam/list_rute_process')}" method="post">
+    <input type="hidden" name="registrasi_id" value="{$detail.registrasi_id|default:''}">
+    <table class="table-form" width="100%">
+        <tr>
+            <td colspan="4" align='center'>
+                <b style="font-size: 16px;">PERMOHONAN {$detail.group_nm|upper}</b>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" align='center'>&nbsp;</td>
+        </tr>
+        <tr>
+            <td width='20%'>
+                <span style="text-decoration: underline;">Tanggal Surat Permohonan</span><br /><i>Request Letter Date</i>
+            </td>
+            <td width='30%'><b>{$dtm->get_full_date($detail.izin_request_letter_date|default:'')|upper}</b></td>
+            <td width='20%'>
+                <span style="text-decoration: underline;">Nomor Surat Permohonan</span><br /><i>Request Letter Number</i>
+            </td>
+            <td width='30%'><b>{$detail.izin_request_letter|default:''|upper}</b></td>
+        </tr>
+        <tr>
+            <td>
+                <span style="text-decoration: underline;">Kode Izin Rute</span><br /><i>Routes Code</i>
+            </td>
+            <td style="color: blue; font-weight: bold;">
+                {$detail.kode_izin|default:''|upper}
+            </td>
+            <td>
+                <span style="text-decoration: underline;">Rute Penerbangan</span><br /><i>Flight Routes</i>
+            </td>
+            <td style="color: blue; font-weight: bold;">
+                {$detail.izin_rute_start|default:''|upper} / {$detail.izin_rute_end|default:''|upper}
+            </td>
+        </tr>
+    </table> 
+    <h3 style="font-family: helvetica; font-size: 12px;">Pilihan Data Rute Penerbangan Yang Akan Diubah</h3>
+    <table width="100%" class="table-view" style="font-weight: normal;">
+        <tr>
+            <td width="5%" align="center">No</td>
+            <td width="12%" align="center">Rute  <br />Penerbangan</td>
+            <td width="8%" align="center">Tipe <br />Pesawat</td>
+            <td width="8%" align="center">Kapasitas <br />Pesawat</td>
+            <td width="8%" align="center">Nomor Penerbangan</td>
+            <td width="8%" align="center">ETD</td>
+            <td width="8%" align="center">ETA</td>
+            <td width="8%" align="center">Hari Operasi</td>
+            <td width="8%" align="center">Frekuensi</td>
+            <td width="12%" align="center">Masa Berlaku</td>
+            <td align="center"></td>
+        </tr>
+        {$no = 0}
+        {$temp = ""}
+        {$frekuensi = 0}
+        {foreach from=$rs_id item=data}
+        {if $data.izin_id neq $temp}
+        {$no = $no + 1}    
+        {/if}
+        <tr {if $data.kode_frekuensi|in_array:$izin_selected}class="red-row"{/if} >
+
+            {if $data.izin_id neq $temp}
+            <td align="center" rowspan="{$data.rowspan|default:'0'}">{$no}.</td>
+            {/if}
+            <td align="center">{if $data.kode_frekuensi|in_array:$izin_selected}{$rs_new[$data.rute_all].rute_all}{else}{$data.rute_all}{/if}</td>
+            <td align="center">{if $data.kode_frekuensi|in_array:$izin_selected}{$rs_new[$data.rute_all].aircraft_type}{else}{$data.aircraft_type}{/if}</td>
+            <td align="center">{if $data.kode_frekuensi|in_array:$izin_selected}{$rs_new[$data.rute_all].aircraft_capacity}{else}{$data.aircraft_capacity}{/if}</td>
+            <td align="center">{if $data.kode_frekuensi|in_array:$izin_selected}{$rs_new[$data.rute_all].flight_no}{else}{$data.flight_no}{/if}</td>
+            <td align="center">{if $data.kode_frekuensi|in_array:$izin_selected}{$rs_new[$data.rute_all].etd|substr:0:5}{else}{$data.etd|substr:0:5}{/if}</td>
+            <td align="center">{if $data.kode_frekuensi|in_array:$izin_selected}{$rs_new[$data.rute_all].eta|substr:0:5}{else}{$data.eta|substr:0:5}{/if}</td>
+
+            <td align="center" >{$data.doop}</td>
+            
+            {$frekuensi = $frekuensi + $data.frekuensi}
+            <td align="center" style="color: blue;">{$data.frekuensi}X</td>
+
+            <td align="center" style="color: blue;">
+                {$dtm->get_full_date($data.start_date, 'ins')|upper}<br />
+                {$dtm->get_full_date($data.end_date, 'ins')|upper}
+            </td>
+            
+            {if $data.izin_id neq $temp}
+            <td align="center" rowspan="{$data.rowspan|default:'0'}">
+                <a href="{$config->site_url('izin_pending_domestik/notam/rute_edit/'|cat:$detail.registrasi_id|cat:'/'|cat:$data.kode_frekuensi)}" class="button-edit">Edit</a><br/><br/>
+                <a href="{$config->site_url('izin_pending_domestik/notam/rute_delete/'|cat:$detail.registrasi_id|cat:'/'|cat:$data.kode_frekuensi)}" class="button-hapus" onclick="return confirm('Apakah anda yakin akan membatalkan notam frekuensi ini?');">Cancel</a>
+
+            </td>
+            {/if}
+        </tr>
+        {if $data.izin_id neq $temp}
+        {$temp = $data.izin_id}
+        {/if}
+        {/foreach}
+        <tr>
+            <td colspan="8" align="right">Jumlah Frekuensi / Minggu Saat Ini</td>
+            <td align="center"><b>{$tot_frek|default:0}X</b></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+    <table class="table-form" width='100%'>
+        <tr class="submit-box">
+            <td>
+                Pastikan data yang anda masukkan adalah data yang benar!
+            </td>
+            <td align='right'>
+                <input type="submit" name="save" value="Lanjutkan" class="submit-button" />
+            </td>
+        </tr>
+    </table>
+</form>

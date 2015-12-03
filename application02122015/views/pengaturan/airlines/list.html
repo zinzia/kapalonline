@@ -1,0 +1,84 @@
+<div class="breadcrum">
+    <p>        
+        <a href="#">Settings</a><span></span>
+        <small>Operator Penerbangan</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="search-box">
+    <h3><a href="#">Pencarian</a></h3>
+    <form action="{$config->site_url('pengaturan/airlines/proses_cari')}" method="post">
+        <table class="table-search" width="100%" border="0">
+            <tr>
+                <th width="8%">Nama</th>
+                <td width="10%">
+                    <input name="airlines" type="text" value="{$search.airlines|default:''}" size="20" maxlength="50" />
+                </td>
+                <th width="8%">Brand</th>
+                <td width="10%">
+                    <input name="brand" type="text" value="{$search.brand|default:''}" size="20" maxlength="50" />
+                </td>
+                <th width="8%">IATA</th>
+                <td width="10%">
+                    <input name="iata" type="text" value="{$search.iata|default:''}" size="5" maxlength="5" />
+                </td>
+                <th width="8%">ICAO</th>
+                <td width="10%">
+                    <input name="icao" type="text" value="{$search.icao|default:''}" size="5" maxlength="5" />
+                </td>
+                <td width="28%" align='right'>
+                    <input class="blue" name="save" type="submit" value="Tampilkan" />
+                    <input class="orange" name="save" type="submit" value="Reset" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info">Total&nbsp;<strong>{$pagination.total|default:0}</strong>&nbsp;Record&nbsp;</li>{$pagination.data|default:''}
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('pengaturan/airlines/add')}"><img src="{$BASEURL}resource/doc/images/icon/add-icon.png" alt="" /> Add Data</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width="5%">No</th>
+        <th width="25%">Nama Operator</th>
+        <th width="18%">Nama Brand</th>
+        <th width="10%">IATA Code</th>
+        <th width="10%">ICAO Code</th>
+        <th width="20%">Jenis Penerbangan</th>
+        <th width="12%"></th>
+    </tr>
+    {foreach from=$rs_airlines item=result}
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+        <td align="center">{$no++}.</td>
+        <td>{$result.airlines_nm|upper|default:''}</td>
+        <td>{$result.airlines_brand|upper|default:''}</td>
+        <td align="center">{$result.airlines_iata_cd|default:''}</td>
+        <td align="center">{$result.airlines_icao_cd|default:''}</td>
+        <td align="center">{$result.airlines_flight_type|upper|default:''}</td>
+        <td align="center">
+            <a href="{$config->site_url('pengaturan/airlines/edit/'|cat:$result.airlines_id|default:'')}" class="button-edit">Edit</a>
+            <a href="{$config->site_url('pengaturan/airlines/delete/'|cat:$result.airlines_id|default:'')}" class="button-hapus">Hapus</a>
+        </td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="7">Data not found!</td>
+    </tr>
+    {/foreach}
+</table>

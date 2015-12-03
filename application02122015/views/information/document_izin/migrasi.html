@@ -1,0 +1,93 @@
+<div id="table-data" style="margin: 0 0 5px 0; padding: 10px; border: 1px solid #ddd; font-family: helvetica;">
+    <table class="table-form" width="100%">
+        <tr>
+            <td colspan="5">Lampiran Surat Direktorat Jenderal Perhubungan Udara</td>
+        </tr>
+        <tr>
+            <td width='10%'>Nomor</td>
+            <td width='1%'>:</td>
+            <td width='49%'>{$result.izin_published_letter}</td>
+            <td width='5%'></td>
+            <td width='35%'></td>
+        </tr>
+        <tr>
+            <td>Tanggal</td>
+            <td>:</td>
+            <td>{$dtm->get_full_date($result.izin_published_date)}</td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+    <h3 style="text-align: center;">{$result.group_nm}</h3>
+    <p class="caption">
+        <b>{$result.airlines_nm}</b>
+        <br />
+        <b>{$dtm->get_full_date($izin_start_date)|upper}</b> hingga <b>{$dtm->get_full_date($izin_expired_date)|upper}</b>
+    </p>
+    <br />
+    <table class="table-view" width="100%" style="font-size: 12px; font-family: helvetica; color: #333;">
+        <tr>
+            <td width="5%" rowspan="2" align='center'>No</td>
+            <td width="15%" rowspan="2" align='center'>Rute<br />Penerbangan</td>
+            <td width="15%" rowspan="2" align='center'>Tipe<br />Pesawat</td>
+            <td width="15%" rowspan="2" align='center'>Nomor<br />Penerbangan</td>
+            <td width="20%" colspan="2" align='center'>Jadwal Penerbangan <br />(Waktu Lokal)</td>
+            <td width="15%" rowspan="2" align='center'>Frekuensi /<br /> Minggu</td>
+            <td width="15%" rowspan="2" align='center'>Hari<br /> Operasi</td>
+        </tr>
+        <tr>
+            <td width="10%" align='center'>ETD</td>
+            <td width="10%" align='center'>ETA</td>
+        </tr>
+        {$no = 0}
+        {$temp = ""}
+        {$frekuensi = 0}
+        {foreach from=$rs_id item=data}
+        {if $data.izin_id neq $temp}
+        {$no = $no + 1}    
+        {/if}
+        <tr>
+            {if $data.izin_id neq $temp}
+            {if $data.pairing eq 'VV'}
+            <td align="center" rowspan="2">{$no}.</td>
+            {else}
+            <td align="center">{$no}.</td>        
+            {/if}
+            {/if}
+
+            <td align="center">{$data.rute_all}</td>
+            <td align="center">{$data.aircraft_type}</td>
+            <td align="center">{$data.flight_no}</td>
+            <td align="center">{$data.etd|substr:0:5}</td>
+            <td align="center">{$data.eta|substr:0:5}</td> 
+
+            {if $data.izin_id neq $temp}
+            {if $data.pairing eq 'VV'}
+            {$frekuensi = $frekuensi + $data.frekuensi}
+            <td align="center" rowspan="2">{$data.frekuensi}X</td>
+            {else}
+            {$frekuensi = $frekuensi + $data.frekuensi}
+            <td align="center">{$data.frekuensi}X</td>
+            {/if}
+            {/if}
+
+            {if $data.izin_id neq $temp}
+            {if $data.pairing eq 'VV'}
+                {if $data.ron eq 0}
+                    <td align="center" rowspan="2">{$data.dos}</td>
+                {else}
+                    <td align="center">{$data.dos}</td>        
+                {/if}
+            {else}
+                <td align="center">{$data.dos}</td>        
+            {/if}
+            {elseif $data.ron neq 0}
+                <td align="center">{$dos->reverse_dos($data.dos,$data.ron)}</td>   
+            {/if}
+        </tr>
+        {if $data.izin_id neq $temp}
+        {$temp = $data.izin_id}
+        {/if}
+        {/foreach}
+    </table>
+</div>

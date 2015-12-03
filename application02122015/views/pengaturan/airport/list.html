@@ -1,0 +1,81 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <small>Bandar Udara</small>
+    </p>
+    <div class="clear"></div>
+</div>
+
+<div class="search-box">
+    <h3><a href="#">Pencarian</a></h3>
+    <form action="{$config->site_url('pengaturan/airport/proses_cari')}" method="post">
+        <table class="table-search" width="100%" border="0">
+            <tr>
+                <th width="10%">Nama</th>
+                <td width="15%">
+                    <input name="airport_nm" type="text" value="{$search.airport_nm|default:''}" size="20" maxlength="40" placeholder="-- semua --" />
+                </td>
+                <th width="10%">Status</th>
+                <td width="15%">
+                    <select name="airport_st">
+                        <option value="">-- semua --</option>
+                        <option value="domestik" {if $search.airport_st|default:'' eq 'domestik'}selected="selected"{/if}>DOMESTIK</option>
+                        <option value="internasional" {if $search.airport_st|default:'' eq 'internasional'}selected="selected"{/if}>INTERNASIONAL</option>
+                    </select>   
+                </td>
+                <td width='50%' align='right'>
+                    <input name="save" type="submit" value="Tampilkan" />
+                    <input name="save" type="submit" value="Reset" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info">Total&nbsp;<strong>{$pagination.total|default:0}</strong>&nbsp;Record&nbsp;</li>{$pagination.data|default:''}
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('pengaturan/airport/add')}"><img src="{$BASEURL}resource/doc/images/icon/add-icon.png" alt="" /> Add Data</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width="5%">No</th>
+        <th width="27%">Bandar Udara</th>
+        <th width="10%">IATA</th>
+        <th width="10%">ICAO</th>
+        <th width="15%">Kota</th>
+        <th width="15%">Negara</th>
+        <th width="18%"></th>
+    </tr>
+    {foreach from=$rs_id item=result}
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+        <td align="center">{$no++}.</td>
+        <td>{$result.airport_nm|upper}</td>
+        <td align="center">{$result.airport_iata_cd|upper}</td>
+        <td align="center">{$result.airport_icao_cd|upper}</td>
+        <td align="center">{$result.airport_region|upper}</td>
+        <td align="center">{$result.airport_country|upper}</td>
+        <td align="center">
+            <a href="{$config->site_url('pengaturan/airport/edit/'|cat:$result.airport_id|default:'')}" class="button-edit">Edit</a>
+            <a href="{$config->site_url('pengaturan/airport/delete/'|cat:$result.airport_id|default:'')}" class="button-hapus">Hapus</a>
+        </td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="7">Data not found!</td>
+    </tr>
+    {/foreach}
+</table>

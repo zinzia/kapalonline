@@ -1,0 +1,102 @@
+<script type="text/javascript">
+    $(document).ready(function () {
+        /*
+         * COMBO BOX
+         */
+        $("#combobox").select2({
+            placeholder: "Pilih Operator Penerbangan",
+            allowClear: true,
+            width: 310
+        });
+    });
+</script>
+<style type="text/css">
+    .select2-choice {
+        width: 300px !important;
+    }
+    .select2-default {
+        width: 300px !important;
+    }
+</style>
+<div class="breadcrum">
+    <p>
+        <a href="#">Pencabutan Izin Rute Penerbangan</a><span></span>
+        <small>{$detail.izin_flight|upper}</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('pencabutan/'|cat:$detail.izin_flight)}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" />Back to Draft List</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="step-box">
+    <ul>
+        <li>
+            <a href="{$config->site_url('pencabutan/'|cat:$detail.izin_flight|cat:'/penghentian/'|cat:$detail.registrasi_id)}" class="active"><b>Step 1</b><br />Pilih Operator Penerbangan</a>
+        </li>
+        <li>
+            <a href="#" class="normal"><b>Step 2</b><br />Pilih Rute Penerbangan</a>
+        </li>
+        <li>
+            <a href="#" class="normal"><b>Step 3</b><br />Upload File Attachment</a>
+        </li>
+        <li>
+            <a href="#" class="normal"><b>Step 4</b><br />Review Permohonan</a>
+        </li>
+    </ul>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('pencabutan/penghentian/edit_process')}" method="post">
+    <input type="hidden" name="registrasi_id" value="{$detail.registrasi_id|default:''}">
+    <input type="hidden" name="airlines_id_old" value="{$detail.airlines_id|default:''}">
+    <table class="table-form" width="100%">
+        <tr>
+            <td colspan="4" align='center'>
+                <b style="font-size: 16px;">{$detail.group_nm|upper}</b>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align='center'>&nbsp;</td>
+        </tr>
+        <tr>
+            <td width='20%'>
+                <span style="text-decoration: underline;">Operator Penerbangan</span><br /><i>Airlines</i>
+            </td>
+            <td width='80%'>
+                <select name="airlines_id" id="combobox">
+                    <option value=""></option>
+                    {foreach from=$rs_id item=data}
+                    <option value="{$data.airlines_id|default:''}" {if $detail.airlines_id|default:'' eq $data.airlines_id|default:''}selected="selected"{/if}>{$data.airlines_nm|upper}</option>
+                    {/foreach}
+                </select>
+            </td>
+        </tr>   
+        <tr>
+            <td>
+                <span style="text-decoration: underline;">Dibuat Oleh</span><br /><i>Create By</i>
+            </td>
+            <td>{$detail.operator_name|upper}</td>
+        </tr>     
+        <tr>
+            <td>
+                <span style="text-decoration: underline;">Tanggal</span><br /><i>Date</i>
+            </td>
+            <td>{$dtm->get_full_date($detail.mdd)|upper}</td>
+        </tr>     
+    </table>
+    <table class="table-form" width='100%'>
+        <tr class="submit-box">
+            <td>Pencabutan frekuensi / izin rute ini merupakan perintah langsung dari pimpinan yang bertanggung jawab di Direktorat Jenderal Perhubungan Udara</td>
+            <td align='right'>
+                <input type="submit" name="save" value="Simpan dan Lanjutkan" class="submit-button" />
+            </td>
+        </tr>
+    </table>
+</form>

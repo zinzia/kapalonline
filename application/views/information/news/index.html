@@ -1,0 +1,34 @@
+<h3>{$update_last}</h3>
+<div class="content">
+    {if empty($result)}
+    <p>
+        Tidak ada update terbaru
+    </p>
+    {else}
+    <h4>{$result.news_lang_title}</h4>
+    {if $result.news_lang_img neq ''}
+    <img src="{$result.news_lang_img}" alt="" class="news-img" />
+    {/if}
+    <p><small>Post Date : {$dtm->get_full_date($result.news_post_date)}</small></p>
+    <p>
+        {$result.news_lang_content|nl2br}
+    </p>
+    <div class="clear"></div>
+    {/if}
+    <br />
+    <h4>{$update_other}</h4>
+    <ul class="list-news">
+        {foreach from=$rs_news item=news}
+        <li>
+            <a href="{$config->site_url('information/news/index/'|cat:$news.news_id|default:'')}">
+                <b>{$news.news_lang_title}</b>, <small>Post Date : {$dtm->get_full_date($news.news_post_date)}</small><br />
+                <span style="color: #555;">{$news.news_lang_content|substr:0:200} ......</span>
+            </a>
+        </li>
+        {foreachelse}
+        <li>No Updates!</li>
+        {/foreach}
+    </ul>
+    <br />
+    <br />
+</div>

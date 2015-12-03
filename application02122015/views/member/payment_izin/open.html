@@ -1,0 +1,71 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Penagihan dan Pembayaran</a><span></span>
+        <small>Izin Rute Penerbangan</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="sub-nav-content">
+    <ul>
+        <li><a href="{$config->site_url('member/payment_izin')}" class="active">CREATE INVOICES</a></li>
+        <li><a href="{$config->site_url('member/payment_izin/pending')}">Waiting for Payment</a></li>
+        <li><a href="{$config->site_url('member/payment_izin/failed')}">Payment Failed</a></li>
+        <li><a href="{$config->site_url('member/payment_izin/success')}">Payment Success</a></li>
+    </ul>
+</div>
+<div class="clear"></div>
+<div class="sub-content">
+    <!-- notification template -->
+    {include file="base/templates/notification.html"}
+    <!-- end of notification template-->
+    <div class="navigation">
+        <div class="pageRow">
+            <div class="pageNav">
+                <ul>
+                    <li class="info">Total draft penagihan gagal diproses &nbsp;<strong style="text-decoration: underline;">{$total_draft|default:0} Draft Penagihan</strong>&nbsp;&nbsp;</li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="navigation-button">
+            <ul>
+                <li><a href="{$config->site_url('member/payment_izin')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" /> Back</a></li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <table class="table-view" width="100%">
+        <tr>
+            <th width='5%'>No</th>
+            <th width='15%'>Kode Billing</th>
+            <th width='12%'>Jumlah <br />Ijin Rute</th>
+            <th width='12%'>Jumlah <br />Total Pembayaran</th>
+            <th width='20%'>Create Date</th>
+            <th width='21%'>Create By</th>
+            <th width='15%'></th>
+        </tr>
+        {$no = 1}
+        {foreach from=$rs_id item=result}
+        <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+            <td align="center">{$no++}.</td>
+            <td align="center">{$result.virtual_account}</td>
+            <td align="center">{$result.total_ijin|upper}</td>
+            <td align="right">{$result.inv_total|number_format:0:",":"."|default:'-'}</td>
+            <td align="center">{$dtm->get_full_date($result.inv_date)|upper}</td>
+            <td align="center">{$result.operator_name|upper}</td>
+            <td align="center">
+                {if $result.total_fa <= 0}
+                <a href="{$config->site_url('member/payment_izin/cancel_invoices/'|cat:$result.inv_id)}" class="button-hapus" onclick="return confirm('Apakah anda yakin akan membatalkan invoices ini?')">Cancel</a>
+                {else}
+                <a href="{$config->site_url('member/payment_izin/open_invoices/'|cat:$result.inv_id)}" class="button-edit">Process</a>
+                {/if}
+            </td>
+        </tr>
+        {foreachelse}
+        <tr>
+            <td colspan="7">Data not found!</td>
+        </tr>
+        {/foreach}
+    </table>
+</div>
+

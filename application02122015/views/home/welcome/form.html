@@ -1,0 +1,179 @@
+<script type="text/javascript">
+    $(function() {
+        $(".login").jCryption({
+            getKeysURL: "{$config->site_url('home/welcome/crypt?getPublicKey=true')}",
+            handshakeURL: "{$config->site_url('home/welcome/crypt?handshake=true')}"
+        });
+    });
+</script>
+{if $login_st|default:'' eq ''}
+<div class="content">
+    <form action="{$config->site_url('home/welcome/login_process')}" method="post" autocomplete="off" class="login">
+        <input type="hidden" name="{$token_nm}" value="{$token}"/>
+        <div class="input">
+            <input name="username" maxlength="30" type="text" placeholder="Username" autocomplete="off" />
+            <br/>
+            <input name="pass" maxlength="30" type="password" placeholder="Password" autocomplete="off" />
+        </div>
+        <div style="float: left; margin: 0; padding: 0;">
+            {$captcha.image|default:''}
+        </div>
+        <div style="float: right; margin: 0; padding: 0;">
+            <a href="{$config->site_url('home/welcome')}" class="captcha-reload">Re-load Pages</a>
+            <br />
+            <br />
+            <a href="{$config->site_url('home/welcome/reset')}" class="reset-link">Reset Password</a>
+        </div>
+        <div class="clear"></div>
+        <br/>
+        <input type="text" name="captcha" size="10" maxlength="10" class="captcha" placeholder="Type Captcha" autocomplete="off" />
+        <br/>
+        <br/>
+        <div style="float: left; margin: 0; padding: 0;">
+            <button></button>
+        </div>
+        <div style="float: right; margin: 0; padding: 0;">
+            <br />
+            <a href="{$config->site_url('member/registration')}" class="register-link">Register New</a>
+        </div>
+		<div class="clear"></div>
+    </form>
+</div>
+{elseif $login_st|default:'' eq 'error'}
+<div class="alert red"><b>Your account is not found!</b> <p>Please Try Again or contact your administrator</p></div>
+<div class="content">
+    <form action="{$config->site_url('home/welcome/login_process')}" method="post" autocomplete="off" class="login">
+        <input type="hidden" name="{$token_nm}" value="{$token}"/>
+        <div class="input">
+            <input name="username" maxlength="30" type="text" placeholder="Username" autocomplete="off"/>
+            <br/>
+            <input name="pass" maxlength="30" type="password" placeholder="Password" autocomplete="off"/>
+        </div>
+        <div style="float: left; margin: 0; padding: 0;">
+            {$captcha.image|default:''}
+        </div>
+        <div style="float: right; margin: 0; padding: 0;">
+            <a href="{$config->site_url('home/welcome')}" class="captcha-reload">Re-load Pages</a>
+            <br />
+            <br />
+            <a href="{$config->site_url('home/welcome/reset')}" class="reset-link">Reset Password</a>
+        </div>
+        <div class="clear"></div>
+        <br/>
+        <input type="text" name="captcha" size="10" maxlength="10" class="captcha" placeholder="Type Captcha" autocomplete="off" />
+        <br/>
+        <br/>
+        <div style="float: left; margin: 0; padding: 0;">
+            <button></button>
+        </div>
+        <div style="float: right; margin: 0; padding: 0;">
+            <br />
+            <a href="{$config->site_url('home/welcome')}" class="register-link">Register New</a>
+        </div>
+        <div class="clear"></div>
+    </form>
+</div>
+{elseif $login_st|default:'' eq 'locked'}
+<div class="alert red"><b>Your account has been locked!</b> <p>Please Try Again or contact your administrator</p></div>
+<div class="content">
+    <form action="{$config->site_url('home/welcome/login_process')}" method="post" autocomplete="off" class="login">
+        <input type="hidden" name="{$token_nm}" value="{$token}"/>
+        <div class="input">
+            <input name="username" maxlength="30" type="text" placeholder="Username" autocomplete="off"/>
+            <br/>
+            <input name="pass" maxlength="30" type="password" placeholder="Password" autocomplete="off"/>
+        </div>
+        <div style="float: left; margin: 0; padding: 0;">
+            {$captcha.image|default:''}
+        </div>
+        <div style="float: right; margin: 0; padding: 0;">
+            <a href="{$config->site_url('home/welcome')}" class="captcha-reload">Re-load Pages</a>
+            <br />
+            <br />
+            <a href="{$config->site_url('home/welcome/reset')}" class="reset-link">Reset Password</a>
+        </div>
+        <div class="clear"></div>
+        <br/>
+        <input type="text" name="captcha" size="10" maxlength="10" class="captcha" placeholder="Type Captcha" autocomplete="off" />
+        <br/>
+        <br/>
+        <div style="float: left; margin: 0; padding: 0;">
+            <button></button>
+        </div>
+        <div style="float: right; margin: 0; padding: 0;">
+            <br />
+            <a href="{$config->site_url('home/welcome')}" class="register-link">Register New</a>
+        </div>
+        <div class="clear"></div>
+    </form>
+</div>
+{elseif $login_st|default:'' eq 'error_captcha'}
+<div class="alert red"><b>Captcha doesn't match!</b> <p>Please Try Again</p></div>
+<div class="content">
+    <form action="{$config->site_url('home/welcome/login_process')}" method="post" autocomplete="off" class="login">
+        <input type="hidden" name="{$token_nm}" value="{$token}"/>
+        <div class="input">
+            <input name="username" maxlength="30" type="text" placeholder="Username" autocomplete="off"/>
+            <br/>
+            <input name="pass" maxlength="30" type="password" placeholder="Password" autocomplete="off"/>
+        </div>
+        <div style="float: left; margin: 0; padding: 0;">
+            {$captcha.image|default:''}
+        </div>
+        <div style="float: right; margin: 0; padding: 0;">
+            <a href="{$config->site_url('home/welcome')}" class="captcha-reload">Re-load Pages</a>
+            <br />
+            <br />
+            <a href="{$config->site_url('home/welcome/reset')}" class="reset-link">Reset Password</a>
+        </div>
+        <div class="clear"></div>
+        <br/>
+        <input type="text" name="captcha" size="10" maxlength="10" class="captcha" placeholder="Type Captcha" autocomplete="off" />
+        <br/>
+        <br/>
+        <div style="float: left; margin: 0; padding: 0;">
+            <button></button>
+        </div>
+        <div style="float: right; margin: 0; padding: 0;">
+            <br />
+            <a href="{$config->site_url('home/welcome')}" class="register-link">Register New</a>
+        </div>
+        <div class="clear"></div>
+    </form>
+</div>
+{elseif $login_st|default:'' eq 'still'}
+<div class="alert red"><b>You are still login!</b> <p>Please Try Again or contact your administrator</p></div>
+{else}
+<div class="content">
+    <form action="{$config->site_url('home/welcome/login_process')}" method="post" autocomplete="off" class="login">
+        <input type="hidden" name="{$token_nm}" value="{$token}"/>
+        <div class="input">
+            <input name="username" maxlength="30" type="text" placeholder="Username" autocomplete="off"/>
+            <br/>
+            <input name="pass" maxlength="30" type="password" placeholder="Password" autocomplete="off"/>
+        </div>
+        <div style="float: left; margin: 0; padding: 0;">
+            {$captcha.image|default:''}
+        </div>
+        <div style="float: right; margin: 0; padding: 0;">
+            <a href="{$config->site_url('home/welcome')}" class="captcha-reload">Re-load Pages</a>
+            <br />
+            <br />
+            <a href="{$config->site_url('home/welcome/reset')}" class="reset-link">Reset Password</a>
+        </div>
+        <div class="clear"></div>
+        <br/>
+        <input type="text" name="captcha" size="10" maxlength="10" class="captcha" placeholder="Type Captcha" autocomplete="off" />
+        <br/>
+        <br/>
+        <div style="float: left; margin: 0; padding: 0;">
+            <button></button>
+        </div>
+        <div style="float: right; margin: 0; padding: 0;">
+            <br />
+            <a href="{$config->site_url('home/welcome')}" class="register-link">Register New</a>
+        </div>
+        <div class="clear"></div>
+    </form>
+</div>
+{/if}

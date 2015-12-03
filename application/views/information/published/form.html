@@ -1,0 +1,64 @@
+<h3>Cek Status Flight Approval</h3>
+<div class="content">
+    <div style="font-family: tahoma; line-height: 18px;">
+        <!-- notification template -->
+        {include file="base/templates/notification.html"}
+        <!-- end of notification template-->
+    </div>
+    <table class="table-input" width="100%">
+        <tbody>
+            {if $result.data_st|default:'' eq "approved"}
+            <tr>
+                <td width="15%">Nomor Flight Approval</td>
+                <td width="40%">{$result.published_no|default:''}</td>
+            </tr>
+            <tr>
+                <td>Tanggal Disetujui</td>
+                <td>{$result.published_date|default:''}</td>
+            </tr>
+            <tr>
+                <td>Nama</td>
+                <td>{$result.operator_name|default:''}</td>
+            </tr>
+            <tr>
+                <td>Jabatan</td>
+                <td>{$result.jabatan|default:''}</td>
+            </tr>
+            {elseif $result.data_st|default:'' eq "rejected"}
+            <tr>
+                <td width="15%">Nomor Flight Approval</td>
+                <td width="40%">Ditolak</td>
+            </tr>
+            <tr>
+                <td>Tanggal Disetujui</td>
+                <td>Ditolak</td>
+            </tr>
+            <tr>
+                <td>Nama</td>
+                <td>Ditolak</td>
+            </tr>
+            <tr>
+                <td>Jabatan</td>
+                <td>Ditolak</td>
+            </tr>
+            {else}
+            <tr>
+                <td width="15%">Nomor Flight Approval</td>
+                <td width="40%">-</td>
+            </tr>
+            <tr>
+                <td>Tanggal Disetujui</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>Nama</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>Jabatan</td>
+                <td>-</td>
+            </tr>
+            {/if}
+        </tbody>
+    </table>
+</div>

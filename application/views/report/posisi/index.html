@@ -1,0 +1,86 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Data Report</a><span></span>
+        <small>Posisi Pengajuan</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="search-box">
+    <h3><a href="#">Pencarian</a></h3>
+    <form action="{$config->site_url('report/posisi/proses_cari')}" method="post">
+        <table class="table-search" width="100%" border="0">
+            <tr>
+                <th width="5%">Tipe</th>
+                <td width="15%">
+                    <select name="role_id">
+                        <option value=""></option>
+                        {foreach from=$rs_role item=data}
+                        <option value="{$data.role_id}" {if $search.role_id|default:'' eq $data.role_id}selected="selected"{/if}>{$data.role_nm}</option>
+                        {/foreach}
+                    </select>   
+                </td>
+                <td align='right'>
+                    <input name="save" type="submit" value="Tampilkan" />
+                    <input name="save" type="submit" value="Reset" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info"><strong>{$pagination.total|default:0}</strong> Record&nbsp;</li>{$pagination.data|default:''}
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="navigation">
+        <div class="navigation-button">
+            <ul>
+                <li><a href="{$config->site_url('report/posisi/download/')}"><img src="{$BASEURL}resource/doc/images/icon/download-icon.png" alt="" /> Download Excel</a></li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width="5%">No</th>
+        <th width="12%">Nomor<br />Dokumen</th>
+        <th width="13%">Nomor FA</th>
+        <th width="20%">Operator</th>
+        <th width="20%">Jenis Penerbangan</th>
+        <th width="15%">Tanggal</th>
+        <th width="15%">Rute</th>
+    </tr>
+    {foreach from=$rs_id item=result}
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if} onclick="form_fa({$result.data_id})" style="cursor:zoom-in;">
+        <td align="center">{$no++}.</td>
+        <td align="center">{$result.document_no|upper}</td>
+        <td align="center">{$result.document_no|upper}</td>
+        <td>{$result.airlines_nm|upper}</td>
+        <td align="center">{$result.data_type|upper} {$result.data_flight|upper}</td>
+        <td align="center">
+            {$result.date_start|date_format:"%d %b %y"|upper} / 
+            {$result.date_end|date_format:"%d %b %y"|upper}
+        </td>
+        <td align="center">{$result.rute_all|upper|default:''}</td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="7">Data not found!</td>
+    </tr>
+    {/foreach}
+</table>
+
+<!-- script form fa -->
+<script type="text/javascript">
+    function form_fa(data_id) {
+        window.open("{$config->site_url('report/posisi/form')}/" + data_id, "_blank");
+    }
+</script>

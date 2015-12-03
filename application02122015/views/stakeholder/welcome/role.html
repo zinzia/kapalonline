@@ -1,0 +1,33 @@
+<div class="breadcrum">
+    <p><a href="#">Account Settings</a><span></span><small>Change Role</small></p>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('stakeholder/account_settings/process_update_role')}" method="post" onsubmit="return confirm('Apakah anda yakin akan merubah hak akses anda sekarang?');">
+    <table class="table-input" width="100%">
+        <tr>
+            <th colspan="2">Change Role</th>
+        </tr>
+        <tr>
+            <td width='15%'>Active Role</td>
+            <td width='85%'><b>{$com_user.role_nm|upper|default:''}</b></td>
+        </tr>
+        <tr>
+            <td>Change To</td>
+            <td>
+                <select name="role_id">
+                    {foreach from=$rs_roles item=data}
+                    <option value="{$data.role_id}" {if $com_user.role_id|default:'' eq $data.role_id}selected="selected"{/if}>{$data.role_nm|upper}</option>
+                    {/foreach}
+                </select>
+            </td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="2">
+                <input name="save" value="Change" class="submit-button" type="submit"/>
+            </td>
+        </tr>
+    </table>
+</form>

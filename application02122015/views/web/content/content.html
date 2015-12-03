@@ -1,0 +1,43 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Web Management</a><span></span>
+        <a href="{$config->site_url('web/content')}">Web Content</a><span></span>
+        <small>{$content.content_title|upper|default:''}</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('web/content')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" /> Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width="4%"></th>
+        <th width="10%">Languages</th>
+        <th width="80%">Content</th>
+        <th width="6%"></th>
+    </tr>
+    {foreach from=$rs_id item=result}
+    <tr {if $result.content_lang_title eq ''}class="blink-row"{/if}>
+        <td align='center'>
+            <img src="{$BASEURL}resource/doc/images/lang/{$result.lang_icon}" alt="" style="height: 16px;" />
+        </td>
+        <td align='center'>{$result.lang_name|upper}</td>
+        <td>{$result.content_value}</td>
+        <td align="center">
+            <a href="{$config->site_url('web/content/content_edit/'|cat:$content.data_id|cat:'/'|cat:$result.lang_id)}" class="button-edit">Edit</a>
+        </td>
+    </tr>    
+    {foreachelse}
+    <tr>
+        <td colspan="4">Data not found!</td>
+    </tr>
+    {/foreach}
+</table>

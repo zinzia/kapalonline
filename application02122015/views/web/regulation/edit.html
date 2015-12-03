@@ -1,0 +1,61 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Web Management</a><span></span>
+        <a href="{$config->site_url('web/regulation')}">Regulation</a><span></span>
+        <small>{$regulation.judul}</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('web/regulation/')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" /> Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('web/regulation/edit_process')}" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="data_id" value="{$result.data_id|default:''}" />
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="2">Edit Item</th>
+        </tr>
+        <tr>
+            <td width='20%'>Judul</td>
+            <td width='80%'>
+                <input name="judul" type="text" size="50" maxlength="100" value="{$result.judul|default:''}" />
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr>
+            <td>Deskripsi</td>
+            <td>
+                <input name="deskripsi" type="text" size="100" maxlength="255" value="{$result.deskripsi|default:''}" />
+            </td>
+        </tr>
+        <tr>
+            <td>Diunduh</td>
+            <td>
+                <input name="download" type="text" size="3" maxlength="10" value="{$result.download|default:''}" />
+            </td>
+        </tr>
+        <tr>
+            <td>File Attachment</td>
+            <td>
+                <input name="file_name" type="file" />
+                <br />
+                <br />
+                <a href="">{$result.file_name}</a>
+            </td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="2">
+                <input type="submit" name="save" value="Simpan" class="submit-button" />
+                <input type="reset" name="save" value="Reset" class="reset-button" />
+            </td>
+        </tr>
+    </table>
+</form>

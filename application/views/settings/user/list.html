@@ -1,0 +1,47 @@
+<div class="head-content">
+    <h3>Users</h3>
+    <div class="head-content-nav">
+        <ul>
+            <li><a href="{$config->site_url('settings/adminuser/add')}"><img src="{$BASEURL}resource/doc/images/icon/add-icon.png" alt="" /> Add Data</a></li>
+            <li><a href="{$config->site_url('settings/adminuser')}" class="active">List Data</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<div class="pageRow">
+    <div class="pageNav">
+        <ul>
+            <li class="info"><strong>{$pagination.start|default:'0'} - {$pagination.end|default:'0'}</strong> dari <strong>{$pagination.total|default:'0'}</strong> Data</li>
+            {$pagination.data|default:''}
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<table class="table-view" width="100%">
+    <tr>
+        <th width="5%">No</th>
+        <th width="35%">Role</th>
+        <th width="35%">Email</th>
+        <th width="10%">Lock Status</th>
+        <th width="15%"></th>
+    </tr>
+    {foreach from=$rs_id item=result}
+    <tr {if ($no % 2) == 0}class="blink-row"{/if}>
+        <td>{$no++}.</td>
+        <td>{$result.role_nm}</td>
+        <td>{$result.user_mail}</td>
+        <td align="center">{$result.lock_st}</td>
+        <td align="center">
+            <a href="{$config->site_url({'settings/adminuser/edit/'|cat:$result.user_id})}" class="button-edit">Edit</a>
+            <a href="{$config->site_url({'settings/adminuser/hapus/'|cat:$result.user_id})}" class="button-hapus">Hapus</a>
+        </td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="6">Data not found!</td>
+    </tr>
+    {/foreach}
+</table>

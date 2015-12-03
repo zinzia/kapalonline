@@ -1,0 +1,16 @@
+<!-- notification template -->
+{if $notification_header|default:'' == "error"}
+<div class="notification red">
+    <p><strong>{$notification_header|upper} :</strong> {$notification_message} </p>
+    {$notification_error}
+    <div class="clear"></div>
+</div>
+{elseif $notification_header|default:'' == "success"}
+<div class="notification green">
+    <p><strong>{$notification_header|upper} :</strong> {$notification_message} </p>
+    {$notification_error}
+    <div class="clear"></div>
+</div>
+{else}
+{/if}
+<!-- End of notification template -->

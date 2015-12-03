@@ -1,0 +1,101 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Pencabutan Izin Rute Penerbangan</a><span></span>
+        <small>DOMESTIK</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="content-dashboard">
+    <h4>
+        <a href="#" class="group">
+            Pilihan Pencabutan Izin Rute Penerbangan
+        </a>
+    </h4>
+    <div class="clear"></div>
+    <div class="group-box">
+        <div class="map-box" style="width: 298px; height: 80px;">
+            <p>
+                <a href="{$config->site_url('pencabutan/domestik/create/107')}" style="height: 70px;">
+                    <img src="{$BASEURL}resource/doc/images/icon/d.icon.png" alt="" />
+                    Pencabutan Seluruh Rute Penerbangan<br />
+                    <small>Mencabut seluruh izin rute penerbangan pada rute tertentu!</small>
+                </a>
+            </p>
+        </div>
+        <div class="map-box" style="width: 298px; height: 80px;">
+            <p>
+                <a href="{$config->site_url('pencabutan/domestik/create/106')}" style="height: 70px;">
+                    <img src="{$BASEURL}resource/doc/images/icon/penghentian.icon.png" alt="" />
+                    Pencabutan Sebagian Rute Penerbangan<br />
+                    <small>Mencabut sebagian pelayanan pada rute penerbangan tertentu!</small>
+                </a>
+            </p>
+        </div>
+        <div class="map-box" style="width: 298px; height: 80px;">
+            <p>
+                <a href="{$config->site_url('pencabutan/domestik/create/105')}" style="height: 70px;">
+                    <img src="{$BASEURL}resource/doc/images/icon/calendar_delete.png" alt="" style="width: 32px; height: 32px; padding: 5px 0px 20px 2px;" />
+                    Pencabutan Frekuensi Rute Penerbangan<br />
+                    <small>Mencabut sebagian frekuensi (hari operasi) pada rute penerbangan tertentu!</small>
+                </a>
+            </p>
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info">Total Draft ( <b style="color: red;">{$total|default:0} Belum Diproses</b> ) <u> Pencabutan Izin Rute Penerbangan</u></li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="clear"></div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width='4%'>No</th>
+        <th width='25%'>Jenis Pencabutan</th>
+        <th width='20%'>Operator / Airlines</th>
+        <th width='10%'>Rute<br/>Penerbangan</th>
+        <th width='20%'>Didaftarkan Oleh</th>
+        <th width='16%'></th>
+    </tr>
+    {$no = 1}
+    {foreach from=$rs_id item=result}
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+        <td align="center">{$no++}.</td>
+        <td><b style="color: #999;">{$result.group_nm|upper}</b></td>
+        <td><b style="color: #999;">{$result.airlines_nm|upper}</b></td>
+        <td align="center"><b style="color: #999;">{$result.izin_rute_start|upper}<br />{$result.izin_rute_end|upper}</b></td>
+        <td align="center">
+            <span style="text-decoration: underline;">{$result.operator_name|default:'-'}</span><br />
+            {$dtm->get_full_date($result.mdd)|default:''}
+        </td>
+        <td align="center">
+            <a href="{$config->site_url($result.group_link|cat:'/index/'|cat:$result.registrasi_id|default:'')}" class="button-edit">
+                {if $result.selisih_hari == 0 && substr($result.selisih_waktu,0,2) == 00}
+                {substr($result.selisih_waktu,3,2)} minutes
+                {else if $result.selisih_hari == 0}
+                {substr($result.selisih_waktu,0,2)} hour
+                {else}
+                {$result.selisih_hari} day
+                {/if}
+            </a>
+            <a href="{$config->site_url('pencabutan/domestik/delete_process/'|cat:$result.registrasi_id|default:'')}" class="button-hapus" onclick="return confirm('Apakah anda yakin akan menghapus data ini?')">
+                Delete
+            </a>
+        </td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="6">Data not found!</td>
+    </tr>
+    {/foreach}
+</table>

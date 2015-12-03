@@ -1,0 +1,74 @@
+<div class="breadcrum">
+    <p>        
+        <a href="#">Settings</a><span></span>
+        <small>Block Airlines</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="search-box">
+    <h3><a href="#">Pencarian</a></h3>
+    <form action="{$config->site_url('pengaturan/block/proses_cari')}" method="post">
+        <table class="table-search" width="100%" border="0">
+            <tr>
+                <th width="10%">Status</th>
+                <td width="10%">
+                    <select name="block_st">
+                        <option value="1" {if $search.block_st|default:'' eq "1"}selected="selected"{/if}>LOCKED</option>
+                        <option value="0" {if $search.block_st|default:'' eq "0"}selected="selected"{/if}>OPEN</option>
+                    </select>
+                </td>
+                <td align='right' width="80%">
+                    <input class="blue" name="save" type="submit" value="Tampilkan" />
+                    <input class="orange" name="save" type="submit" value="Reset" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info">Total&nbsp;<strong>{$pagination.total|default:0}</strong>&nbsp;Record&nbsp;</li>{$pagination.data|default:''}
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('pengaturan/block/add')}"><img src="{$BASEURL}resource/doc/images/icon/add-icon.png" alt="" /> Add Data</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width="5%">No</th>
+        <th width="20%">Airlines</th>
+        <th width="30%">Alasan Pemblokiran</th>
+        <th width="15%">Tanggal<br />Pemblokiran</th>
+        <th width="20%">Penanggungjawab</th>
+        <th width="10%"></th>
+    </tr>
+    {foreach from=$rs_id item=result}
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+        <td align="center">{$no++}.</td>
+        <td>{$result.airlines_nm|upper|default:''}</td>
+        <td>{$result.block_reason|default:''}</td>
+        <td align="center">{$result.block_date|date_format:'%d %b %y'|upper}</td>
+        <td align="center">{$result.operator_name|upper}</td>
+        <td align="center">
+            {if $result.block_by eq $com_user.user_id}
+            <a href="{$config->site_url('pengaturan/block/edit/'|cat:$result.block_id|default:'')}" class="button-edit">Update</a>
+            {/if}
+        </td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="6">Data not found!</td>
+    </tr>
+    {/foreach}
+</table>

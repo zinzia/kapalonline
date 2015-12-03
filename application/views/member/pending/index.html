@@ -1,0 +1,73 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Request Pending</a><span></span>
+        <small>Flight Approval</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info">Total Pending ( <b style="color: red;">{$total|default:0}</b> ) Permohonan. <u>Mohon segera di perbaiki dan dikirimkan kembali!</u></li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="clear"></div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width='4%'>No</th>
+        <th width='10%'>Nomor Permohonan</th>
+        <th width='12%'>Jenis Penerbangan</th>
+        <th width='12%'>Domestik / <br />Internasional</th>
+        <th width='15%'>Tanggal</th>
+        <th width='15%'>Rute</th>
+        <th width='17%'>Remark</th>
+        <th width='15%'></th>
+    </tr>
+    {$no = 1}
+    {foreach from=$rs_id item=result}
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+        <td align="center">{$no++}.</td>
+        <td align="center">{$result.document_no|upper}</td>
+        <td align="center">{$result.data_type|upper}</td>
+        <td align="center">{$result.data_flight|upper}</td>
+        <td align="center">
+            {if $result.date_start|default:'' eq "0000-00-00"}
+                {$result.date_end_upto|date_format:"%d%b%y"|upper}
+            {else}
+                {$result.date_start|date_format:"%d%b%y"|upper}
+            {/if}
+            /
+            {if $result.date_end|default:'' eq "0000-00-00"}
+                {$result.date_start_upto|date_format:"%d%b%y"|upper}
+            {else}
+                {$result.date_end|date_format:"%d%b%y"|upper}
+            {/if}
+        </td>
+        <td align="center">{$result.rute_all|upper}</td>
+        <td>{$result.services_nm|upper}</td>
+        <td align="center">
+            <a href="{$config->site_url('member/pending/detail/'|cat:$result.group_id|default:''|cat:'/'|cat:$result.data_id|default:'')}" class="button-edit">
+                {if $result.selisih_hari == 0 && substr($result.selisih_waktu,0,2) == 00}
+                {substr($result.selisih_waktu,3,2)} minutes
+                {else if $result.selisih_hari == 0}
+                {substr($result.selisih_waktu,0,2)} hour
+                {else}
+                {$result.selisih_hari} day
+                {/if}
+            </a>
+        </td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="8">Data not found!</td>
+    </tr>
+    {/foreach}
+</table>

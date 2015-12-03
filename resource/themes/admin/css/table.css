@@ -1,0 +1,278 @@
+/* CSS Document */
+/* created by chow-2011 */
+
+.table-input {
+    margin: 0 0 5px 0;
+    padding: 0;
+    background-color: #dcebd0;
+    border-collapse: collapse;
+    color: #43761d;
+    font-size: 11px;
+    text-align: left;
+    vertical-align: top;
+}
+
+.table-input th {
+    margin: 0;
+    padding: 5px 10px;
+    background-color: #cfe4be;
+    border-bottom: 1px solid #c6deb2;
+    border-top: 1px solid #c6deb2;
+    color: #43761d;
+    font-size: 12px;
+    vertical-align: top;
+}
+
+.table-input .headrow th  {
+    background-color: #91b277;
+    border-bottom: 1px solid #729656;
+    border-top: 1px solid #729656;
+    color: #FFFFFF;
+}
+
+.table-input td {
+    margin: 0;
+    padding: 5px 5px 5px 10px;
+    background-color: #dcebd0;
+    border-bottom: 1px solid #c6deb2;
+    vertical-align: top;
+}
+
+.table-input td label {
+    float: left;
+    margin: 2px 10px 2px 0;
+    padding: 0;
+    display: block;
+    vertical-align: top;
+}
+
+.table-input td input, textarea {
+    margin: 0 2px 0 0;
+    padding: 2px 3px;
+    border: 1px solid #afc99a;
+    font-size: 11px;
+}
+
+.table-input input[type="radio"] {
+    margin: 0 2px 0 0;
+    padding: 0;
+    border: none;
+    vertical-align: top;
+}
+
+.table-input input[type="checkbox"] {
+    margin: 0 2px 0 0;
+    padding: 0;
+    border: none;
+    vertical-align: top;
+}
+
+.table-input td select {
+    margin: 0 4px 1px 0;
+    padding: 1px 0;
+    border: 1px solid #afc99a;
+    font-size: 11px;
+}
+
+.table-input td em {
+    color: #666666;
+    font-size: 10px;
+}
+
+.table-input td option {
+    margin: 0;
+    padding: 0 3px;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.table-input input.edit-button {
+    float: left;
+    margin: 0 3px 0 0;
+    padding: 2px 7px;
+    background-color: #7fb555;
+    background-image: url('../img/button-edit-bg.gif');
+    background-position: left top;
+    background-repeat: repeat-x;
+    border: none;
+    color: #FFFFFF;
+    display: block;
+    font-size: 12px;
+    text-align: center;
+}
+
+.table-input input.edit-button:hover {
+    background-color: #649f35;
+    background-image: url('../img/button-edit-hover-bg.gif');
+}
+
+/* Table view ----------------------------------------- */
+
+.table-view {
+    margin: 0 0 5px 0;
+    padding: 0;
+    border-collapse: collapse;
+    color: #515151;
+    font-size: 11px;
+}
+
+.table-view th {
+    margin: 0;
+    padding: 4px 0;
+    background: #ebebeb url('../img/table-view-th-bg.gif') left top repeat-x;
+    border: 1px solid #cdcdcd;
+    color: #272727;
+    font-weight: normal;
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+}
+
+.table-view td {
+    margin: 0;
+    padding: 4px;
+    border: 1px solid #edebeb;
+    border-left: 1px solid #edebeb;
+    border-right: 1px solid #edebeb;
+    font-family: tahoma;
+}
+
+.table-view a {
+    margin: 0;
+    padding: 0;
+    color: #3e6ba7;
+    text-decoration: none;
+}
+
+.table-view a:hover {
+    text-decoration: underline;
+}
+
+.table-view .blink-row {
+    background-color: #f2f8fd;
+}
+
+.table-view a.button {
+    margin: 0 1px;
+    padding: 1px 4px;
+    background-color: #fff;
+    border: 1px solid #F9EBD7;
+    color: #8D4F00;
+    display: inline;
+    text-align: center;
+    text-decoration: none;
+}
+
+.table-view a.button:hover {
+    background-color: #FFF6C4;
+    border: 1px solid #F9EBD7;
+}
+
+.table-view a.button-edit {
+    margin: 0 1px;
+    padding: 1px 4px 1px 19px;
+    background-image: url("../img/edit-icon.png");
+    background-position: 4px 2px;
+    background-repeat: no-repeat;
+    background-color: #fff;
+    border: 1px solid #F9EBD7;
+    color: #8D4F00;
+    display: inline;
+    text-align: center;
+    text-decoration: none;
+}
+
+.table-view a.button-edit:hover {
+    background-color: #FFF6C4;
+    border: 1px solid #F9EBD7;
+}
+
+.table-view a.button-hapus {
+    margin: 0 1px;
+    padding: 1px 4px 1px 19px;
+    background-image: url("../img/delete-icon.png");
+    background-position: 4px 3px;
+    background-repeat: no-repeat;
+    background-color: #fff;
+    border: 1px solid #F9EBD7;
+    color: #8D4F00;
+    display: inline;
+    text-align: center;
+    text-decoration: none;
+}
+
+.table-view a.button-hapus:hover {
+    background-color: #FFF6C4;
+    border: 1px solid #F9EBD7;
+}
+
+/* Table search ------------------------------------------------ */
+
+.table-search {
+    margin: 0;
+    padding: 0;
+    border-collapse: collapse;
+    font-size: 11px;
+}
+
+.table-search th {
+    margin: 0;
+    padding: 3px 4px;
+    color: #333;
+    font-weight: normal;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.table-search td {
+    margin: 0;
+    padding: 3px 4px;
+    color: #4e6ba5;
+    vertical-align: middle;
+}
+
+.table-search td label {
+    margin: 0 10px 0 0;
+    padding: 0;
+    vertical-align: middle;
+}
+
+.table-search input {
+    margin: 0;
+    padding: 1px 2px 2px 2px;
+    border: 1px solid #b4bed6;
+    font-size: 11px;
+}
+
+.table-search input[type="radio"] {
+    margin: 0 2px 0 0;
+    padding: 0;
+    border: none;
+    vertical-align: middle;
+}
+
+.table-search input[type="checkbox"] {
+    margin: 0 2px 0 0;
+    padding: 0;
+    border: none;
+    vertical-align: middle;
+}
+
+.table-search input[type="submit"] {
+    margin: 0 3px 0 0;
+    padding: 2px 7px;
+    background-color: #8BA9C4;
+    background-image: url('../img/table-search-submit.gif');
+    background-position: left top;
+    background-repeat: repeat-x;
+    border: 1px solid #c6d5ec;
+    color: #385A78;
+}
+
+.table-search input[type="submit"]:hover {
+    border: 1px solid #ffffff;
+}
+
+.table-search select {
+    margin: 0;
+    padding: 1px 2px 2px 2px;
+    border: 1px solid #b4bed6;
+    font-size: 11px;
+}

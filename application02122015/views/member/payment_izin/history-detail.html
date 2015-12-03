@@ -1,0 +1,82 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Penagihan dan Pembayaran</a><span></span>
+        <a href="#">Izin Rute Penerbangan</a><span></span>
+        <small>History Rincian Pembayaran Permohonan Izin Rute</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation"> 
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('member/payment_izin/history')}"><img alt="" src="{$BASEURL}/resource/doc/images/icon/back-icon.png">Daftar History</a></li> 
+        </ul>
+        <div class="clear"></div>
+    </div>
+</div>
+<table class="table-input" width="100%">
+    <tr class="headrow">
+        <th colspan="2">Rincian Pembayaran Permohonan Izin Rute</th>
+    </tr>
+    <tr>
+        <td width="25%">Nomer VA</td>
+        <td width="75%">{$result.payment_invoice|default:0}</td>
+    </tr>
+    <tr>
+        <td width="25%">Airlines</td>
+        <td width="75%">{$result.airlines_nm|default:'-'}</td>
+    </tr>
+    <tr>
+        <td width="25%">Tanggal Invoice</td>
+        <td width="75%">{$dtm->get_full_date($result.payment_date|default:0)}</td>
+    </tr>   
+</table>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info">Total&nbsp;<strong>{$total|default:0}</strong>&nbsp;Record&nbsp;</li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<table class="table-view" width="100%">
+            <tr>
+                <th width='4%'>No</th>
+                <th width='10%'>No.Surat</th>
+                <th width='15%'>Group</th>
+                <th width='15%'>Operator</th>
+                <th width='15%'>Tanggal<br/>Permohonan</th>
+                <th width='10%'>DOS</th>
+                <th width='10%'>Due date</th>
+                <th width='8%'>Jumlah Tagihan</th>
+            </tr>
+            {$no = 1}
+            {$total = 0}
+            {foreach $rs_id as $result}
+            <input type="hidden" name="izin_id[]" value="{$result.registrasi_id|default:''}">
+            <tr {if $smarty.now|date_format:'%Y-%m-%d'>$result.payment_due_date|date_format:'%Y-%m-%d'}style="background-color:#DD4B39;color:#FFF"{/if}>
+                <td align="center">{$no++}.</td>
+                <td align="left">{$result.izin_request_letter|upper}</td>
+                <td align="left">{$result.group_nm|upper}</td>
+                <td><b>{$result.airlines_nm|upper}</b></td>
+                <td align="center">
+                    {$dtm->get_full_date($result.izin_request_date)}
+                </td>
+                <td align="center">
+                    {$result.dos}
+                </td>
+                <td align="center">{$dtm->get_full_date($result.payment_due_date|default:'-')|upper}</td>
+                <td align="right">
+                    {$rs_tarif[$result.group_alias]|number_format:0:",":"."}
+                </td>
+            </tr>
+            {$total = $rs_tarif[$result.group_alias]}
+            <tr><td colspan="7"><b>TOTAL</b></td><td  align="right"><b>{$total|default:0|number_format:0:",":"."}</b></td></tr>
+            {foreachelse}
+            <tr>
+                <td colspan="10">Data not found!</td>
+            </tr>
+            {/foreach}
+        </table>

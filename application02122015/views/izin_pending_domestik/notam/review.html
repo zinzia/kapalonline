@@ -1,0 +1,277 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Pendaftaran Izin Rute</a><span></span>
+        <small>PERMOHONAN {$detail.group_nm|upper}</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('member/pending_izin/')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" />Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="step-box">
+    <ul>
+        <li>
+            <a href="{$config->site_url('izin_pending_domestik/notam/index/'|cat:$detail.registrasi_id)}" class="normal"><b>Step 1</b><br />Data Permohonan</a>
+        </li>
+        <li>
+            <a href="{$config->site_url('izin_pending_domestik/notam/list_rute/'|cat:$detail.registrasi_id)}" class="normal"><b>Step 2</b><br />Data Rute Penerbangan</a>
+        </li>
+        {if $airport.is_all_used_score neq 1}
+        <li>
+            <a href="{$config->site_url('izin_pending_domestik/notam/list_slot/'|cat:$detail.registrasi_id)}" class="normal"><b>Step 3</b><br />Slot Clearance</a>
+        </li>
+        <li>
+            <a href="{$config->site_url('izin_pending_domestik/notam/list_files/'|cat:$detail.registrasi_id)}"><b>Step 4</b><br />File Attachment</a>
+        </li>
+        <li>
+            <a href="{$config->site_url('izin_pending_domestik/notam/review/'|cat:$detail.registrasi_id)}" class="active"><b>Step 5</b><br />Review Permohonan</a>
+        </li>
+        {else}
+        <li>
+            <a href="{$config->site_url('izin_pending_domestik/notam/list_files/'|cat:$detail.registrasi_id)}"><b>Step 3</b><br />File Attachment</a>
+        </li>
+        <li>
+            <a href="{$config->site_url('izin_pending_domestik/notam/review/'|cat:$detail.registrasi_id)}" class="active"><b>Step 4</b><br />Review Permohonan</a>
+        </li>
+        {/if}
+    </ul>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('izin_pending_domestik/notam/send_process')}" method="post">
+    <input type="hidden" name="registrasi_id" value="{$detail.registrasi_id|default:''}">
+    <table class="table-form" width="100%">
+        <tr>
+            <td colspan="4" align='center'>
+                <b style="font-size: 16px;">PERMOHONAN {$detail.group_nm|upper}</b>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" align='center'>&nbsp;</td>
+        </tr>        
+        <tr>
+            <td width='20%'>
+                <span style="text-decoration: underline;">Tanggal Surat Permohonan</span><br /><i>Request Letter Date</i>
+            </td>
+            <td width='30%'><b>{$dtm->get_full_date($detail.izin_request_letter_date|default:'')|upper}</b></td>
+            <td width='20%'>
+                <span style="text-decoration: underline;">Penunjukkan Oleh</span><br /><i>Appointment By</i>
+            </td>
+            <td width='30%'><b>{$detail.penanggungjawab|default:''|upper}</b></td>
+        </tr>
+        <tr>
+            <td width='20%'>
+                <span style="text-decoration: underline;">Nomor Surat Permohonan</span><br /><i>Request Letter Number</i>
+            </td>
+            <td width='30%'><b>{$detail.izin_request_letter|default:''|upper}</b></td>
+            <td width='20%'>
+                <span style="text-decoration: underline;">Jabatan</span><br /><i>Job Title</i>
+            </td>
+            <td width='30%'><b>{$detail.jabatan|default:''|upper}</b></td>
+        </tr>
+        <tr>
+            <td>
+                <span style="text-decoration: underline;">Kode Izin Rute</span><br /><i>Routes Code</i>
+            </td>
+            <td style="color: blue; font-weight: bold;">
+                {$detail.kode_izin|default:''|upper}
+                ( {$izin.izin_rute_start|default:''|upper} / {$izin.izin_rute_end|default:''|upper} )
+            </td>
+            <td>
+                <span style="text-decoration: underline;">Jumlah Frekuensi</span><br /><i>Total Frequency</i>
+            </td>
+            <td style="color: blue; font-weight: bold;">
+                {$izin.frekuensi}X
+            </td>
+        </tr>   
+    </table>
+    <div id="table-data" style="margin: 0 0 5px 0; padding: 10px; border: 1px solid #ddd; font-weight: bold; font-size: 12px; font-family: helvetica;">
+        <h3 style="font-family: helvetica; font-size: 12px;">Data Rute Penerbangan Yang Sebelumnya</h3>
+        <table class="table-view" width="100%" style="font-weight: normal;">
+            <tr>
+                <td width="10%" style="text-align: center; font-weight: bold;">Kode</td>
+                <td width="10%" style="text-align: center; font-weight: bold;">Rute</td>
+                <td width="10%" style="text-align: center; font-weight: bold;">Tipe Pesawat</td>
+                <td width="10%" style="text-align: center; font-weight: bold;">Nomor Penerbangan</td>
+                <td width="10%" style="text-align: center; font-weight: bold;">ETD <br />(Waktu Lokal)</td>
+                <td width="10%" style="text-align: center; font-weight: bold;">ETA <br />(Waktu Lokal)</td>
+                <td width="10%" style="text-align: center; font-weight: bold;">DOS</td>
+                <td width="10%" style="text-align: center; font-weight: bold;">RON</td>
+                <td width="10%" style="text-align: center; font-weight: bold;">Frekuensi</td>
+                <td width="10%" style="text-align: center; font-weight: bold;">Masa<br />Berlaku</td>
+            </tr>
+            {$no = 0}
+            {$temp = ""}
+            {$frekuensi = 0}
+            {foreach from=$rs_old item=data_old}
+            <tr>
+                {if $data_old.izin_id neq $temp}
+                <td align="center" rowspan="{$data_old.rowspan|default:'0'}">{$data_old.kode_frekuensi}</td>
+                {/if}
+                <td align="center">{$data_old.rute_all}</td>
+                <td align="center">{$data_old.aircraft_type}</td>
+                <td align="center">{$data_old.flight_no}</td>
+                <td align="center">{$data_old.etd|substr:0:5}</td>
+                <td align="center">{$data_old.eta|substr:0:5}</td>   
+
+                <td align="center">{$data_old.doop}</td>
+                
+                {if $data_old.izin_id neq $temp}
+                <td align="center" rowspan="{$data_old.rowspan|default:'0'}">{$data_old.ron}</td>
+                {/if}
+
+                <td align="center" >{$data_old.frekuensi}X</td>
+                
+                <td align="center" >
+                    {$dtm->get_full_date($data_old.start_date, 'ins')|upper}<br />
+                    {$dtm->get_full_date($data_old.end_date, 'ins')|upper}
+                </td>
+            </tr>
+            {if $data_old.izin_id neq $temp}
+            {$temp = $data_old.izin_id}
+            {/if}
+            {/foreach}
+        </table>
+    </div>
+    <div id="table-data" style="margin: 0 0 5px 0; padding: 10px; border: 1px solid #ddd; font-weight: bold; font-size: 12px; font-family: helvetica;">
+        <h3 style="font-family: helvetica; font-size: 12px;">Data Rute Penerbangan Yang Akan Diubah</h3>
+        <table class="table-view" width="100%" style="font-weight: normal;">
+            <tr>
+                <td width="10%" style="text-align: center; font-weight: bold;">Kode</td>
+                <td width="10%" style="text-align: center; font-weight: bold;">Rute</td>
+                <td width="10%" style="text-align: center; font-weight: bold;">Tipe Pesawat</td>
+                <td width="10%" style="text-align: center; font-weight: bold;">Nomor Penerbangan</td>
+                <td width="10%" style="text-align: center; font-weight: bold;">ETD <br />(Waktu Lokal)</td>
+                <td width="10%" style="text-align: center; font-weight: bold;">ETA <br />(Waktu Lokal)</td>
+                <td width="10%" style="text-align: center; font-weight: bold;">DOS</td>
+                <td width="10%" style="text-align: center; font-weight: bold;">RON</td>
+                <td width="10%" style="text-align: center; font-weight: bold;">Frekuensi</td>
+                <td width="10%" style="text-align: center; font-weight: bold;">Masa<br />Berlaku</td>
+            </tr>
+            {$i = 0}
+            {$no = 0}
+            {$temp = ""}
+            {$frekuensi = 0}
+            {foreach from=$rs_new item=data}
+            {if $data.izin_id neq $temp}
+            {$no = $no + 1}    
+            {/if}
+            <tr>
+                {if $data.izin_id neq $temp}
+                <td align="center" rowspan="{$data.rowspan|default:'0'}">{$data.kode_frekuensi}</td>
+                {/if}
+                <td align="center">{$data.rute_all}</td>
+                <td align="center">
+                    {if $rs_old[$i].aircraft_type neq $data.aircraft_type}<b style="color: red;">{/if}{$data.aircraft_type}{if $rs_old[$i].aircraft_type neq $data.aircraft_type}</b>{/if}
+                </td>
+                <td align="center">
+                    {if $rs_old[$i].flight_no neq $data.flight_no}<b style="color: red;">{/if}{$data.flight_no}{if $rs_old[$i].flight_no neq $data.flight_no}</b>{/if}
+                </td>
+                <td align="center">
+                    {if $rs_old[$i].etd neq $data.etd}<b style="color: red;">{/if}{$data.etd|substr:0:5}{if $rs_old[$i].etd neq $data.etd}</b>{/if}
+                </td>
+                <td align="center">
+                    {if $rs_old[$i].eta neq $data.eta}<b style="color: red;">{/if}{$data.eta|substr:0:5}{if $rs_old[$i].eta neq $data.eta}</b>{/if}
+                </td>   
+
+                <td align="center"><b style="color: red;">{$data.doop}</b></td>
+
+                {if $data.izin_id neq $temp}
+                <td align="center" rowspan="{$data.rowspan|default:'0'}">
+                    {if $rs_old[$i].ron neq $data.ron}<b style="color: red;">{/if}{$data.ron}{if $rs_old[$i].ron neq $data.ron}</b>{/if}
+                </td>
+                {/if}
+
+                {$frekuensi = $frekuensi + $data.frekuensi}
+                <td align="center">{$data.frekuensi}X</td>
+                
+                <td align="center">
+                    {$dtm->get_full_date($data.start_date, 'ins')|upper}<br />
+                    {$dtm->get_full_date($data.end_date, 'ins')|upper}
+                </td>
+            </tr>
+            {if $data.izin_id neq $temp}
+            {$temp = $data.izin_id}
+            {/if}
+            {$i = $i + 1}
+            {/foreach}
+        </table>
+    </div>
+    {if $airport.is_all_used_score neq 1}
+    <table class="table-form" width="100%">
+        <tr>
+            <td colspan="5">
+                <b>Slot Clearance Attachment :</b>
+            </td>
+        </tr>
+        <tr>
+            <th width="5%" align="center">No</th>
+            <th width="30%" align="center">Subject Surat</th>
+            <th width="20%" align="center">Nomor Surat</th>
+            <th width="25%" align="center">Perihal</th>
+            <th width="20%" align="center">File Attachment</th>
+        </tr>
+        {$no = 1}
+        {foreach from=$rs_slot item=data}
+        <tr>
+            <td align="center">{$no++}.</td>
+            <td>{$data.slot_subject}</td>
+            <td>
+                <span style="text-decoration: underline;">{$data.slot_number}</span><br /> 
+                Tanggal : {$dtm->get_full_date($data.slot_date, 'ins')}
+            </td>
+            <td>{$data.slot_desc}</td>
+            <td align="center">
+                <a href="{$config->site_url('izin_pending_domestik/notam/slot_download/'|cat:$detail.registrasi_id|cat:'/'|cat:$data.slot_id)}">{$data.slot_file_name}</a>
+            </td>
+        </tr>
+        {foreachelse}
+        <tr>
+            <td colspan="5">Data slot clearance belum diinputkan!</td>
+        </tr>
+        {/foreach}
+    </table>
+    {/if}
+    <table class="table-form" width="100%">
+        <tr>
+            <td colspan="3">
+                <b>File persyaratan yang wajib di sertakan adalah sebagai berikut :</b>
+            </td>
+        </tr>
+        {$no = 1}
+        {foreach from=$rs_files item=data}
+        <tr>
+            <td width='5%' align="center">
+                {$no++}.
+            </td>
+            <td width='35%'>
+                {$data.ref_name}
+            </td>
+            <td width="60%">
+                {if $data.ref_id|in_array:$file_uploaded}
+                <a href="{$config->site_url('izin_pending_domestik/notam/files_download/'|cat:$detail.registrasi_id|cat:'/'|cat:$data.ref_id)}">{$name_uploaded[$data.ref_id]}</a>
+                {else}
+                Belum ada file yang di upload!
+                {/if}
+            </td>
+        </tr>
+        {/foreach}
+    </table>
+    <table class="table-form" width='100%'>
+        <tr class="submit-box">
+            <td colspan="2">
+                Apakah anda yakin dengan data permohonan diatas?
+            </td>
+            <td colspan="2" align='right'>
+                <input type="submit" name="save" value="Kirim Permohonan" class="reset-button" onclick="return confirm('Apakah anda yakin akan mengirim data permohonan diatas?')" />
+            </td>
+        </tr>
+    </table>
+</form>

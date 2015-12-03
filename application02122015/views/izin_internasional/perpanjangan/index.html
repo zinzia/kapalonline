@@ -1,0 +1,164 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        /*
+         * COMBO BOX
+         */
+        $("#combobox").select2({
+            placeholder: "Pilih Nomor Izin Rute Yang Terdaftar",
+            allowClear: true,
+        });
+        // rute
+        $('#combobox').change(function() {
+            var kode_izin = $(this).val();
+            // ajax loader
+            $("#loader-validate").show();
+            // ajax
+            $.ajax({
+                type: 'POST',
+                data: 'kode_izin=' + kode_izin,
+                url: '{$config->site_url("izin_internasional/perpanjangan/get_rute_by_kode_izin")}',
+                complete: function() {
+                    $("#loader-validate").hide();
+                },
+                success: function(result) {
+                    data = JSON.parse(result);
+                    $('#input_pax_cargo').val(data.pax_cargo);
+                    $('#input_masa_berlaku').val(data.masa_berlaku);
+                    $('#str_pax_cargo').html(data.pax_cargo);
+                    $('#str_masa_berlaku').html(data.masa_berlaku);
+                    $('#str_season_cd').val(data.izin_season_next);
+                }
+            });
+        });
+        // date picker
+        $(".tanggal").datepicker({
+            showOn: 'both',
+            changeMonth: true,
+            changeYear: true,
+            buttonImage: '{$BASEURL}/resource/doc/images/icon/calendar.gif',
+            buttonImageOnly: true,
+            dateFormat: 'yy-mm-dd',
+            maxDate: '0'
+        });
+    });
+</script>
+<div class="breadcrum">
+    <p>
+        <a href="#">Pendaftaran Izin Rute</a><span></span>
+        <small>{$detail.group_nm}</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('member/registration_internasional/')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" />Back to Draft List</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="step-box">
+    <ul>
+        <li>
+            <a href="{$config->site_url('izin_internasional/perpanjangan/index/'|cat:$detail.registrasi_id)}" class="active"><b>Step 1</b><br />Data Permohonan</a>
+        </li>
+        <li>
+            <a href="#" class="normal"><b>Step 2</b><br />Data Rute Penerbangan</a>
+        </li>
+        <li>
+            <a href="#" class="normal"><b>Step 3</b><br />Slot Clearance</a>
+        </li>
+        <li>
+            <a href="#" class="normal"><b>Step 4</b><br />File Attachment</a>
+        </li>
+        <li>
+            <a href="#" class="normal"><b>Step 5</b><br />Review Permohonan</a>
+        </li>
+    </ul>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('izin_internasional/perpanjangan/edit_process')}" method="post">
+    <input type="hidden" name="registrasi_id" value="{$result.registrasi_id|default:''}" />
+    <input type="hidden" name="input_pax_cargo" value="{$result.input_pax_cargo|upper|default:''}" id="input_pax_cargo" />
+    <input type="hidden" name="input_masa_berlaku" value="{$result.input_masa_berlaku|default:''}" id="input_masa_berlaku" />
+    <table class="table-form" width="100%">
+        <tr>
+            <td colspan="4" align='center'>
+                <b style="font-size: 16px;">PERMOHONAN {$detail.group_nm|upper}</b>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" align='center'>&nbsp;</td>
+        </tr>
+        <tr>
+            <td width='20%'>
+                <span style="text-decoration: underline;">Rute Penerbangan</span><br /><i>Routes</i>
+            </td>
+            <td width='30%'>
+                <select name="kode_izin" id="combobox">
+                    <option value=""></option>
+                    {foreach from=$rs_id item=data}
+                    <option value="{$data.kode_izin|default:''}" {if $result.kode_izin|default:'' eq $data.kode_izin|default:''}selected="selected"{/if}>{$data.izin_rute_start|upper} / {$data.izin_rute_end|upper} ( {$data.izin_season|upper} )</option>
+                    {/foreach}
+                </select>    
+            </td>
+            <td>
+                <span style="text-decoration: underline;">Tanggal Surat Permohonan</span><br /><i>Request Letter Date</i>
+            </td>
+            <td>
+                <input type="text" name="izin_request_letter_date" size="10" maxlength="10" value="{$result.izin_request_letter_date|default:''}" class="tanggal" readonly="readonly" style="text-align: center; font-weight: bold;" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span style="text-decoration: underline;">Jenis Penerbangan</span><br /><i>Flight Type</i>
+            </td>
+            <td>
+                <label id="str_pax_cargo">{$result.input_pax_cargo|upper}</label>
+            </td>
+            <td width='20%'>
+                <span style="text-decoration: underline;">Nomor Surat Permohonan</span><br /><i>Request Letter Number</i>
+            </td>
+            <td width='30%'>
+                <input type="text" name="izin_request_letter" size="25" maxlength="50" value="{$result.izin_request_letter|default:''|upper}" style="font-weight: bold;" />
+            </td>
+        </tr>   
+        <tr>
+            <td>
+                <span style="text-decoration: underline;">Masa Berlaku</span><br /><i>Expired Date</i>
+            </td>
+            <td>
+                <label id="str_masa_berlaku">{$result.input_masa_berlaku}</label>
+            </td>
+            <td><span style="text-decoration: underline;">Penunjukkan Oleh</span><br /><i>Appointment By</i></td>
+            <td>
+                <input type="text" name="penanggungjawab" size="20" maxlength="50" value="{$result.penanggungjawab|default:''|upper}" />
+            </td>
+        </tr>  
+        <tr>
+            <td>
+                <span style="text-decoration: underline;">Season Code</span><br /><i>Untuk Perpanjangan</i>
+            </td>
+            <td>
+                <input type="text" name="izin_season" size="11" maxlength="3" value="{$result.izin_season|default:''|upper}" style="text-align: center;" readonly="readonly" id="str_season_cd" />
+            </td>
+            <td><span style="text-decoration: underline;">Jabatan</span><br /><i>Job Title</i></td>
+            <td>
+                <input type="text" name="jabatan" size="20" maxlength="50" value="{$result.jabatan|default:''|upper}" />
+            </td>
+        </tr>
+    </table>
+    <table class="table-form" width='100%'>
+        <tr class="submit-box">
+            <td>
+                Semua field wajib diisi! kesalahan pada format input merupakan tanggungjawab pengguna dan akan dikembalikan (Revisi) pada pemohon!
+            </td>
+            <td align='right'>
+                <input type="submit" name="save" value="Simpan dan Lanjutkan" class="submit-button" />
+            </td>
+        </tr>
+    </table>
+</form>

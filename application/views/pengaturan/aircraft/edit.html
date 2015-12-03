@@ -1,0 +1,62 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <a href="{$config->site_url('pengaturan/aircraft')}">Tipe Pesawat</a><span></span>
+        <small>Edit Data</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('pengaturan/aircraft')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" /> Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('pengaturan/aircraft/edit_process')}" method="post">
+    <input name="aircraft_id" type="hidden" value="{$result.aircraft_id|default:''}" />
+    <table class="table-input" width="100%" border='0'>
+        <tr class="headrow">
+            <th colspan="4">Edit Data Tipe Pesawat</th>
+        </tr>
+        <tr>
+            <td width="15%">Pembuat</td>
+            <td width="35%">
+                <input name="aircraft_manufacture" type="text" value="{$result.aircraft_manufacture|default:''}" size="30" maxlength="40" />
+                <em>* wajib diisi</em>
+            </td>
+            <td width="15%">Tipe</td>
+            <td width="35%">
+                <input name="aircraft_model" type="text" value="{$result.aircraft_model|default:''}" size="25" maxlength="25" />
+                <em>* wajib diisi</em>
+            </td>
+        </tr>  
+        <tr>
+            <td>Tahun Pembuatan</td>
+            <td>
+                <input name="aircraft_product_year" type="text" value="{$result.aircraft_product_year|default:''}" size="4" maxlength="4" />
+            </td>
+
+            <td>Standard Capacity</td>
+            <td>
+                <input name="aircraft_std_capacity" type="text" value="{$result.aircraft_std_capacity|default:''}" size="25" maxlength="25" />
+            </td>
+        </tr>
+        <tr>
+            <td width="15%">Deskripsi</td>
+            <td width="35%" colspan="3">
+                <input name="aircraft_desc" type="text" value="{$result.aircraft_desc|default:''}" size="45" maxlength="255" />
+            </td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="4">
+                <input type="submit" name="save" value="Simpan" class="submit-button" />
+                <input type="reset" name="save" value="Reset" class="reset-button" />
+            </td>
+        </tr>
+    </table>
+</form>

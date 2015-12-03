@@ -1,0 +1,64 @@
+<form action="{$config->site_url('izin_pending_domestik/migrasi/rute_add_process_non_iasm')}" method="post">
+    <input type="hidden" name="registrasi_id" value="{$detail.registrasi_id|default:''}">
+    <input type="hidden" name="izin_id" value="{$rute.izin_id|default:''}">
+    <table class="table-form" width='100%'>
+        <tr style="font-size: 10px;">
+            <td width='8%' align='center'><b>Rute</b></td>
+            <td width='8%' align='center'><b>Tipe<br />Pesawat</b></td>
+            <td width='8%' align='center'><b>Kapasitas<br />Pesawat</b></td>
+            <td width='8%' align='center'><b>Nomor Penerbangan</b></td>
+            <td width='8%' align='center'><b style="font-size: 10px">ETD<br />(Local Time)</b></td>
+            <td width='8%' align='center'><b style="font-size: 10px">ETA<br />(Local Time)</b></td>
+            <td width='23%' align='center'><b>DOS</b></td>
+            <td width='5%' align='center'><b>RON</b></td>
+            <td width='22%' align='center'><b>Tanggal Efektif</b></td>
+        </tr>
+        <tr>
+            <td align='center'>
+                <select name="rute_all">
+                    <option value="{$detail.izin_rute_start}" {if $detail.izin_rute_start eq $result.rute_all}selected="selected"{/if}>{$detail.izin_rute_start}</option>
+                    <option value="{$detail.izin_rute_end}" {if $detail.izin_rute_end eq $result.rute_all}selected="selected"{/if}>{$detail.izin_rute_end}</option>
+                </select>
+            </td>
+            <td align='center'>
+                <input type="text" name="tipe" size="5" maxlength="5" value="{$result.tipe|default:''|upper}" style="text-align: center;" />
+            </td>
+            <td align='center'>
+                <input type="text" name="capacity" size="5" maxlength="5" value="{$result.capacity|default:''|upper}" style="text-align: center;" />
+            </td>
+            <td align='center'>
+                <input type="text" name="flight_no" size="5" maxlength="5" value="{$result.flight_no|default:''|upper}" style="text-align: center;" />
+            </td>
+            <td align='center'>
+                <input type="text" name="etd" size="6" maxlength="5" value="{$result.etd|default:''|substr:0:5}" style="text-align: center;" class="waktu" readonly="readonly" placeholder="Local Time" />
+            </td>
+            <td align='center'>
+                <input type="text" name="eta" size="6" maxlength="5" value="{$result.eta|default:''|substr:0:5}" style="text-align: center;" class="waktu" readonly="readonly" placeholder="Local Time" />
+            </td>
+            <td align='center'>
+                {for $i=1 to 7} 
+                <label style="float: none; padding: 0; margin: 0;">
+                    <input type="checkbox" name="dos[{$i}]" value="{$i}" {if $dos.$i eq $i}checked="checked"{/if}>{$i}
+                </label>
+                {/for}
+            </td>
+            <td align='center'>
+                <input type="text" name="roon" size="2" maxlength="1" value="{$result.roon|default:''|upper}" style="text-align: center;" />
+            </td>
+            <td align='center'>
+                <input type="text" name="start_date" size="8" maxlength="10" value="{$result.start_date|default:''}" class="tanggal" readonly="readonly" style="text-align: center; font-weight: bold;" placeholder="Start" />
+                <input type="text" name="end_date" size="8" maxlength="10" value="{$result.end_date|default:''}" class="tanggal" readonly="readonly" style="text-align: center; font-weight: bold;" placeholder="End" />
+            </td>
+        </tr>
+    </table>
+    <table class="table-form" width='100%'>
+        <tr class="submit-box">
+            <td colspan="2">
+                Pastikan data yang anda masukkan adalah data yang benar!
+            </td>
+            <td colspan="2" align='right'>
+                <input type="submit" name="save" value="Process" class="submit-button" />
+            </td>
+        </tr>
+    </table>
+</form>

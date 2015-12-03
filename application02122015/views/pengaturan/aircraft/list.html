@@ -1,0 +1,74 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <small>Tipe Pesawat</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="search-box">
+    <h3><a href="#">Pencarian</a></h3>
+    <form action="{$config->site_url('pengaturan/aircraft/proses_cari')}" method="post">
+        <table class="table-search" width="100%" border="0">
+            <tr>
+                <th width="10%">Pembuat</th>
+                <td width="20%">
+                    <input id="tags_pembuat" name="manufacture" type="text" value="{$search.manufacture|default:''}" size="35" maxlength="50" />
+                </td>
+                <th width="10%">Tipe</th>
+                <td width="20%">
+                    <input id="tags_tipe" name="model" type="text" value="{$search.model|default:''}" size="20" maxlength="25" />
+                </td>
+                <td width='40%' align='right'>
+                    <input class="blue" name="save" type="submit" value="Tampilkan" />
+                    <input class="orange" name="save" type="submit" value="Reset" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info">Total&nbsp;<strong>{$pagination.total|default:0}</strong>&nbsp;Record&nbsp;</li>{$pagination.data|default:''}
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('pengaturan/aircraft/add')}"><img src="{$BASEURL}resource/doc/images/icon/add-icon.png" alt="" /> Add Data</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width="4%">No</th>
+        <th width="20%">Pembuat</th>
+        <th width="20%">Tipe</th>
+        <th width="20%">Tahun</th>
+        <th width="20%">Kapasitas Standard</th>
+        <th width="16%"></th>
+    </tr>
+    {foreach from=$rs_aircraft item=result}
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+        <td align="center">{$no++}.</td>
+        <td align="center">{$result.aircraft_manufacture|upper|default:''}</td>
+        <td align="center">{$result.aircraft_model|upper|default:''}</td>
+        <td align="center">{$result.aircraft_product_year|upper|default:''}</td>
+        <td align="center">{$result.aircraft_std_capacity|upper|default:''}</td>
+        <td align="center">
+            <a href="{$config->site_url('pengaturan/aircraft/edit/'|cat:$result.aircraft_id|default:'')}" class="button-edit">Edit</a>
+            <a href="{$config->site_url('pengaturan/aircraft/delete/'|cat:$result.aircraft_id|default:'')}" class="button-hapus">Hapus</a>
+        </td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="6">Data not found!</td>
+    </tr>
+    {/foreach}
+</table>

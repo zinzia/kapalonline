@@ -1,0 +1,86 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Pendaftaran</a><span></span>
+        <small>Rute Dalam Negeri</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<div class="content-dashboard">
+    <h4>
+        <a href="#">
+            Pilihan Permohonan Izin Rute Penerbangan
+        </a>
+    </h4>
+    <div class="clear"></div>
+    <div class="group-box">
+        {foreach from=$rs_group item=data}
+        <div class="map-box">
+            <p>
+                <a href="{$config->site_url('member/registration_domestik/disclaimer/'|cat:$data.group_id)}">
+                    <img src="{$BASEURL}resource/doc/images/icon/{$data.group_alias|lower}.icon.png" alt="" />
+                    {$data.group_nm}<br />
+                    <small>{$data.group_desc}</small>
+                </a>
+            </p>
+        </div>
+        {/foreach}
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info">Total ( <b style="color: red;">Belum Dikirim</b> ) <u>{$total|default:0} Permohonan Izin Rute Penerbangan Domestik</u></li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+</div>
+<table class="table-view" width="100%">
+    <tr>
+        <th width='5%'>No</th>
+        <th width='29%'>Jenis Permohonan</th>
+        <th width='10%'>Rute<br/>Penerbangan</th>
+        <th width='20%'>Surat<br/>Permohonan</th>
+        <th width='20%'>Didaftarkan Oleh</th>
+        <th width='16%'></th>
+    </tr>
+    {$no = 1}
+    {foreach from=$rs_id item=result}
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+        <td align="center">{$no++}.</td>
+        <td><b style="color: #999;">{$result.group_nm|upper}</b></td>
+        <td align="center"><b style="color: #999;">{$result.izin_rute_start|upper}<br />{$result.izin_rute_end|upper}</b></td>
+        <td align="center">
+            <span style="text-decoration: underline;">{$result.izin_request_letter|upper}</span><br />{$dtm->get_full_date($result.izin_request_letter_date, 'ins')|upper}
+        </td>
+        <td align="center">
+            <span style="text-decoration: underline;">{$result.operator_name|default:'-'}</span><br />
+            {$dtm->get_full_date($result.mdd)|default:''}
+        </td>
+        <td align="center">
+            <a href="{$config->site_url($result.group_link|cat:'/index/'|cat:$result.registrasi_id|default:'')}" class="button-edit">
+                {if $result.selisih_hari == 0 && substr($result.selisih_waktu,0,2) == 00}
+                {substr($result.selisih_waktu,3,2)} minutes
+                {else if $result.selisih_hari == 0}
+                {substr($result.selisih_waktu,0,2)} hour
+                {else}
+                {$result.selisih_hari} day
+                {/if}
+            </a>
+            <a href="{$config->site_url('member/registration_domestik/delete_process/'|cat:$result.registrasi_id|default:'')}" class="button-hapus" onclick="return confirm('Apakah anda yakin akan menghapus data ini?')">
+                Delete
+            </a>
+        </td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="6">Data not found!</td>
+    </tr>
+    {/foreach}
+</table>

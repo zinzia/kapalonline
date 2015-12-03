@@ -1,0 +1,69 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Registration</a><span></span>
+        <small>Flight Approval Angkutan Udara Niaga Berjadwal</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info">Total Pending ( <b style="color: red;">Belum Dikirim</b> ) <u>{$total|default:0} Permohonan FA</u></li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('member/registration_scheduled/disclaimer/')}"><img src="{$BASEURL}resource/doc/images/icon/document_edit.png" alt="" />New Registration</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width='5%'>No</th>
+        <th width='10%'>Domestik / <br />Internasional</th>
+        <th width='18%'>Tanggal</th>
+        <th width='15%'>Tanda Pendaftaran / Nomor Penerbangan</th>
+        <th width='14%'>Rute</th>
+        <th width='20%'>Remark</th>
+        <th width='18%'></th>
+    </tr>
+    {$no = 1}
+    {foreach from=$rs_id item=result}
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+        <td align="center">{$no++}.</td>
+        <td align="center">{$result.data_flight|upper|default:'-'}</td>
+        <td align="center">
+            {$result.date_start|date_format:"%d %b %Y"|upper|default:'-'} / 
+            {$result.date_end|date_format:"%d %b %Y"|upper|default:'-'}
+        </td>
+        <td align="center">{$result.flight_no|upper|default:'-'}/{$result.flight_no_2|upper|default:'-'}</td>
+        <td align="center">{$result.rute_all|upper|default:'-'}</td>
+        <td>{$result.services_nm|upper|default:'-'}</td>
+        <td align="center">
+            <a href="{$config->site_url('member/registration_scheduled/add/'|cat:$result.data_id|default:'')}" class="button-edit">
+                {if $result.selisih_hari == 0 && substr($result.selisih_waktu,0,2) == 00}
+                {substr($result.selisih_waktu,3,2)} minutes
+                {else if $result.selisih_hari == 0}
+                {substr($result.selisih_waktu,0,2)} hour
+                {else}
+                {$result.selisih_hari} day
+                {/if}
+            </a>
+            <a href="{$config->site_url('member/registration_scheduled/delete/'|cat:$result.data_id|default:'')}" class="button-hapus" onclick="return confirm('Apakah anda yakin akan menghapus data ini?')">
+                Delete
+            </a>
+        </td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="7">Data not found!</td>
+    </tr>
+    {/foreach}
+</table>

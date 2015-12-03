@@ -1,0 +1,80 @@
+<div class="dashboard-welcome">
+    <h3>{$tanggal.hari}, {$tanggal.tanggal}</h3>
+    <!-- notification template -->
+    {include file="base/templates/notification.html"}
+    <!-- end of notification template-->
+    <div class="dashboard-profile">
+        <div style="float: left;">
+            <div class="dashboard-profile-sidebar">
+                <h4>Welcome</h4>
+                <div class="list">
+                    <div style="height: 150px; overflow: auto;">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div style="float: right;">
+            <div class="dashboard-profile-content">
+                
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<!-- clocl -->
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#countdown').ClassyCountdown({
+            end: '{$end}',
+            now: '{$now}',
+            labels: true,
+            style: {
+                element: "",
+                textResponsive: .5,
+                days: {
+                    gauge: {
+                        thickness: .05,
+                        bgColor: "rgba(0,0,0,0)",
+                        fgColor: "#1abc9c",
+                        lineCap: 'round'
+                    },
+                    textCSS: 'font-family:\'Open Sans\'; font-size:55px; font-weight:700; color:#34495e;'
+                },
+                hours: {
+                    gauge: {
+                        thickness: .05,
+                        bgColor: "rgba(0,0,0,0)",
+                        fgColor: "#2980b9",
+                        lineCap: 'round'
+                    },
+                    textCSS: 'font-family:\'Open Sans\'; font-size:55px; font-weight:700; color:#34495e;'
+                },
+                minutes: {
+                    gauge: {
+                        thickness: .05,
+                        bgColor: "rgba(0,0,0,0)",
+                        fgColor: "#8e44ad",
+                        lineCap: 'round'
+                    },
+                    textCSS: 'font-family:\'Open Sans\'; font-size:55px; font-weight:700; color:#34495e;'
+                },
+                seconds: {
+                    gauge: {
+                        thickness: .05,
+                        bgColor: "rgba(0,0,0,0)",
+                        fgColor: "#f39c12",
+                        lineCap: 'round'
+                    },
+                    textCSS: 'font-family:\'Open Sans\'; font-size:55px; font-weight:700; color:#34495e;'
+                }
+
+            },
+            onEndCallback: function() {
+                console.log("Time out!");
+            }
+        });
+    });
+</script>

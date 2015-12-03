@@ -1,0 +1,66 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <a href="{$config->site_url('pengaturan/operator')}">Operator</a><span></span>
+        <small>{$result.operator_name|default:''}</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('pengaturan/operator')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" /> Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('pengaturan/operator/delete_process')}" method="post" onsubmit="return confirm('Apakah anda yakin akan menghapus data berikut ini?')">
+    <input name="user_id" type="hidden"  value="{$result.user_id|default:''}" />
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="4">Apakah anda yakin akan menghapus data dibawah ini?</th>
+        </tr>
+        <tr>
+            <td width="15%">Nama Lengkap</td>
+            <td width="35%">{$result.operator_name|default:''}</td>
+            <td width="15%">Alamat</td>
+            <td width="35%">{$result.operator_address|default:''}</td>
+        </tr>
+        <tr>
+            <td>Jenis Kelamin</td>
+            <td>
+                {if $result.operator_gender|default:'' eq 'L'}Laki - Laki{/if}
+                {if {$result.operator_gender|default:''} eq 'P'}Perempuan{/if}
+            </td>
+            <td>Email</td>
+            <td>{$result.user_mail|default:''}</td>
+        </tr>
+        <tr>
+            <td>Tempat Lahir</td>
+            <td>{$result.operator_birth_place|default:''}</td>
+            <td>Nomor Telepon</td>
+            <td>{$result.operator_phone|default:''}</td>
+        </tr>
+        <tr>
+            <td>Tanggal Lahir</td>
+            <td>{$result.operator_birth_day|default:''}</td>
+        </tr>
+        <tr class="headrow">
+            <th colspan="4">Attachment</th>
+        </tr>
+        <tr>
+            <td>Foto</td>
+            <td colspan="3">
+                <img src="{$operator_photo|default:''}" alt="" style="height: 160px; background-color: #fff; border: 1px solid #ccc; padding: 5px;" />
+            </td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="4">
+                <input type="submit" name="save" value="Hapus" class="reset-button" />
+            </td>
+        </tr>
+    </table>
+</form>  

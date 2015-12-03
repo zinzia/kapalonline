@@ -1,0 +1,78 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Data Report</a><span></span>
+        <small>Rekapitulasi User LOG</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="search-box">
+    <h3><a href="#">Pencarian</a></h3>
+    <form action="{$config->site_url('report/log/proses_cari')}" method="post">
+        <table class="table-search" width="100%" border="0">
+            <tr>
+                <th width="5%">Name</th>
+                <td width="15%">
+                    <input type="text" name="operator_name" value="{$search.operator_name|default:''}" size="25" maxlength="50" />
+                </td>
+                <th width="5%">Operator</th>
+                <td width="15%">
+                    <select name="airlines_nm">
+                        <option value=""></option>
+                        {foreach from=$rs_airlines item=data}
+                        <option value="{$data.airlines_nm}" {if $search.airlines_nm|default:'' eq $data.airlines_nm}selected="selected"{/if}>{$data.airlines_nm}</option>
+                        {/foreach}
+                    </select>
+                </td>
+                <td align='right'>
+                    <input name="save" type="submit" value="Tampilkan" />
+                    <input name="save" type="submit" value="Reset" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info"><strong>{$pagination.total|default:0}</strong> Record&nbsp;</li>{$pagination.data|default:''}
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="navigation">
+        <div class="navigation-button">
+            <ul>
+                <li><a href="{$config->site_url('report/log/download/')}"><img src="{$BASEURL}resource/doc/images/icon/download-icon.png" alt="" /> Download Excel</a></li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width="5%">No</th>
+        <th width="20%">Nama</th>
+        <th width="20%">Operator</th>
+        <th width="20%">Last Login</th>
+        <th width="20%">Last Logout</th>
+        <th width="15%">IP</th>
+    </tr>
+    {foreach from=$rs_id item=result}
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+        <td align="center">{$no++}.</td>
+        <td>{$result.operator_name|upper}</td>
+        <td>{$result.airlines_nm|upper}</td>
+        <td align="center">{$dtm->get_full_date($result.login_date|default:'')}</td>
+        <td align="center">{$dtm->get_full_date($result.logout_date|default:'')}</td>
+        <td align="center">{$result.ip_address|upper}</td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="7">Data not found!</td>
+    </tr>
+    {/foreach}
+</table>

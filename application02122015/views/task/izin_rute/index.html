@@ -1,0 +1,88 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Task Manager Izin Rute</a><span></span>
+        <small>{$com_user.role_nm|upper}</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info">Total ( <b style="color: red;">{$total|default:0}</b> ) Permohonan Yang Harus Diproses!</li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="navigation">
+        <div class="navigation-button">
+            <ul>
+                <li>
+                    <form action="{$config->site_url('task/izin_rute/proses_cari')}" method="post">
+                        <input type="text" name="airlines_nm" value="{$search.airlines_nm}" placeholder="Semua Operator Penerbangan" size="30" maxlength="50" style="vertical-align: bottom; padding: 3px; text-align: center; border: 1px solid #C8E4F1; background-color: #D8F3FF; color: #666;" />
+                        <input type="text" name="group_nm" value="{$search.group_nm}" placeholder="Semua Jenis Permohonan" size="30" maxlength="50" style="vertical-align: bottom; padding: 3px; text-align: center; border: 1px solid #C8E4F1; background-color: #D8F3FF; color: #666;" />
+                        <input type="submit" name="save" style="vertical-align: bottom; cursor: pointer; background-color: #FEA546; border: 1px solid #FF9421; padding: 2px 5px; vertical-align: middle; color: #fff;" value="Cari" />
+                        <input type="submit" name="save" style="vertical-align: bottom; cursor: pointer; background-color: #FEA546; border: 1px solid #FF9421; padding: 2px 5px; vertical-align: middle; color: #fff;" value="Reset" />
+                    </form>
+                </li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width='5%'>No</th>
+        <th width='25%'>Operator</th>
+        <th width='10%'>Rute Penerbangan</th>
+        <th width='10%'>Domestik /<br /> Internasional</th>
+        <th width='20%'>Surat<br/>Permohonan</th>
+        <th width='15%'>Didaftarkan Oleh</th>
+        <th width='15%'></th>
+    </tr>
+    {$no = 1}
+    {foreach from=$rs_id item=result}
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+        <td align="center">{$no++}.</td>
+        <td>
+            {$result.airlines_nm}
+            <br />
+            <b>{$result.group_nm}</b>
+        </td>
+        <td align="center"><b style="text-decoration: underline;">{$result.izin_rute_start|upper}</b> <br /> <b>{$result.izin_rute_end|upper}</b></td>
+        <td align="center">{$result.izin_flight|capitalize}</td>
+        <td align="center">
+            {if $result.group_alias != 'migrasi'}
+            <span style="text-decoration: underline;">{$result.izin_request_letter|default:''}</span><br />
+            {$dtm->get_full_date($result.izin_request_letter_date)|default:''}
+            {else}
+            <span style="text-decoration: underline;">{$result.izin_published_letter|default:''}</span><br />
+            Penerbitan :  {$dtm->get_full_date($result.izin_published_date)|default:''}
+            {/if}
+        </td>
+        <td align="center">
+            <span style="text-decoration: underline;">{$result.pengirim|default:'-'}</span><br />
+            {$dtm->get_full_date($result.izin_request_date, 'ins')|upper|default:''}
+        </td>
+        <td align="center">
+            <a href="{$config->site_url($result.task_link|cat:'/'|cat:$result.group_alias|cat:'/'|cat:$result.registrasi_id|default:'')}" class="button">
+                {if $result.selisih_hari == 0 && substr($result.selisih_waktu,0,2) == 00}
+                {substr($result.selisih_waktu,3,2)|replace:':':'0'} menit yang lalu
+                {else if $result.selisih_hari == 0}
+                {substr($result.selisih_waktu,0,2)} jam yang lalu
+                {else}
+                {$result.selisih_hari} hari yang lalu
+                {/if}
+            </a>
+        </td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="7">Belum ada permohonan izin rute penerbangan yang di ajukan</td>
+    </tr>
+    {/foreach}
+</table>

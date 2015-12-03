@@ -1,0 +1,54 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Web Management</a><span></span>
+        <a href="{$config->site_url('web/news')}">News</a><span></span>
+        <small>{$news.news_title|upper|default:''}</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('web/news')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" /> List of News</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="sub-nav-content">
+    <ul>
+        <li><a href="{$config->site_url('web/news/edit/'|cat:$news.news_id)}">News</a></li>
+        <li><a href="{$config->site_url('web/news/content/'|cat:$news.news_id)}" class="active">Content</a></li>
+    </ul>
+    <div class="clear"></div>
+    <div class="sub-content">
+        <!-- notification template -->
+        {include file="base/templates/notification.html"}
+        <!-- end of notification template-->
+        <table class="table-view" width="100%">
+            <tr>
+                <th width="4%"></th>
+                <th width="10%">Languages</th>
+                <th width="20%">Title</th>
+                <th width="60%">Content</th>
+                <th width="6%"></th>
+            </tr>
+            {foreach from=$rs_id item=result}
+            <tr {if $result.news_lang_title eq ''}class="blink-row"{/if}>
+                <td align='center'>
+                    <img src="{$BASEURL}resource/doc/images/lang/{$result.lang_icon}" alt="" style="height: 16px;" />
+                </td>
+                <td align='center'>{$result.lang_name|upper}</td>
+                <td><b>{$result.news_lang_title|upper}</b></td>
+                <td>{$result.news_lang_content|nl2br}</td>
+                <td align="center">
+                    <a href="{$config->site_url('web/news/content_edit/'|cat:$news.news_id|cat:'/'|cat:$result.lang_id)}" class="button-edit">Edit</a>
+                </td>
+            </tr>    
+            {foreachelse}
+            <tr>
+                <td colspan="5">Data not found!</td>
+            </tr>
+            {/foreach}
+        </table>
+    </div>
+</div>

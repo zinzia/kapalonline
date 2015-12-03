@@ -1,0 +1,166 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        // --
+        $(".data_flight").select2({
+            placeholder: "-- Pilih Jenis Penerbangan --",
+            width: 200,
+            allowClear: true
+        });
+        $(".services_cd").select2({
+            placeholder: "-- Pilih Keterangan --",
+            width: 280,
+            allowClear: true
+        });
+    });
+</script>
+<script type="text/javascript">
+    function prev() {
+        var confirmation = confirm("Apakah anda yakin membatalkan pengajuan ini?");
+        if (confirmation == true) {
+            window.location = "{$config->site_url('member/pending/batalkan/'|cat:$result.data_id)}";
+        }
+    }
+</script>
+<style type="text/css">
+    .data_flight .select2-choice {
+        width: 190px !important;
+        font-weight: bold;
+    }
+    .data_flight .select2-default {
+        width: 190px !important;
+        font-weight: bold;
+    }
+    .services_cd .select2-default {
+        width: 270px !important;
+        font-weight: bold;
+    }
+</style>
+<div class="breadcrum">
+    <p>
+        <a href="#">Registration</a><span></span>
+        <small>Flight Approval Angkutan Udara Bukan Niaga</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('member/registration_non/')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" />Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="step-box">
+    <ul>
+        <li>
+            <a href="{$config->site_url('member/pending/aubn_add/'|cat:$result.data_id)}" class="active"><b>Step 1</b><br />Domestic / International</a>
+        </li>
+        <li>
+            <a href="#" class="normal"><b>Step 2</b><br />Flight Approval</a>
+        </li>
+        <li>
+            <a href="#" class="normal"><b>Step 3</b><br />File Attachment</a>
+        </li>
+    </ul>
+    <div class="clear"></div>
+</div>
+<div class="dashboard">
+    <table class="table-form" width="100%">
+        <tr>
+            <td><h3>Catatan Perbaikan</h3></td>
+        </tr>
+        <tr>
+            <td>
+                <div class="notification red">
+                    <p>{$message.catatan|upper}</p>
+                    <div class="clear"></div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('member/pending/aubn_add_process')}" method="post">
+    <input type="hidden" name="data_id" value="{$result.data_id|default:''}">
+    <table class="table-form" width="100%">
+        <tr>
+            <td width='25%'>
+                <span style="text-decoration: underline;">Kementerian Perhubungan Republik Indonesia</span><br />
+                <i>Ministry of Transportation Of the Republic of Indonesia</i>
+            </td>
+            <td rowspan="2" width='45%' align='center'><b style="font-size: 24px;">FLIGHT APPROVAL</b></td>
+            <td rowspan="2" width='30%'>
+                <select name="data_flight" class="data_flight" id="data_flight">
+                    <option value=""></option>
+                    <option value="domestik" {if $result.data_flight|default:'' eq 'domestik'}selected="selected"{/if}>DOMESTIC</option>
+                    <option value="internasional" {if $result.data_flight|default:'' eq 'internasional'}selected="selected"{/if}>INTERNATIONAL</option>
+                </select>
+                <em>* wajib diisi</em>
+                <br>
+                <br>
+                <select name="services_cd" class="services_cd" id="services_cd">
+                    <option value=""></option>
+                    {foreach from=$rs_service_code item=data}
+                    <option value="{$data.services_cd}" {if $result.services_cd|default:'' eq $data.services_cd}selected="selected"{/if}>{$data.services_nm}</option>
+                    {/foreach}
+                </select>
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span style="text-decoration: underline;">Direktorat Jenderal Perhubungan Udara </span><br />
+                <i>Directorate General of Civil Aviation</i>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span style="text-decoration: underline;">Persetujuan terbang untuk wilayah Indonesia</span><br />
+                <i>Flight Approval for Indonesia territory</i>
+            </td>
+            <td align="right">
+            </td>
+            <td>
+            </td>
+        </tr>
+    </table>
+    <table class="table-form" width='100%'>
+        <tr class="submit-box">
+            <td colspan="2">
+                <input name="save" value="Batalkan" class="submit-button" type="button" onclick="prev();" />
+            </td>
+            <td colspan="2" align='right'>
+                <input type="submit" name="save" value="Lanjutkan" class="submit-button" />
+            </td>
+        </tr>
+    </table>
+</form>
+
+<script type="text/javascript">
+    jQuery('#data_flight').on('change', function(dom_int) {
+        $.ajaxSetup({
+            cache: false
+        });
+        var sendData = {
+            data_type: 'bukan niaga',
+            data_flight: dom_int.val
+        };
+        $.ajax({
+            type: "POST",
+            url: "{$BASEURL}index.php/member/pending/get_services_cd/",
+            dataType: "json",
+            data: sendData,
+            success: function (results) {
+                $('#services_cd').empty();
+                $.each(results, function (index, value) {
+                    $('#services_cd').append($('<option/>', {
+                        value: value.services_nm,
+                        text: value.services_nm
+                    }))
+                })
+            },
+        });
+    })
+</script>

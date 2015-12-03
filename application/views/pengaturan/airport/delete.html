@@ -1,0 +1,57 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <a href="{$config->site_url('pengaturan/airport')}">Bandar Udara</a><span></span>
+        <small>Delete Data</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('pengaturan/airport')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" /> Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('pengaturan/airport/delete_process')}" method="post" onsubmit="return confirm('Apakah anda yakin akan menghapus data berikut ini?')">
+    <input name="airport_id" type="hidden" value="{$result.airport_id|default:''}" />
+    <table class="table-input" width="100%" border="0">
+        <tr class="headrow">
+            <th colspan="4">Hapus Data Bandar Udara</th>
+        </tr>
+        <tr>
+            <th colspan="4">Apakah anda yakin akan menghapus data dibawah ini?</th>
+        </tr>
+        <tr>
+            <td width="15%">Nama Bandar Udara</td>
+            <td width="35%">{$result.airport_nm|default:''}</td>
+            <td width="15%">Domestik / Internasional</td>
+            <td width="35%">{$result.airport_st|default:''|upper}</td>
+        </tr>
+        <tr>
+            <td>IATA Code</td>
+            <td>{$result.airport_iata_cd|default:''}</td>
+            <td>ICAO Code</td>
+            <td>{$result.airport_icao_cd|default:''}</td>
+        </tr>
+        <tr>
+            <td>Region</td>
+            <td>
+                {$result.airport_region|default:''}
+            </td>
+            <td>Country</td>
+            <td>
+                {$result.airport_country|default:''}
+            </td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="4">
+                <input type="submit" name="save" value="Hapus" class="reset-button" />
+            </td>
+        </tr>
+    </table>
+</form>

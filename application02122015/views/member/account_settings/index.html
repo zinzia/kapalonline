@@ -1,0 +1,91 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        // date picker
+        $(".tanggal").datepicker({
+            yearRange: '-50:+0',
+            changeMonth: true,
+            changeYear: true,
+            showOn: 'both',
+            buttonImage: '{$BASEURL}/resource/doc/images/icon/calendar.gif',
+            buttonImageOnly: true,
+            dateFormat: 'yy-mm-dd'
+        });
+    });
+</script>
+<div class="breadcrum">
+    <p><a href="#">Account Settings</a><span></span><small>Data Pribadi</small></p>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('member/account_settings/process_data_pribadi')}" method="post" enctype="multipart/form-data">
+    <table class="table-input" width="100%">
+        <tr>
+            <th colspan="3">Data Pribadi</th>
+        </tr>
+        <tr>
+            <td width="20%">Nama Lengkap</td>
+            <td width="55%">
+                <input type="text" name="operator_name" value="{$result.operator_name|default:''}" />
+            </td>
+            <td rowspan="6" align='center' width="25%">
+                <img src="{$operator_photo|default:''}" alt="" style="height: 160px; width: 90%; background-color: #fff; border: 1px solid #ccc; padding: 5px;" />
+                <br /><br />
+                <input type="file" name="operator_photo" />
+            </td>
+        </tr>
+        <tr>
+            <td>Jenis Kelamin</td>
+            <td>
+                <label><input type="radio" name="operator_gender" value="L" {if {$result.operator_gender|default:''} eq 'L'}checked="checked"{/if} />LAKI - LAKI</label>
+                <label><input type="radio" name="operator_gender" value="P" {if {$result.operator_gender|default:''} eq 'P'}checked="checked"{/if} />PEREMPUAN</label>
+            </td>
+        </tr>
+        <tr>
+            <td>Tempat, Tanggal Lahir</td>
+            <td>
+                <input name="operator_birth_place" type="text" value="{$result.operator_birth_place|default:''}" size="25" maxlength="50" />
+                <input name="operator_birth_day" type="text" value="{$result.operator_birth_day|default:''}" size="10" maxlength="10" class="tanggal" style="text-align: center;" readonly='readonly' />
+            </td>
+        </tr>
+        <tr>
+            <td>Alamat</td>
+            <td>
+                <input name="operator_address" type="text" value="{$result.operator_address|default:''}" size="45" maxlength="100" />
+            </td>
+        </tr>
+        <tr>
+            <td>Nomor Telepon</td>
+            <td>
+                <input name="operator_phone" type="text" value="{$result.operator_phone|default:''}" size="15" maxlength="30" />
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td>
+                <input type="text" name="user_mail" value="{$result.user_mail|default:''}" size="40" maxlength="50" />
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr>
+            <th colspan="3">
+                <input type="hidden" name="member_status" value="{$result.member_status|default:''}" />
+                {$result.member_status|upper} UNTUK :
+            </th>
+        </tr>
+        {foreach from=$rs_airlines item=data}
+        <tr>
+            <td colspan="3">
+                <a href="{$config->site_url('member/account_settings/process_change_airlines/'|cat:$data.airlines_id)}" {if $com_user.airlines_id eq $data.airlines_id}style="color: red; font-weight: bold;"{/if}> {$data.airlines_nm|upper} ( {$data.airlines_brand|upper} )</a>
+            </td>
+        </tr> 
+        {/foreach}
+        <tr class="submit-box">
+            <td colspan="3" align="right">
+                <input name="save" value="Update" class="submit-button" type="submit"/>
+            </td>
+        </tr>
+    </table>
+</form>

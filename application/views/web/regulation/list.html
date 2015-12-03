@@ -1,0 +1,62 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Web Management</a><span></span>
+        <small>Regulation</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info"><strong>{$total} Records</strong></li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('web/regulation/add/')}"><img src="{$BASEURL}resource/doc/images/icon/add-icon.png" alt="" /> Add Data</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width="4%">No</th>
+        <th width="15%">Dasar Hukum</th>
+        <th width="29%">Tentang</th>
+        <th width="10%">File</th>
+        <th width="10%">Diunduh</th>
+        <th width="20%">Last Update</th>
+        <th width="12%"></th>
+    </tr>
+    {$no = 1}
+    {foreach from=$rs_id item=result}
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+        <td align='center'>{$no++}.</td>
+        <td><b>{$result.judul|upper}</b></td>
+        <td>{$result.deskripsi|upper}</td>
+        <td align='center'>
+            {if $result.file_name neq ''}
+            <a href="{$config->site_url({'web/regulation/download/'|cat:$result.data_id})}">download</a>
+            {else}
+            <i>Belum diupload</i>
+            {/if}
+        </td>
+        <td align="center">{$result.download}</td>
+        <td align="center">{$dtm->get_full_date($result.mdd)}</td>
+        <td align="center">
+            <a href="{$config->site_url('web/regulation/edit/'|cat:$result.data_id)}" class="button-edit">Edit</a>
+            <a href="{$config->site_url('web/regulation/delete_process/'|cat:$result.data_id)}" class="button-hapus" onclick="return confirm('Apakah anda yakin akan menghapus data berikut ini?');">Hapus</a>
+        </td>
+    </tr>    
+    {foreachelse}
+    <tr>
+        <td colspan="7">Data not found!</td>
+    </tr>
+    {/foreach}
+</table>

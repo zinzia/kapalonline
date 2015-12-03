@@ -1,0 +1,198 @@
+<div class="dashboard-welcome">
+    <h3>{$tanggal.hari}, {$tanggal.tanggal}</h3>
+    <div class="search-box">
+        <h2><a href="#">Search</a></h2>
+        <form action="{$config->site_url('stakeholder/welcome/proses_cari')}" method="post">
+            <table class="table-search" width="100%" border="0">
+                <tr>
+                    <th width="5%">Nomor</th>
+                    <td width="15%">
+                        <input name="published_no" type="text" value="{$search.published_no|default:''}" size="40" maxlength="40" />
+                    </td>
+                    <th width="5%">Operator</th>
+                    <td width="15%">
+                        <input name="airlines_nm" type="text" value="{$search.airlines_nm|default:''}" size="20" maxlength="50" />
+                    </td>
+                    <th width="5%">Bandara</th>
+                    <td width="15%">
+                        <input name="airport_iata_cd" type="text" value="{$search.airport_iata_cd|default:''}" size="3" maxlength="3" />
+                    </td>
+                    <td align="right">
+                        <input name="save" type="submit" value="Tampilkan" />
+                        <input name="save" type="submit" value="Reset" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div class="dashboard-profile">
+        <div style="float: left;">
+            <div class="dashboard-profile-sidebar">
+                <h4>Angkutan Udara Niaga Berjadwal</h4>
+                <div class="info">
+                    <p>{$total_waiting_berjadwal|default:'0'|number_format:0:',':'.'} Flight Approval</p>
+                </div>
+                <div class="list">
+                    <div style="height: 150px; overflow: auto;">
+                        {foreach from=$list_waiting_berjadwal item=data}
+                        <p>
+                            <a href="{$config->site_url('stakeholder/realisasi/form/'|cat:$data.data_id)}">
+                                <b>{$data.airlines_nm|upper}<br />{$data.published_no|upper}</b>
+                                <br />
+                                Nomor Penerbangan : {$data.flight_no|upper}
+                                <br />
+                                Type : {$data.services_nm|upper} 
+                                <br />
+                                <small>
+                                    Penerbangan :
+                                    {$dtm->get_full_date($data.date_start)|upper}
+                                    -
+                                    {$dtm->get_full_date($data.date_end)|upper}
+                                    <br />
+                                    Rute :
+                                    {$data.rute_all|upper}
+                                </small>
+                            </a>
+                        </p>
+                        {foreachelse}
+                        <p>
+                            <a href="#">No request found</a>
+                        </p>
+                        {/foreach}
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-profile-sidebar">
+                <h4>Angkutan Udara Niaga Tidak Berjadwal dan Bukan Niaga</h4>
+                <div class="info">
+                    <p>{$total_waiting_tidak_berjadwal|default:'0'|number_format:0:',':'.'} Flight Approval</p>
+                </div>
+                <div class="list">
+                    <div style="height: 150px; overflow: auto;">
+                        {foreach from=$list_waiting_tidak_berjadwal item=data}
+                        <p>
+                            <a href="{$config->site_url('stakeholder/realisasi/form/'|cat:$data.data_id)}">
+                                <b>{$data.airlines_nm|upper}<br />{$data.published_no|upper}</b>
+                                <br />
+                                Nomor Penerbangan : {$data.flight_no|upper}
+                                <br />
+                                Type : {$data.services_nm|upper} 
+                                <br />
+                                <small>
+                                    Penerbangan :
+                                    {$dtm->get_full_date($data.date_start)|upper}
+                                    -
+                                    {$dtm->get_full_date($data.date_end)|upper}
+                                    <br />
+                                    Rute :
+                                    {$data.rute_all|upper}
+                                </small>
+                            </a>
+                        </p>
+                        {foreachelse}
+                        <p>
+                            <a href="#">No request found</a>
+                        </p>
+                        {/foreach}
+                    </div>
+                </div>
+            </div>
+            <div class="clear"></div>
+            <div class="dashboard-profile-sidebar">
+                <h4>Izin Rute Penerbangan Domestik</h4>
+                <div class="info">
+                    <p>{$total_waiting_domestik|default:'0'|number_format:0:',':'.'} Izin Rute</p>
+                </div>
+                <div class="list">
+                    <div style="height: 150px; overflow: auto;">
+                        {foreach from=$list_waiting_domestik item=data}
+                        <p>
+                            <a href="{$config->site_url('stakeholder/published_izin/'|cat:$data.group_alias|cat:'/'|cat:$data.registrasi_id)}">
+                                <b>{$data.airlines_nm|upper}</b>
+                                <br />
+                                Permohonan : {$data.group_nm|upper}
+                                <br />
+                                <small>
+                                    Rute : {$data.izin_rute_start|upper} / {$data.izin_rute_end|upper}
+                                    <br />
+                                    {if $data.selisih_hari == 0 && substr($data.selisih_waktu,0,2) == 00}
+                                    {substr($data.selisih_waktu,3,2)} minutes ago
+                                    {else if $data.selisih_hari == 0}
+                                    {substr($data.selisih_waktu,0,2)} hour ago
+                                    {else}
+                                    {$data.selisih_hari} day ago
+                                    {/if}
+                                </small>
+                            </a>
+                        </p>
+                        {foreachelse}
+                        <p>
+                            <a href="#">No request found</a>
+                        </p>
+                        {/foreach}
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-profile-sidebar">
+                <h4>Izin Rute Penerbangan Internasional</h4>
+                <div class="info">
+                    <p>{$total_waiting_internasional|default:'0'|number_format:0:',':'.'} Izin Rute</p>
+                </div>
+                <div class="list">
+                    <div style="height: 150px; overflow: auto;">
+                        {foreach from=$list_waiting_internasional item=data}
+                        <p>
+                            <a href="{$config->site_url('stakeholder/published_izin/'|cat:$data.group_alias|cat:'/'|cat:$data.registrasi_id)}">
+                                <b>{$data.airlines_nm|upper}</b>
+                                <br />
+                                Permohonan : {$data.group_nm|upper}
+                                <br />
+                                <small>
+                                    Rute : {$data.izin_rute_start|upper} / {$data.izin_rute_end|upper}
+                                    <br />
+                                    {if $data.selisih_hari == 0 && substr($data.selisih_waktu,0,2) == 00}
+                                    {substr($data.selisih_waktu,3,2)} minutes ago
+                                    {else if $data.selisih_hari == 0}
+                                    {substr($data.selisih_waktu,0,2)} hour ago
+                                    {else}
+                                    {$data.selisih_hari} day ago
+                                    {/if}
+                                </small>
+                            </a>
+                        </p>
+                        {foreachelse}
+                        <p>
+                            <a href="#">No request found</a>
+                        </p>
+                        {/foreach}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard-profile-content">
+            <img src="{$com_user.operator_photo}" alt="" class="user-img" />
+            <ul>
+                <li><b>{$com_user.operator_name}, <br />({$com_user.role_nm})</b><br />{$com_user.sub_direktorat}</li>
+                <li><img src="{$BASEURL}resource/doc/images/icon/phone.icon.png" alt="" />{$com_user.operator_phone}</li>
+                <li><img src="{$BASEURL}resource/doc/images/icon/address.icon.png" alt="" />{$com_user.operator_address}</li>
+                <li><img src="{$BASEURL}resource/doc/images/icon/email.icon.png" alt="" />{$com_user.user_mail}</li>
+                <li><a href="{$config->site_url('stakeholder/account_settings/data_pribadi')}">Update my profile</a></li>
+            </ul>
+            <div class="clear"></div>
+        </div>
+<!--         <div class="dashboard-profile-content">
+            <br />
+            <h5>Statistik Pelayanan Flight Approval {$tanggal.tahun}</h5>
+            <div id="chart">
+                <script type="text/javascript">
+                    var chart = new FusionCharts("{$BASEURL}resource/doc/charts/StackedColumn2D.swf", "chart", "100%", "285", "0", "1");
+                    chart.setDataURL("{$config->site_url('stakeholder/data_chart')}");
+                    chart.render("chart");
+                </script> 
+            </div>
+
+            <div class="clear"></div>
+        </div>
+ -->        <div class="clear"></div>
+    </div>
+</div>

@@ -1,0 +1,67 @@
+<script>
+    CKEDITOR.disableAutoInline = true;
+    $( document ).ready( function() {
+        $( '#faq_answer' ).ckeditor(); // Use CKEDITOR.replace() if element is <textarea>.
+    } );
+</script>
+<div class="breadcrum">
+    <p>
+        <a href="#">Web Management</a><span></span>
+        <a href="{$config->site_url('web/faq')}">FAQ</a><span></span>
+        <small>{$result.category_nm|upper}</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('web/faq/detail/'|cat:$result.category_id)}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" /> Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('web/faq/add_question_process')}" method="post">
+    <input name="category_id" type="hidden" value="{$result.category_id|default:''}" />
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="2">Add Question</th>
+        </tr>
+        <tr>
+            <td width='20%'>Title</td>
+            <td width='80%'>
+                <input name="faq_title" type="text" size="50" maxlength="50" value="{$result.faq_title|default:''}" />
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr>
+            <td>Pertanyaan</td>
+            <td>
+                <input name="faq_question" type="text" size="255" maxlength="255" value="{$result.faq_question|default:''}" />
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr>
+            <td>Jawaban</td>
+            <td>
+                <textarea cols="80" id="faq_answer" name="faq_answer" rows="10">{$result.faq_answer|default:''}</textarea>
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr>
+            <td>Urutan</td>
+            <td>
+                <input name="faq_seq" type="text" size="3" maxlength="11" value="{$result.faq_seq|default:''}" />
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="2">
+                <input type="submit" name="save" value="Simpan" class="submit-button" />
+                <input type="reset" name="save" value="Reset" class="reset-button" />
+            </td>
+        </tr>
+    </table>
+</form>

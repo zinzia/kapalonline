@@ -1,0 +1,50 @@
+<script type="text/javascript">
+    function delete_data() {
+        if (confirm("Apakah anda yakin akan menghapus data ini?")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+</script>
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <small>Preferences</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="sub-nav-content">
+    <ul>
+        <li><a href="{$config->site_url('pengaturan/preferences/')}">Services Type</a></li>
+        <li><a href="{$config->site_url('pengaturan/preferences/mail/')}" class="active">Waktu Pengajuan</a></li>
+    </ul>
+    <div class="clear"></div>
+    <div class="sub-content">
+        <!-- notification template -->
+        {include file="base/templates/notification.html"}
+        <!-- end of notification template-->
+        <table class="table-view" width="100%">
+            <tr>
+                <th width="5%">No</th>
+                <th width="45%">Nama</th>
+                <th width="44%">Value</th>
+                <th width="6%"></th>
+            </tr>
+            {foreach from=$rs_id key=no item=result}
+            <tr {if ($no % 2) <> 0}class="blink-row"{/if}>
+                <td align='center'>{$no + 1}.</td>
+                <td>{$result.pref_nm}</td>
+                <td align='center'>{$result.pref_value}</td>
+                <td align="center">
+                    <a href="{$config->site_url('pengaturan/preferences/mail_edit/'|cat:$result.pref_id)}" class="button-edit">Edit</a>
+                </td>
+            </tr>    
+            {foreachelse}
+            <tr>
+                <td colspan="4">Data tidak ditemukan!</td>
+            </tr>
+            {/foreach}
+        </table>
+    </div>
+</div>

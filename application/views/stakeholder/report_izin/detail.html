@@ -1,0 +1,148 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Data Report</a><span></span>
+        <small>Izin Rute Penerbangan</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation">
+        <div class="navigation-button">
+            <ul>
+                <li><a href="{$config->site_url('stakeholder/report_izin/')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" /> Back</a></li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<table class="table-form" width="100%">
+    <tr>
+        <td width="15%">Kode Rute Penerbangan</td>
+        <td width="35%">
+            <b style="color: blue; font-weight: bold;">
+                {$kode_izin|default:''|upper}
+            </b>
+            ( {$izin_rute_start|default:''|upper} / {$izin_rute_end|default:''|upper} )
+        </td>
+        <td width="15%">Masa Berlaku</td>
+        <td width="35%" style="color: blue; font-weight: bold;">
+            {$dtm->get_full_date($izin_expired_date)|upper}
+        </td>
+    </tr> 
+</table>
+<div id="table-data" style="margin: 0 0 5px 0; padding: 10px; border: 1px solid #ddd; font-size: 11px; font-family: helvetica;">
+    <table class="table-view" width="100%">
+        <tr style="font-weight: normal;">
+            <td width="5%" align="center">No</td>
+            <td width="9%" align="center">Rute</td>
+            <td width="9%" align="center">Nomor Penerbangan</td>
+            <td width="9%" align="center">ETD <br />(Waktu Lokal)</td>
+            <td width="9%" align="center">ETA <br />(Waktu Lokal)</td>
+            <td width="8%" align="center">DOS</td>
+            <td width="8%" align="center">Frekuensi</td>
+            <td width="8%" align="center">Tipe<br />Pesawat</td>
+            <td width="8%" align="center">Kapasitas <br />Pesawat</td>
+            <td width="8%" align="center">Kapasitas<br />Per Minggu</td>
+            <td width="19%" align="center">Nomor Penerbitan</td>
+        </tr>
+        {$no = 0}
+        {$temp = ""}
+        {$frekuensi = 0}
+        {$kapasitas = 0}
+        {foreach from=$rs_id item=data}
+        {if $data.izin_id neq $temp}
+        {$no = $no + 1}    
+        {/if}
+        <tr>
+            {if $data.izin_id neq $temp}
+            {if $data.pairing eq 'VV'}
+            <td align="center" rowspan="2">{$no}.</td>
+            {else}
+            <td align="center">{$no}.</td>        
+            {/if}
+            {/if}
+            <td align="center">{$data.rute_all}</td>
+            <td align="center">{$data.flight_no}</td>
+            <td align="center">{$data.etd|substr:0:5}</td>
+            <td align="center">{$data.eta|substr:0:5}</td>   
+
+            {if $data.izin_id neq $temp}
+            {if $data.pairing eq 'VV'}
+            <td align="center" rowspan="2">{$data.dos}</td>
+            {else}
+            <td align="center">{$data.dos}</td>        
+            {/if}
+            {/if}
+
+            {if $data.izin_id neq $temp}
+            {if $data.pairing eq 'VV'}
+            {if $data.izin_active neq '2'}
+            {$frekuensi = $frekuensi + $data.frekuensi}
+            {/if}
+            <td align="center" rowspan="2">{$data.frekuensi}X</td>
+            {else}
+            {if $data.izin_active neq '2'}
+            {$frekuensi = $frekuensi + $data.frekuensi}
+            {/if}
+            <td align="center">{$data.frekuensi}X</td>        
+            {/if}
+            {/if}  
+
+            <td align="center">{$data.aircraft_type}</td>
+
+            {if $data.izin_id neq $temp}
+            {if $data.pairing eq 'VV'}
+            <td align="center" rowspan="2">
+                {$data.aircraft_capacity}
+            </td>
+            {else}
+            <td align="center">
+                {$data.aircraft_capacity}
+            </td>
+            {/if}
+            {/if}
+
+            {if $data.izin_id neq $temp}
+            {if $data.pairing eq 'VV'}
+            {$kapasitas = $kapasitas + ($data.frekuensi*$data.aircraft_capacity*2)}
+            <td align="center" rowspan="2">
+                {($data.aircraft_capacity * $data.frekuensi * 2)|number_format:0:',':'.'}
+            </td>
+            {else}
+            {$kapasitas = $kapasitas + ($data.frekuensi*$data.aircraft_capacity)}
+            <td align="center">
+                {($data.aircraft_capacity * $data.frekuensi)|number_format:0:',':'.'}
+            </td>
+            {/if}
+            {/if}
+
+            {if $data.izin_id neq $temp}
+            {if $data.pairing eq 'VV'}
+            <td align="center" rowspan="2" style="font-size: 11px;">
+                <span style="text-decoration: underline;">{$data.izin_published_letter}</span>
+                <br />
+                {$dtm->get_full_date($data.izin_published_date)}
+            </td>
+            {else}
+            <td align="center">
+                <span style="text-decoration: underline;">{$data.izin_published_letter}</span>
+                <br />
+                {$dtm->get_full_date($data.izin_published_date)}
+            </td>
+            {/if}
+            {/if}
+        </tr>
+        {if $data.izin_id neq $temp}
+        {$temp = $data.izin_id}
+        {/if}
+        {/foreach}
+        <tr class="red-row">
+            <td colspan="6" align="center">JUMLAH</td>
+            <td align="center"><b>{$frekuensi}X</b></td>
+            <td align="center"><b>{$data.aircraft_type}</b></td>
+            <td align="center"><b>{$data.aircraft_capacity}</b></td>
+            <td align="center"><b>{$kapasitas|number_format:0:',':'.'}</b></td>
+            <td></td>
+        </tr>
+    </table>
+</div>

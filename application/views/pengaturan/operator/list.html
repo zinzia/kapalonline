@@ -1,0 +1,104 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        /*
+         * COMBO BOX
+         */
+        $(".pelabuhan").select2({
+            placeholder: "Pilih Pelabuhan",
+            allowClear: true,
+            width: 300
+        });
+		
+    });
+</script>
+<style type="text/css">
+    .select2-choice {
+        width: 280px !important;
+    }
+    .select2-default {
+        width: 280px !important;
+    }
+</style>
+
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <small>Operator</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="search-box">
+    <h3><a href="#">Pencarian</a></h3>
+    <form action="{$config->site_url('pengaturan/operator/proses_cari')}" method="post">
+        <table class="table-search" width="100%" border="0">
+            <tr>
+                <th width="10%">Nama</th>
+                <td width="15%">
+                    <input name="operator_name" type="text" value="{$search.operator_name|default:''}" size="20" maxlength="40" placeholder="-- semua --" />
+                </td>
+                <th width="10%">Pelabuhan</th>
+                <td width="40%">
+                    <select name="pelabuhan_id" class="pelabuhan">
+                        <option value="">-- semua --</option>
+                        {foreach from=$rs_pelabuhan_id item=data}
+                        <option value="{$data.pelabuhan_id}" {if ($data.pelabuhan_id) eq $search.pelabuhan_id|default:''}selected="selected"{/if}>{$data.pelabuhan_nm} - {$data.pelabuhan_kd}</option>
+						{/foreach}
+                    </select>       
+                </td>
+                <td width='25%' align='right'>
+                    <input name="save" type="submit" value="Tampilkan" />
+                    <input name="save" type="submit" value="Reset" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info">Total&nbsp;<strong>{$pagination.total|default:0}</strong>&nbsp;Record&nbsp;</li>{$pagination.data|default:''}
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('pengaturan/operator/add')}"><img src="{$BASEURL}resource/doc/images/icon/add-icon.png" alt="" /> Add Data</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width="4%">No</th>
+        <th width="20%">Name</th>
+        <th width="22%">Pelabuhan</th>
+        <th width="15%">Jabatan</th>
+        <th width="12%">E-mail</th>
+        <th width="12%">Phone Number</th>
+        <th width="15%"></th>
+    </tr>
+    {$no = 1}
+    {foreach from=$rs_id item=result}
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+        <td align="center">{$no++}.</td>
+        <td>{$result.operator_name|upper}</td>
+        <td>{$result.pelabuhan_nm|upper} - {$result.pelabuhan_kd}</td>
+        <td>{$result.jabatan|upper}</td>
+        <td>{$result.user_mail}</td>
+        <td align="center">{$result.operator_phone}</td>
+        <td align="center">
+            <a href="{$config->site_url('pengaturan/operator/edit/'|cat:$result.user_id|default:'')}" class="button-edit">Edit</a>
+            <a href="{$config->site_url('pengaturan/operator/delete/'|cat:$result.user_id|default:'')}" class="button-hapus">Hapus</a>
+        </td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="7">Data not found!</td>
+    </tr>
+    {/foreach}
+</table>

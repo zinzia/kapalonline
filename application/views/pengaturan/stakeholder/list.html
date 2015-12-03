@@ -1,0 +1,91 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <small>Member Stakeholder</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="search-box">
+    <h3><a href="#">Pencarian</a></h3>
+    <form action="{$config->site_url('pengaturan/stakeholder/proses_cari')}" method="post">
+        <table class="table-search" width="100%" border="0">
+            <tr>
+                <th width="10%">Nama</th>
+                <td width="15%">
+                    <input name="operator_name" type="text" value="{$search.operator_name|default:''}" size="20" maxlength="40" placeholder="-- semua --" />
+                </td>
+                <th width="10%">Status</th>
+                <td width="15%">
+                    <select name="member_status">
+                        <option value="">-- semua --</option>
+                        <option value="airnav" {if $search.member_status|default:'' eq 'airnav'}selected="selected"{/if}>AIRNAV</option>
+                        <option value="bandara" {if $search.member_status|default:'' eq 'bandara'}selected="selected"{/if}>BANDARA</option>
+                        <option value="otoritas" {if $search.member_status|default:'' eq 'otoritas'}selected="selected"{/if}>OTORITAS</option>
+                    </select>
+                </td>
+                <th width="10%">Bandara</th>
+                <td width="15%">
+                    <select name="airport_id">
+                        <option value="">-- semua --</option>
+                        {foreach from=$rs_airport item=data}
+                        <option value="{$data.airport_id}"  {if $data.airport_id eq $search.airport_id|default:''}selected="selected"{/if}>{$data.airport_nm|upper}</option>
+                        {/foreach}
+                    </select>   
+                </td>
+                <td width='25%' align='right'>
+                    <input name="save" type="submit" value="Tampilkan" />
+                    <input name="save" type="submit" value="Reset" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info">Total&nbsp;<strong>{$pagination.total|default:0}</strong>&nbsp;Record&nbsp;</li>{$pagination.data|default:''}
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('pengaturan/stakeholder/add')}"><img src="{$BASEURL}resource/doc/images/icon/add-icon.png" alt="" /> Add Data</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width="4%">No</th>
+        <th width="23%">Nama Member</th>
+        <th width="15%">Status Member</th>
+        <th width="20%">E-mail</th>
+        <th width="15%">Phone Number</th>
+        <th width="10%">Jumlah<br />Airport</th>
+        <th width="13%"></th>
+    </tr>
+    {$no = 1}
+    {foreach from=$rs_id item=result}
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+        <td align="center">{$no++}.</td>
+        <td>{$result.operator_name|upper}</td>
+        <td>{$result.member_status|upper}</td>
+        <td>{$result.user_mail}</td>
+        <td align="center">{$result.operator_phone}</td>
+        <td align="center">{$result.total_airport}</td>
+        <td align="center">
+            <a href="{$config->site_url('pengaturan/stakeholder/edit/'|cat:$result.user_id|default:'')}" class="button-edit">Edit</a>
+            <a href="{$config->site_url('pengaturan/stakeholder/delete/'|cat:$result.user_id|default:'')}" class="button-hapus">Hapus</a>
+        </td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="6">Data not found!</td>
+    </tr>
+    {/foreach}
+</table>

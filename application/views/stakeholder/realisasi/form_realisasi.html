@@ -1,0 +1,76 @@
+<div class="breadcrum">
+    <p>
+        <a href="{$config->site_url('stakeholder/realisasi/')}">Realisasi Flight Approval</a><span></span>
+        <a href="{$config->site_url('stakeholder/realisasi/form/'|cat:$result.data_id|default:'')}">{$result.published_no|default:''}</a><span></span>
+        <small>Update Data</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('stakeholder/realisasi/form/'|cat:$result.data_id|default:'')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" /> Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('stakeholder/realisasi/form_realisasi_process')}" method="post">
+    <input type="hidden" name="data_id" value="{$result.data_id|default:''}" />
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="4">Tambah Data Operator Penerbangan</th>
+        </tr>
+        <tr>
+            <td width="15%">Nama Operator</td>
+            <td width="85%">
+                {$result.airlines_nm|default:''|upper}
+            </td>
+        </tr>
+        <tr>
+            <td>Nomor Dokumen</td>
+            <td>
+                {$result.document_no|default:''|upper}
+            </td>
+        </tr>
+        <tr>
+            <td>Nomor Flight Approval</td>
+            <td>
+                {$result.published_no|default:''|upper}
+            </td>
+        </tr>
+        <tr>
+            <td>Tipe</td>
+            <td>
+                {$result.data_type|default:''|upper} - {$result.data_flight|default:''|upper}
+            </td>
+        </tr>
+        <tr>
+            <td>Tanggal</td>
+            <td>
+                {$result.date_start|default:''|upper|date_format:'%d %b %Y'} / {$result.date_end|default:''|upper|date_format:'%d %b %Y'}
+            </td>
+        </tr>
+        <tr>
+            <td>Rute</td>
+            <td>
+                {$result.rute_all|default:''|upper}
+            </td>
+        </tr>
+        <tr>
+            <td>Realisasi Rute</td>
+            <td>
+                <input name="realisasi_rute" type="text" value="{$result.realisasi_rute|default:''}" size="25" maxlength="100" />
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="2">
+                <input type="submit" name="save" value="Simpan" class="submit-button" />
+                <input type="reset" name="save" value="Reset" class="reset-button" />
+            </td>
+        </tr>
+    </table>
+</form>

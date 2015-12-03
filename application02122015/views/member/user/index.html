@@ -1,0 +1,77 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Published Request</a><span></span>
+        <small>Flight Approval</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="search-box">
+    <h3><a href="#">Search</a></h3>
+    <form action="{$config->site_url('member/user/proses_cari')}" method="post">
+        <table class="table-search" width="100%" border="0">
+            <tr>
+                <td width="10%">Username</td>
+                <td width="10%">
+                    <input type="text" name="user_name" value="{$search.user_name|default:''}" size="25" maxlength="50">
+                </td>
+                <td width="10%">Operator Name</td>
+                <td width="10%">
+                    <input type="text" name="operator_name" value="{$search.operator_name|default:''}" size="25" maxlength="50">
+                </td>
+                <td>
+                    <input name="save" type="submit" value="Tampilkan" />
+                    <input name="save" type="submit" value="Reset" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info">Total&nbsp;<strong>{$pagination.total|default:0}</strong>&nbsp;Record&nbsp;</li>
+                {$pagination.data|default:''}
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('member/user/add')}"><img src="{$BASEURL}resource/doc/images/icon/add-icon.png" alt="" /> Add Data</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width='4%'>No</th>
+        <th width='12%'>Username</th>
+        <th width='12%'>Operator Name</th>
+        <th width='15%'>Alamat</th>
+        <th width='15%'>Nomor</th>
+        <th width='10%'>Status</th>
+        <th width='10%'></th>
+    </tr>
+    {foreach from=$rs_id item=result}
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+        <td align="center">{$no++}.</td>
+        <td align="center">{$result.user_name|upper}</td>
+        <td align="center">{$result.operator_name|upper}</td>
+        <td align="center">{$result.operator_address|upper}</td>
+        <td align="center">{$result.operator_phone|upper}</td>
+        <td align="center">{$result.lock_st|upper}</td>
+        <td align="center">
+            <a href="{$config->site_url('member/user/edit/'|cat:$result.user_id|default:'')}" class="button-edit">Edit</a>
+            <a href="{$config->site_url('member/user/delete/'|cat:$result.user_id|default:'')}" class="button-hapus">Hapus</a>
+        </td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="8">Data not found!</td>
+    </tr>
+    {/foreach}
+</table>

@@ -1,0 +1,66 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <small>Member</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="search-box">
+    <h3><a href="#">Pencarian</a></h3>
+    <form action="{$config->site_url('pengaturan/member/proses_cari')}" method="post">
+        <table class="table-search" width="100%" border="0">
+            <tr>
+                <th width="10%">Nama</th>
+                <td>
+                    <input name="operator_name" type="text" value="{$search.operator_name|default:''}" size="20" maxlength="40" placeholder="-- semua --" />
+                </td>
+                <td width='60%' rowspan="2" align="right">
+                    <input name="save" type="submit" value="Tampilkan" />
+                    <input name="save" type="submit" value="Reset" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info">Total&nbsp;<strong>{$pagination.total|default:0}</strong>&nbsp;Record&nbsp;</li>{$pagination.data|default:''}
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width="4%">No</th>
+        <th width="33%">Nama Member</th>
+        <th width="15%">Username</th>
+        <th width="20%">E-mail</th>
+        <th width="15%">Phone Number</th>
+        <th width="13%"></th>
+    </tr>
+    {$no = 1}
+    {foreach from=$rs_id item=result}
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+        <td align="center">{$no++}.</td>
+        <td>{$result.operator_name|upper}</td>
+        <td>{$result.user_name|upper}</td>
+        <td>{$result.user_mail}</td>
+        <td align="center">{$result.operator_phone}</td>
+        <td align="center">
+            <a href="{$config->site_url('pengaturan/member/edit/'|cat:$result.user_id|default:'')}" class="button-edit">Edit</a>
+            <a href="{$config->site_url('pengaturan/member/delete/'|cat:$result.user_id|default:'')}" class="button-hapus">Hapus</a>
+        </td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="6">Data not found!</td>
+    </tr>
+    {/foreach}
+</table>

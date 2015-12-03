@@ -1,0 +1,396 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Penerbitan Izin Rute / FA</a><span></span>
+        <small>Izin Rute Penerbangan</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="clear"></div>
+<div class="navigation" style="background-color: #eee; padding: 10px;">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info"><b>PENERBITAN SURAT PERSETUJUAN</b></li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('member/published_izin')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" /> Back</a></li>
+            <li><a href="{$config->site_url('member/published_izin/download_frekuensi/'|cat:$detail.registrasi_id)}"><img src="{$BASEURL}resource/doc/images/icon/todolist.png" alt="" /> Download</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<table class="table-form" width="100%">
+    <tr>
+        <td width='10%'>Nomor</td>
+        <td width='1%'>:</td>
+        <td width='49%'>
+            {$detail.izin_published_letter|default:''}
+        </td>
+        <td width='5%'></td>
+        <td width='35%'>
+            Jakarta, {$dtm->get_full_date($detail.izin_published_date)}
+        </td>
+    </tr>
+    <tr>
+        <td>Klasifikasi</td>
+        <td>:</td>
+        <td>PENTING</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Lampiran</td>
+        <td>:</td>
+        <td>{$lampiran} ( {$terbilang} ) Lembar</td>
+        <td></td>
+        <td>Kepada</td>
+    </tr>
+    <tr>
+        <td style="vertical-align: top;">Perihal</td>
+        <td style="vertical-align: top;">:</td>
+        <td style="vertical-align: top;">
+            {if $detail.izin_perihal neq ''}
+            {$perihal = $detail.izin_perihal|upper}
+            {else}
+            {$perihal = $detail.group_nm|upper|cat:' '|cat:$detail.izin_flight|upper}
+            {/if}
+            {$perihal}
+        </td>
+        <td style="vertical-align: top;">Yth:</td>
+        <td>
+            <span style="text-decoration: underline;">PERIKSA ALAMAT TERLAMPIR</span>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="5">&nbsp;</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td colspan="3">
+            <ol style="margin: 0; padding: 0; line-height: 24px;">
+                <li>
+                    Menunjuk :
+                    <ol style="margin: 0 0 0 15px; padding: 0; line-height: 24px; list-style-type: lower-alpha;">
+
+                        <li style="padding-left: 10px;">
+                            Peraturan Menteri Perhubungan Nomor {$km.pref_value} dan peraturan perundang - undangan yang terkait dengan penerbangan;
+                        </li>
+
+                        {foreach from=$surat_persetujuan item=surat}
+                        <li style="padding-left: 10px;">
+                            Surat Direktorat Jenderal Perhubungan Udara Nomor: {$surat.izin_published_letter} 
+                            tanggal {$dtm->get_full_date($surat.izin_published_date)}
+                            {if $surat.group_nm neq 'Migrasi Data'}
+                            perihal 
+                            {if $surat.izin_perihal neq ''}
+                            {$surat.izin_perihal|upper}
+                            {else}
+                            {$surat.group_nm} {if $surat.izin_flight eq 'domestik'}Dalam Negeri;{else}Luar Negeri;{/if}
+                            {/if}
+                            {/if}
+                        </li>
+                        {/foreach}
+
+                        <li style="padding-left: 10px;">
+                            Surat dari {$detail.airlines_nm} 
+                            Nomor: {$detail.izin_request_letter} 
+                            Tanggal {$dtm->get_full_date($detail.izin_request_letter_date)}
+                            perihal Permohonan 
+                            {if $detail.izin_perihal neq ''}
+                            {$detail.izin_perihal|upper}
+                            {else}
+                            {$detail.group_nm} {if $detail.izin_flight eq 'domestik'}Dalam Negeri,{else}Luar Negeri,{/if}
+                            {/if}yang diajukan pada tanggal {$dtm->get_date_only($detail.mdd)};
+                        </li>
+
+                        {foreach from=$rs_slot_iasm item=data}
+                        <li style="padding-left: 10px;">
+                            Slot Clearance dari Bandar Udara {$data.airport_nm}, {$data.airport_region} ( sesuai data dari IASM );
+                        </li>         
+                        {/foreach}       
+
+                        {foreach from=$rs_slot_non item=data}
+                        <li style="padding-left: 10px;">
+                            {$data.slot_subject} 
+                            Nomor {$data.slot_number} 
+                            tanggal {$dtm->get_full_date($data.slot_date)} 
+                            perihal {$data.slot_desc};
+                        </li>         
+                        {/foreach}
+
+                    </ol>
+                    dengan hormat disampaikan bahwa Direktorat Jenderal Perhubungan Udara dapat memberikan {$detail.group_nm|lower} rute penerbangan {if $detail.pax_cargo eq "cargo"}untuk cargo{/if} berjadwal kepada {$detail.airlines_nm}, sesuai dengan jadwal penerbangan sebagaimana terlampir.
+                </li>
+
+                <li>
+                    Dalam pelaksanaan penerbangan sebagaimana tersebut diatas, 
+                    {$detail.airlines_nm} diwajibkan mematuhi peraturan dan ketentuan perundang - undangan yang berlaku tentang keselamatan dan keamanan penerbangan.
+                </li>
+
+                {foreach from=$rs_memos item=data}
+                <li>
+                    <ul style="list-style: none;">
+                        <li style="border-bottom: 1px solid #ddd;">
+                            <em>
+                                {$data.operator_name} / {$dtm->get_full_date($data.memo_date)}
+                            </em>
+                        </li>
+                    </ul>
+                </li>
+                {/foreach}
+
+                <li>
+                    Dimohon kepada
+
+                    {$no = 1}
+                    {foreach from=$rs_redaksional item=data}
+                        {$data.pref_value},
+                    {$no = $no + 1}
+                    {foreachelse}
+                        ( Data "Kepada Yth." belum diinputkan! )
+                    {/foreach}
+
+                    untuk meneruskan surat persetujuan ini kepada jajaran di lingkungan wilayah kerjanya untuk dilakukan pengawasan dalam pelaksanaannya.
+                </li>
+
+                <li>
+                    Demikian disampaikan, atas perhatiannya diucapkan terima kasih.
+                </li>
+            </ol>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="5">&nbsp;</td>
+    </tr>
+    <tr>
+        <td colspan="3"></td>
+        <td align='center' colspan="2">
+            {if $an eq 'DRJU-DAU'}
+            <b>DIREKTUR JENDERAL PERHUBUNGAN UDARA</b>
+            {/if}
+            {if $an eq 'DJPU-DAU'}
+            <b>
+                a.n. DIREKTUR JENDERAL PERHUBUNGAN UDARA
+                <br />
+                DIREKTUR ANGKUTAN UDARA
+            </b>
+            {/if}
+        </td>
+    </tr>
+    <tr>
+        <td colspan="3">
+            <b style="text-decoration: underline; float: left;">Kepada Yth :</b>
+            <div class="clear"></div>
+            <ol style="line-height: 20px;">
+
+                {if $detail.airlines_nationality eq 'nasional'}
+                <li>Direktur Utama {$detail.airlines_nm}</li>
+                {else}
+                <li>Kepala Perwakilan {$detail.airlines_nm}</li>
+                {/if}
+
+                {foreach from=$rs_kepada item=data}
+                <li>
+                    {$data.redaksional_nm}
+                </li>               
+                {/foreach}
+
+            </ol>
+            <b style="text-decoration: underline; float: left;">Tembusan :</b>
+            <div class="clear"></div>
+            <ol style="line-height: 20px;">
+                {foreach from=$rs_tembusan item=data}
+                <li>
+                    {$data.redaksional_nm}
+                </li>
+                {/foreach}
+            </ol>
+        </td>
+        <td align='center' colspan="2" style="padding-top:100px; vertical-align:top;">
+            <br />
+            <b style="text-decoration: underline; color: red;">{$direktur.operator_name}</b> <br /> <small>( atau sesuai dengan yang memberikan approval nantinya )</small>
+            <br />
+            {$direktur.operator_pangkat|default:'-'}
+            <br />
+            NIP. {$direktur.operator_nip|default:'-'}
+        </td>
+    </tr>
+</table>
+<div id="table-data" style="margin: 0 0 5px 0; padding: 10px; border: 1px solid #ddd; font-family: helvetica;">
+    <table class="table-form" width="100%">
+        <tr>
+            <td colspan="5">Lampiran Surat Direktorat Jenderal Perhubungan Udara</td>
+        </tr>
+        <tr>
+            <td width='10%'>Nomor</td>
+            <td width='1%'>:</td>
+            <td width='49%'>{$detail.izin_published_letter|default:''}
+            <td width='5%'></td>
+            <td width='35%'></td>
+        </tr>
+        <tr>
+            <td>Tanggal</td>
+            <td>:</td>
+            <td>
+                {$dtm->get_full_date($detail.izin_published_date)}
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+    <h3 style="text-align: center;">
+        {$perihal}
+    </h3>
+    <p class="caption">
+        <b>{$detail.airlines_nm}</b>
+    </p>
+    <br />
+    <h4>Rute Penerbangan Sebelumnya</h4>
+    <table class="table-view" width="100%">
+        <tr style="font-weight: bold;">
+            <td width="5%" align='center' rowspan="2">No</td>
+            <td width="10%" align='center' rowspan="2">Rute<br />Penerbangan</td>
+            <td width="10%" align='center' rowspan="2">Tipe<br />Pesawat</td>
+            <td width="10%" align='center' rowspan="2">Nomor<br />Penerbangan</td>
+            <td width="16%" align='center' colspan="2">Jadwal Penerbangan<br /> ( Waktu Lokal )</td>
+            <td width="10%" align='center' rowspan="2">Hari <br />Operasi</td>
+            <td width="10%" align='center' rowspan="2">Frekuensi</td>
+            <td width="10%" align='center' rowspan="2">Total <br />Frekuensi</td>
+            <td width="19%" align='center' rowspan="2">Periode<br /> Efektif</td>
+        </tr>
+        <tr style="font-weight: bold;">
+            <td width="8%" align='center'>ETD <br />( LT )</td>
+            <td width="8%" align='center'>ETA <br />( LT )</td>
+        </tr>
+        {foreach from=$rs_old key=no item=rute}
+        {$i = 1}
+        {$rowspan = $rute|count}
+        {foreach from=$rute item=data}
+        <tr {$row_style[$data.rute_all]}>
+            {if $rowspan <= 1}
+            <td align="center" style="color: black;">{$no}.</td>
+            {elseif $i eq 1}
+            <td align="center" rowspan="{$rowspan}" style="color: black;">{$no}.</td>
+            {/if}
+            <td align="center">{$data.rute_all|default:'-'}</td>
+            <td align="center">{$data.tipe|default:'-'}</td>
+            <td align="center">{if $data.flight_no|count_characters > 4}{$data.flight_no}{else}{$data.airlines_iata_cd}{$data.flight_no|default:'-'}{/if}</td>
+            <td align="center">{$data.etd|default:'-'|substr:0:5}</td>
+            <td align="center">{$data.eta|default:'-'|substr:0:5}</td>   
+            <td align="center">{$data.doop|default:'-'}</td>
+            <td align="center">{$data.frekuensi}X</td>
+            {if $rowspan <= 1}
+            <td align="center" style="color: blue;">
+                {$pairing_old[$data.izin_id]} / 
+                {$frekuensi_old[$data.izin_id]}X
+            </td>
+            {elseif $i eq 1}
+            <td align="center" rowspan="{$rowspan}" style="color: blue;">
+                {$pairing_old[$data.izin_id]} / 
+                {$frekuensi_old[$data.izin_id]}X
+            </td>
+            {/if}
+            <td align="center">{$dtm->get_full_date($data.start_date, 'ins')|upper} / {$dtm->get_full_date($data.end_date, 'ins')|upper}</td>
+            {if $rowspan <= 1}
+            <td align="center"></td>
+            {elseif $i eq 1}
+            <td align="center" rowspan="{$rowspan}"></td>
+            {/if}
+            {if $rowspan <= 1}
+            <td align="center"></td>
+            {elseif $i eq 1}
+            <td align="center" rowspan="{$rowspan}"></td>
+            {/if}
+        </tr>
+        {$i = $i + 1}
+        {foreachelse}
+        <tr>
+            <td align="center" style="color: black;">{$no}.</td>
+            <td colspan="11">Data rute tidak ditemukan!</td>
+        </tr>
+        {/foreach}
+        {foreachelse}
+        <tr>
+            <td colspan="12">Data rute tidak ditemukan!</td>
+        </tr>
+        {/foreach}
+        <tr>
+            <td colspan="8" align="right">Jumlah Frekuensi / Minggu</td>
+            <td align="center"><b>{$total_old}X</b></td>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td></td>
+        </tr>
+    </table>
+    <br />
+
+    <h4>Hasil Penundaan Rute Penerbangan Yang Dilakukan</h4>
+    <table class="table-view" width="100%">
+        <tr style="font-weight: bold;">
+            <td width="5%" align='center' rowspan="2">No</td>
+            <td width="10%" align='center' rowspan="2">Rute<br />Penerbangan</td>
+            <td width="10%" align='center' rowspan="2">Tipe<br />Pesawat</td>
+            <td width="10%" align='center' rowspan="2">Nomor<br />Penerbangan</td>
+            <td width="16%" align='center' colspan="2">Jadwal Penerbangan<br /> ( Waktu Lokal )</td>
+            <td width="10%" align='center' rowspan="2">Hari <br />Operasi</td>
+            <td width="10%" align='center' rowspan="2">Frekuensi</td>
+            <td width="10%" align='center' rowspan="2">Total <br />Frekuensi</td>
+            <td width="19%" align='center' rowspan="2">Periode<br /> Efektif</td>
+        </tr>
+        <tr style="font-weight: bold;">
+            <td width="8%" align='center'>ETD <br />( LT )</td>
+            <td width="8%" align='center'>ETA <br />( LT )</td>
+        </tr>
+        {foreach from=$rs_id key=no item=rute}
+        {$i = 1}
+        {$rowspan = $rute|count}
+        {foreach from=$rute item=data}
+        <tr {$row_style[$data.rute_all]}>
+            {if $rowspan <= 1}
+            <td align="center" style="color: black;">{$no}.</td>
+            {elseif $i eq 1}
+            <td align="center" rowspan="{$rowspan}" style="color: black;">{$no}.</td>
+            {/if}
+            <td align="center">{$data.rute_all|default:'-'}</td>
+            <td align="center">{$data.tipe|default:'-'}</td>
+            <td align="center">{if $data.flight_no|count_characters > 4}{$data.flight_no}{else}{$data.airlines_iata_cd}{$data.flight_no|default:'-'}{/if}</td>
+            <td align="center">{$data.etd|default:'-'|substr:0:5}</td>
+            <td align="center">{$data.eta|default:'-'|substr:0:5}</td>   
+            <td align="center">{$data.doop|default:'-'}</td>
+            <td align="center">{$data.frekuensi}X</td>
+            {if $rowspan <= 1}
+            <td align="center" style="color: blue;">
+                {$pairing[$data.izin_id]} / 
+                {$frekuensi[$data.izin_id]}X
+            </td>
+            {elseif $i eq 1}
+            <td align="center" rowspan="{$rowspan}" style="color: blue;">
+                {$pairing[$data.izin_id]} / 
+                {$frekuensi[$data.izin_id]}X
+            </td>
+            {/if}
+            <td align="center">
+                {$dtm->get_full_date($data.start_date, 'ins')|upper}
+                /
+                {$dtm->get_full_date($data.end_date, 'ins')|upper}
+            </td>
+        </tr>
+        {$i = $i + 1}
+        {/foreach}
+        {foreachelse}
+        <tr>
+            <td colspan="10">Tidak ada rute yang di approved!</td>
+        </tr>
+        {/foreach}
+        <tr style="color: blue;">
+            <td colspan="8" align="right">Jumlah Frekuensi / Minggu</td>
+            <td align="center"><b>{$total_approved.frekuensi}X</b></td>
+            <td align="center"></td>
+        </tr>
+    </table>
+</div>

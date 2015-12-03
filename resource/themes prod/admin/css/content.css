@@ -1,0 +1,250 @@
+/* CSS Document */
+/* created by chow-2011 */
+
+.content {
+    float: left;
+    margin: 0 0 0 10px;
+    padding: 0;
+    overflow: hidden;
+    width: 815px;
+}
+
+.content p {
+    margin: 0 0 5px 0;
+    padding: 0;
+    line-height: 18px;
+    font-size: 11px;
+    color: #333;
+}
+
+.content ul {
+    margin: 0 0 5px 0;
+    padding: 0;
+    line-height: 18px;
+    font-size: 11px;
+    color: #333;
+    list-style: inside;
+}
+
+.content li {
+    margin: 0;
+    padding: 0;
+}
+
+.content a {
+    margin: 0;
+    padding: 0;
+    color: #3e6ba7;
+    text-decoration: none;
+}
+
+.content a:hover {
+    text-decoration: underline;
+}
+
+.content form {
+    margin: 0;
+    padding: 0;
+}
+
+.content-left {
+    float: left;
+    margin: 0;
+    padding: 5px;
+    width: 393px;
+    border: 1px solid #C6CCCD;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.content-right {
+    float: right;
+    margin: 0;
+    padding: 5px;
+    width: 393px;
+    border: 1px solid #C6CCCD;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.content h4 {
+    margin: 0 0 5px 0;
+    padding: 5px 10px;
+    font-size: 12px;
+    background-color: #F2F9FB;
+    color: #3A6595;
+}
+
+/* Head content ==========================================================*/
+
+.head-content {
+    margin: 0 0 5px 0;
+    padding: 0;
+    border-bottom: 1px solid #96a7b9;
+}
+
+.head-content h3 {
+    float: left;
+    margin: 0;
+    padding: 7px 0 5px 0;
+    color: #24365D;
+    font-size: 12px;
+}
+
+.head-content h3 img {
+    margin: 0 5px 0 0;
+    padding: 0;
+    border: none;
+    vertical-align: middle;
+}
+
+.head-content-nav {
+    float: right;
+    margin: 0 0 -1px 0;
+    padding: 0;
+    width: 450px;
+}
+
+.head-content-nav ul {
+    float: right;
+    margin: 0;
+    padding: 0 5px 0 0;
+}
+
+.head-content-nav li {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
+.head-content-nav a {
+    float: left;
+    margin: 0 1px;
+    padding: 7px 8px 6px 8px;
+    display: block;
+    color: #406595;
+    font-weight: bold;
+    font-size: 11px;
+    text-decoration: none;
+    background-color: #f6f6f6;
+    border-bottom: 1px solid #96a7b9;
+}
+
+.head-content-nav a:hover {
+    padding: 7px 8px 5px 8px;
+    background-color: #FFFBE6;
+    border-bottom: 1px solid #fff;
+}
+
+.head-content-nav a.active {
+    margin: 0 1px;
+    padding: 7px 8px 5px 8px;
+    background-color: #fff;
+    border: 1px solid #96a7b9;
+    border-bottom: 1px solid #fff;
+}
+
+.head-content-nav a img {
+    margin: 0 2px 0 0;
+    padding: 0;
+    border: none;
+    height: 12px;
+    vertical-align: middle;
+}
+
+/* sub nav content ==========================================================*/
+
+.sub-nav-content {
+    margin: 0 0 5px 0;
+    padding: 0;
+    background-image: url('../img/sub-tabnav-bg.png');
+    background-position: left top;
+    background-repeat: repeat-x;
+    background-color: #D6E5F5;
+    font-size: 12px;
+    font-family: tahoma;
+}
+
+.sub-nav-content ul {
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+
+.sub-nav-content li {
+    float: left;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sub-nav-content a {
+    margin: 0;
+    padding: 7px 10px;
+    border-right: 1px solid #FEFFFF;
+    color: #617da4;
+    text-decoration: none;
+    display: block;
+}
+
+.sub-nav-content a:hover {
+    background-image: url('../img/sub-tabnav-hover-bg.png');
+    background-position: left top;
+    background-repeat: repeat-x;
+    background-color: #E8E8E8;
+    text-decoration: none;
+    color: #000;
+}
+
+.sub-nav-content a.active {
+    background-image: none;
+    background-color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    color: #617da4;
+}
+
+.sub-nav-content img {
+    border: none;
+}
+
+/* button nav content ==========================================================*/
+
+.button-nav-content {
+    margin: 0 0 5px 0;
+    padding: 0;
+    font-size:  11px;
+}
+
+.button-nav-content img{
+    margin: 0;
+    padding: 0;
+    border:  none;
+    vertical-align: middle;
+    height: 12px;
+}
+
+.button-nav-content a{
+    float: right;
+    margin: 0 0 0 2px;
+    padding: 5px 7px;
+    background-color: #e5e5e5;
+    background-image: url('../img/button-grey-bg.gif');
+    background-position: left top;
+    background-repeat: repeat-x;
+    border: 1px solid #dbdbdb;
+    color: #7a7a7a;
+    text-align: center;
+    text-decoration: none;
+}
+
+.button-nav-content a:hover{
+    color: #000;
+    text-decoration: none;
+}
+
+.button-nav-content a.active{
+    font-weight: bold;
+}

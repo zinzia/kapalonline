@@ -1,0 +1,233 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Pendaftaran Izin Rute</a><span></span>
+        <small>PERMOHONAN {$detail.group_nm|upper}</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('izin_pending_domestik/frekuensi/rute_edit/'|cat:$detail.registrasi_id|cat:'/'|cat:$result.kode_frekuensi)}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" />Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<h3 style="font-family: helvetica; font-size: 12px;">Data Rute Penerbangan Sebelumnya</h3>
+<table width="100%" class="table-view" style="font-weight: normal;">
+    <tr>
+        <td width="12%" align="center">Kode Frekuensi</td>
+        <td width="10%" align="center">Rute  <br />Penerbangan</td>
+        <td width="10%" align="center">Tipe <br />Pesawat</td>
+        <td width="10%" align="center">Kapasitas <br />Pesawat</td>
+        <td width="10%" align="center">Nomor Penerbangan</td>
+        <td width="9%" align="center">ETD<br />(waktu lokal)</td>
+        <td width="9%" align="center">ETA<br />(waktu lokal)</td>
+        <td width="10%" align="center">Hari Operasi</td>
+        <td width="10%" align="center">Frekuensi</td>
+        <td width="10%" align="center">Masa Berlaku</td>
+    </tr>
+    {$no = 0}
+    {$temp = ""}
+    {$frekuensi = 0}
+    {foreach from=$rs_id_lama item=data}
+    {if $data.izin_id neq $temp}
+    {$no = $no + 1}    
+    {/if}
+    <tr {if $data.kode_frekuensi|in_array:$izin_selected}class="red-row"{/if} >
+        {if $data.izin_id neq $temp}
+        <td align="center" rowspan="{$data.rowspan|default:'0'}"><b>{$data.kode_frekuensi}</b></td>
+        {/if}
+
+        <td align="center">{$data.rute_all}</td>
+        <td align="center">{$data.aircraft_type}</td>
+        <td align="center">{$data.aircraft_capacity}</td>
+        <td align="center">{$data.flight_no}</td>
+        <td align="center">{$data.etd|substr:0:5}</td>
+        <td align="center">{$data.eta|substr:0:5}</td>   
+
+        <td align="center">{$data.doop}</td>
+
+        <td align="center" style="color: blue;">{$data.frekuensi}X</td>
+    
+        <td align="center" style="color: blue;">
+            {$dtm->get_full_date($data.start_date, 'ins')|upper}<br />
+            {$dtm->get_full_date($data.end_date, 'ins')|upper}
+        </td>
+    </tr>
+	{if $data.izin_id neq $temp}
+    {$temp = $data.izin_id}
+    {/if}
+    {/foreach}
+</table>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<h3 style="color: red; font-family: helvetica; font-size: 12px;">Untuk penerbangan Vice Versa (VV), pilih rute dari daftar slot dibawah.</h3>
+<form action="{$config->site_url('izin_pending_domestik/frekuensi/edit_score_process')}" method="post">
+    <input type="hidden" name="registrasi_id" value="{$detail.registrasi_id|default:''}">
+    <input type="hidden" name="kode_izin" value="{$result.kode_izin|default:''}">
+    <input type="hidden" name="kode_frekuensi" value="{$result.kode_frekuensi|default:''}">
+    <input type="hidden" name="izin_rute_start" value="{$detail.izin_rute_start|default:''}">
+    <input type="hidden" name="izin_rute_end" value="{$detail.izin_rute_end|default:''}">
+    
+    <table id="tblDef" class="table-view" width="100%">
+    <tr style="font-weight: bold;">
+        <td width="5%" align='center'>No</td>
+        <td width="15%" align='center'>Rute</td>
+        <td width="11%" align='center'>Tipe Pesawat</td>
+        <td width="11%" align='center'>Nomor Penerbangan</td>
+        <td width="11%" align='center'>ETD <br />(waktu lokal)</td>
+        <td width="11%" align='center'>ETA <br />(waktu lokal)</td>
+        <td width="11%" align='center'>Hari Operasi</td>
+        <td width="11%" align='center'>Frekuensi</td>
+        <td width="11%" align='center'>Tanggal Efektif</td>
+        <td align='center'></td>
+    </tr>
+    {$tot_schedule = 0}
+    {foreach from=$schedule item=data}
+    <input type="hidden" name="vv_aircraft_type[]" value="{$data.aircraft_type|default:''}">
+    <input type="hidden" name="vv_aircraft_capacity[]" value="{$data.aircraft_capacity|default:''}">
+    <input type="hidden" name="vv_izin_start_date[]" value="{$data.izin_start_date|default:''}">
+    <input type="hidden" name="vv_izin_expired_date[]" value="{$data.izin_expired_date|default:''}">
+    <input type="hidden" name="vv_dos[]" value="{$data.dos|default:''}">
+    <input type="hidden" name="vv_ron[]" value="{$data.ron|default:''}">
+    <input type="hidden" name="vv_pairing[]" value="{$data.pairing|default:''}">
+    <input type="hidden" name="vv_rute_all[]" value="{$data.rute_all|default:''}">
+    <input type="hidden" name="vv_flight_no[]" value="{$data.flight_no|default:''}">    
+    <input type="hidden" name="vv_etd[]" value="{$data.etd|default:''}">
+    <input type="hidden" name="vv_eta[]" value="{$data.eta|default:''}">
+    <tr class="stay-same-color" style="background-color:#b0cbeb;">
+        <td align="center">&nbsp;</td>
+        <td align="center">{$data.rute_all}</td>
+        <td align="center">{$data.aircraft_type}</td>
+        <td align="center">{$data.flight_no}</td>
+        <td align="center">{$data.etd}</td>
+        <td align="center">{$data.eta}</td>
+        <td align="center">{$data.dos}</td>
+        {$frek = 0}
+        {if $data.dos|substr:0:1 neq 0}
+            {$frek = $frek + 1}
+        {/if}
+        {if $data.dos|substr:1:1 neq 0}
+            {$frek = $frek + 1}
+        {/if}
+        {if $data.dos|substr:2:1 neq 0}
+            {$frek = $frek + 1}
+        {/if}
+        {if $data.dos|substr:3:1 neq 0}
+            {$frek = $frek + 1}
+        {/if}
+        {if $data.dos|substr:4:1 neq 0}
+            {$frek = $frek + 1}
+        {/if}
+        {if $data.dos|substr:5:1 neq 0}
+            {$frek = $frek + 1}
+        {/if}
+        {if $data.dos|substr:6:1 neq 0}
+            {$frek = $frek + 1}
+        {/if}
+        <td align="center">{$frek}X</td>
+        <td align="center">{$dtm->get_full_date($data.izin_start_date, 'ins')|upper}<br/>{$dtm->get_full_date($data.izin_expired_date, 'ins')|upper}</td>
+        <td align="center">&nbsp;</td>
+    </tr>
+    {$tot_schedule = $tot_schedule + 1}
+    {/foreach}
+    {$no = 0}
+    {$frekuensi = 0}
+    {foreach from=$score item=data}
+    {$frek = 0}
+    {$no = $no + 1}
+    <tr>        
+        <td align="center">{$no}.</td>
+        <td align="center">{$data.rute_all}</td>
+        <input type="hidden" id="rute_all{$no}" name="rute_all[]" value="{$data.rute_all}">
+        <td align="center">{$data.aircraft_type}</td>
+        <input type="hidden" name="aircraft_type[]" value="{$data.aircraft_type}">
+        <td align="center">{$data.flight_no}</td>
+        <input type="hidden" name="flight_no[]" value="{$data.flight_no}">
+        
+        <td align="center">{$data.etd}</td>
+        <td align="center">{$data.eta}</td>
+        <input type="hidden" name="etd[]" value="{$data.etd}">
+        <input type="hidden" name="eta[]" value="{$data.eta}">
+
+        <td align="center">{$data.dos}</td>
+        <input type="hidden" name="dos[]" value="{$data.dos}">        
+        <input type="hidden" name="aircraft_capacity[]" value="{$data.aircraft_capacity}">
+        <input type="hidden" name="ron[]" value="{$data.ron}">
+        
+        {if $data.dos|substr:0:1 neq 0}
+            {$frek = $frek + 1}
+        {/if}
+        {if $data.dos|substr:1:1 neq 0}
+            {$frek = $frek + 1}
+        {/if}
+        {if $data.dos|substr:2:1 neq 0}
+            {$frek = $frek + 1}
+        {/if}
+        {if $data.dos|substr:3:1 neq 0}
+            {$frek = $frek + 1}
+        {/if}
+        {if $data.dos|substr:4:1 neq 0}
+            {$frek = $frek + 1}
+        {/if}
+        {if $data.dos|substr:5:1 neq 0}
+            {$frek = $frek + 1}
+        {/if}
+        {if $data.dos|substr:6:1 neq 0}
+            {$frek = $frek + 1}
+        {/if}
+        {$frekuensi = $frekuensi + $frek}
+        <td align="center">{$frek}X</td>
+        <td align="center">{$dtm->get_full_date($data.izin_start_date, 'ins')|upper}<br/>{$dtm->get_full_date($data.izin_expired_date, 'ins')|upper}</td>
+        <td align="center">
+            <label><input type="checkbox" name="slot_selected[]" value="{$no}"/></label>
+        </td>
+        <input type="hidden" name="izin_start_date[]" value="{$data.izin_start_date}">
+        <input type="hidden" name="izin_expired_date[]" value="{$data.izin_expired_date}">
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="10">Data slot untuk penerbangan Vice Versa (VV) tidak ditemukan!</td>
+    </tr>
+    {/foreach}
+    <tr>
+        <td colspan="7" align="right">Jumlah Frekuensi / Minggu</td>
+        <td align="center"><b>{$frekuensi}X</b></td>
+        <td colspan="2"></td>
+    </tr>
+    </table>
+
+    <table class="table-form" width='100%'>
+        <tr class="submit-box">
+            <td colspan="2">
+                Untuk penerbangan Vice Versa (VV), pilih rute dari daftar slot diatas.
+            </td>
+            <td colspan="2" align='right'>
+                <input type="submit" name="save" value="Simpan" class="submit-button" />
+            </td>
+        </tr>
+    </table>
+</form>
+<script type="text/javascript">
+$(document).ready(function() {
+    $(".submit-button").attr("disabled", "disabled");
+    $("input[name='slot_selected[]']:checkbox").unbind("change").change(function(){
+        $("#tblDef tr").not('.stay-same-color').css("background-color","");
+        $("input[name='slot_selected[]']").removeAttr("disabled");
+        $("input[name='slot_selected[]']:checked").each(function(index, value){
+            var k = parseInt($(value).val()) + parseInt({$tot_schedule});
+            $("#tblDef tr:eq("+k+")").css("background-color","#eaf5ff");
+            $(".submit-button").removeAttr("disabled");
+            var index = parseInt($(value).val()) - 1;
+            var flight_no = $("input[name='flight_no[]']:eq("+index+")").val();
+            $("input[name='flight_no[]']").each(function(ii, vv){
+                if (flight_no != $(vv).val()){
+                    $("input[name='slot_selected[]']:eq("+ii+")").attr("disabled", "disabled");
+                }
+            });
+        });
+    });
+});
+</script>

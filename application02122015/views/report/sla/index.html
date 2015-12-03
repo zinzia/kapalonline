@@ -1,0 +1,131 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        // --
+        $(".bulan").select2({
+            placeholder: "-- Bulan --",
+            width: 130,
+            allowClear: true
+        });
+        $(".tahun").select2({
+            placeholder: "-- Tahun --",
+            width: 100,
+            allowClear: true
+        });
+    });
+</script>
+<style type="text/css">
+    .bulan .select2-choice {
+        width: 120px !important;
+        font-weight: bold;
+    }
+    .bulan .select2-default {
+        width: 120px !important;
+        font-weight: bold;
+    }
+    .tahun .select2-choice {
+        width: 90px !important;
+    }
+    .tahun .select2-default {
+        width: 90px !important;
+    }
+</style>
+<div class="breadcrum">
+    <p>
+        <a href="#">Data Report</a><span></span>
+        <small>Service Level Agreement</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="search-box">
+    <h3><a href="#">Pencarian</a></h3>
+    <form action="{$config->site_url('report/sla/proses_cari')}" method="post">
+        <table class="table-search" width="100%" border="0">
+            <tr>
+                <th width="5%">Periode</th>
+                <td width="35%">
+                    <select name="bulan" class="bulan">
+                        <option value=""></option>
+                        {foreach from=$rs_bulan key=index item=data}
+                        <option value="{$index}" {if $search.bulan|default:'' eq $index}selected="selected"{/if}>{$data}</option>
+                        {/foreach}
+                    </select>
+                    <select name="tahun" class="tahun">
+                        <option value=""></option>
+                        {foreach from=$rs_tahun item=data}
+                        <option value="{$data}" {if $search.tahun|default:'' eq $data}selected="selected"{/if}>{$data}</option>
+                        {/foreach}
+                    </select>
+                </td>
+                <td align='right'>
+                    <input name="save" type="submit" value="Tampilkan" />
+                    <input name="save" type="submit" value="Reset" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="navigation">
+    <div class="navigation">
+        <div class="navigation-button">
+            <ul>
+                <li><a href="{$config->site_url('report/sla/download/')}"><img src="{$BASEURL}resource/doc/images/icon/download-icon.png" alt="" /> Download Excel</a></li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th colspan="5"><p style="font-size: 11px"><b>KECEPATAN RESPONSE PEMROSESAN FLIGHT APPROVAL</b></p></th>
+    </tr>
+    <tr>
+        <th width="4%">No</th>
+        <th width="36%">Nama</th>
+        <th width="20%">Total Waktu</th>
+        <th width="20%">Jumlah FA</th>
+        <th width="20%">Rata-Rata</th>
+    </tr>
+    {foreach from=$rs_pengajuan item=data}
+    <tr>
+        <td align="center">{$no++}.</td>
+        <td>{$data.operator_name|upper}</td>
+        <td align="center">{$data.total_time|upper}</td>
+        <td align="center">{$data.total_proses|upper}</td>
+        <td align="center">{$data.response_time|upper}</td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="5">Data not found!</td>
+    </tr>
+    {/foreach}
+</table>
+<br>
+<table width="100%" border="0" style="vertical-align: top">
+    <tr>
+        <td>
+            <div align="center"><p style="font-size: 11px"><b>JUMLAH FLIGHT APPROVAL YANG DITANGANI</b></p></div>
+            <div id="chart_jumlah_fa"></div>
+            <script type="text/javascript">
+            $(document).ready(function() {
+                var chart_jumlah_fa = new FusionCharts("{$BASEURL}resource/doc/charts/Pie3D.swf", "Line", "100%", "300");
+                chart_jumlah_fa.setDataURL("{$config->site_url('report/sla/chart_xml_jumlah_fa/')}");
+                chart_jumlah_fa.render("chart_jumlah_fa");
+            });
+            </script>
+        </td>
+        <td>
+            <div align="center"><p style="font-size: 11px"><b>RATA-RATA RESPON PEMROSESAN</b></p></div>
+            <div id="chart_respon"></div>
+            <script type="text/javascript">
+            $(document).ready(function() {
+                var chart_respon = new FusionCharts("{$BASEURL}resource/doc/charts/Pie3D.swf", "Line", "100%", "300");
+                chart_respon.setDataURL("{$config->site_url('report/sla/chart_xml_respon/')}");
+                chart_respon.render("chart_respon");
+            });
+            </script>
+        </td>
+    </tr>
+</table>

@@ -1,0 +1,196 @@
+/* CSS Document */
+/* created by chow-2011 */
+
+.common {
+    margin: 0;
+    padding: 0;
+    background-image: url("../img/common-bg.gif");
+    background-repeat: repeat-x;
+    background-position: top;
+    background-color: #CDD0D9;
+    font-family: tahoma;
+}
+
+.page {
+    margin: 0 auto;
+    padding: 0;
+    width: 1200px;
+    background-color: #fff;
+}
+
+.header {
+    margin: 0;
+    padding: 10px;
+    height: 42px;
+    color: #fff;
+    border-bottom: 8px solid #6CB7EE;
+}
+
+.header-title {
+    float: left;
+    margin: 0;
+    padding: 0;
+    height: 48px;
+    width: 45%;
+}
+
+.header-title a {
+    margin: 0;
+    padding: 0;
+    color: #000099;
+    text-decoration: none;
+    font-size: 18px;
+    font-family: tahoma;
+}
+
+.header-title img {
+    margin: 0 5px 0 0;
+    padding: 0;
+    vertical-align: bottom;
+    border: none;
+    height: 42px;
+}
+
+.header-profile {
+    float: right;
+    margin: 0;
+    padding: 0;
+    height: 48px;
+    width: 50%;
+}
+
+.header-profile ul {
+    margin: 0;
+    padding: 0 6px 0 0;
+    text-align: right;
+    list-style: none;
+}
+
+.header-profile li {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
+.header-profile li a {
+    float: right;
+    display: block;
+    margin: 0;
+    padding: 15px;
+    color: #0088CC;
+    text-decoration: none;
+    font-size: 12px;
+    width: auto;
+}
+
+.header-profile li a:hover {
+    text-decoration: underline;
+}
+
+.header-profile li a.logout {
+    color: red;
+    font-weight: bold;
+}
+
+.header-profile li a img {
+    margin: 0 0 0 3px;
+    padding: 0;
+    height: 20px;
+    vertical-align: middle;
+}
+
+.header-profile li a img.users {
+    margin: 0;
+    padding: 0;
+    height: 24px;
+    vertical-align: middle;
+}
+
+.header-profile-detailed {
+    right: 5px;
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    background-color: #2B2F35;
+    width: 220px;
+    font-size: 11px;
+    border: 1px solid #373B41;
+    border-top: none;
+}
+
+.header-profile-detailed ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.header-profile-detailed li {
+    margin: 0;
+    padding: 0;
+    clear: both;
+}
+
+.header-profile-detailed li a{
+    display: block;
+    margin: 0;
+    padding: 7px 10px;
+    background-color: #fff;
+    text-decoration: none;
+    color: #555;
+}
+
+.header-profile-detailed li a:hover{
+    background-color: #EEEFF3;
+}
+
+.header-profile-detailed li a.logout{
+    border-top: 1px solid #ccc;
+    font-weight: bold;
+}
+
+.header-profile-detailed li a.logout:hover{
+    border-top: 1px solid #FE1010;
+    background-color: #FF702A;
+    color: #fff;
+}
+
+.header-profile-detailed li a img{
+    margin: 0 5px 0 0;
+    padding: 0;
+    height: 16px;
+    vertical-align: middle;
+}
+
+.header-profile-detailed li.hp-user-profile {
+    margin: 0;
+    padding: 10px 10px 15px 10px;
+    clear: both;
+}
+
+.header-profile-detailed li.hp-user-profile img {
+    float: left;
+    margin: 0 4px 0 0;
+    padding: 0;
+    border: 1px solid #eee;
+    height: 32px;
+    background-color: #fff;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.main-content {
+    margin: 0;
+    padding: 0;
+    clear: both;
+}
+
+.clear {
+    clear: both;
+}
+
+/*
+-moz-border-radius: 4px;
+-webkit-border-radius: 4px;
+border-radius: 4px;
+*/

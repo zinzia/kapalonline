@@ -1,0 +1,154 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        // timepicker
+        $('.waktu').not(".stay-readonly").timepicker({
+            showPeriodLabels: false
+        });
+        // date picker
+        $(".tanggal").not(".stay-readonly").datepicker({
+            showOn: 'both',
+            changeMonth: true,
+            changeYear: true,
+            buttonImage: '{$BASEURL}/resource/doc/images/icon/calendar.gif',
+            buttonImageOnly: true,
+            dateFormat: 'yy-mm-dd',
+        });
+        // onchange
+        $(".pairing").change(function() {
+            var pairing = $(this).val();
+            if (pairing === 'VV') {
+                $("#VV").show();
+                $("#OW").hide()();
+            } else {
+                $("#VV").hide();
+                $("#OW").show()();
+            }
+        });
+    });
+</script>
+<div class="breadcrum">
+    <p>
+        <a href="#">Pendaftaran Izin Rute</a><span></span>
+        <small>PERMOHONAN {$detail.group_nm|upper}</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('izin_pending_internasional/frekuensi/list_rute/'|cat:$detail.registrasi_id)}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" />Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form id="formDef" action="{$config->site_url('izin_pending_internasional/frekuensi/edit_rute_process')}" method="post">
+    <input type="hidden" name="mode" value="{$mode}">
+    <input type="hidden" name="registrasi_id" value="{$detail.registrasi_id|default:''}">
+    <input type="hidden" name="kode_izin" value="{$result.kode_izin|default:''}">
+    <input type="hidden" name="izin_id" value="{$result.izin_id|default:''}">
+    <input type="hidden" name="kode_frekuensi" value="{$result.kode_frekuensi|default:''}">
+    <input type="hidden" name="izin_rute_start" value="{$detail.izin_rute_start|default:''}">
+    <input type="hidden" name="izin_rute_end" value="{$detail.izin_rute_end|default:''}">
+    <table class="table-form" width="100%">
+        <tr>
+            <td width="20%">
+                <span style="text-decoration: underline;">Tipe Pesawat</span><br /><i>Aircraft Type</i>
+            </td>
+            <td width="30%">
+                <input type="text" name="aircraft_type" value="{$result.aircraft_type}" size="30" maxlength="30" {if $airport1.is_used_score eq '1' or $airport2.is_used_score eq '1'}readonly="1"{/if}/>
+            </td>
+            <td width="20%">
+                <span style="text-decoration: underline;">Kapasitas Pesawat</span><br /><i>Aircraft Capacity</i>
+            </td>
+            <td width="30%">
+                <input type="text" name="aircraft_capacity" value="{$result.aircraft_capacity|default:''|upper}" size="3" maxlength="3" {if $airport1.is_used_score eq '1' or $airport2.is_used_score eq '1'}readonly="1"{/if}/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span style="text-decoration: underline;">RON</span><br /><i>Remains of Overnight</i>
+            </td>
+            <td>
+                <input type="text" name="ron" size="1" maxlength="1" value="{$result.ron|default:'0'}" style="font-weight: bold; text-align: center;" onkeyup="angka(this);" {if $airport1.is_used_score eq '1' or $airport2.is_used_score eq '1'}readonly="1"{/if}/>
+            </td>
+            <td>
+                <span style="text-decoration: underline;">Sifat Rute</span><br /><i>Rute Status</i>
+            </td>
+            <td>
+                <select name="pairing" class="pairing" {if $airport1.is_used_score eq '1' or $airport2.is_used_score eq '1'}disabled="1"{/if}>
+                    <option value="VV" {if $result.pairing eq 'VV'}selected="selected"{/if}>Pergi Pulang (VV)</option>
+                    <option value="OW" {if $result.pairing eq 'OW'}selected="selected"{/if}>One Way Services (OW)</option>
+                </select>
+            </td>
+        </tr>
+    </table>    
+    <div>
+        <table class="table-form" width='100%'>
+        <tr>
+            <td width='10%'><b>Rute</b></td>
+            <td width='10%'><b>Nomor<br />Penerbangan</b></td>
+            <td width='10%'><b>ETD</b><br />(Waktu Lokal)</td>
+            <td width='10%'><b>ETA</b><br />(Waktu Lokal)</td>
+            <td><b>DOS</b><br /><i>Day of Services</td>
+            <td width='15%'><b>Tanggal Mulai Efektif</b></td>
+            <td width='15%'><b>Tanggal Akhir Efektif</b></td>
+        </tr>
+        {$no = 0}
+        {$temp = ""}
+        {$frekuensi = 0}
+        {foreach from=$rute item=data}
+        <input type="hidden" name="is_used_score[]" value="{$data.is_used_score}" />
+        <tr>
+            <td>
+                <input type="text" name="rute_all[]" size="20" maxlength="20" value="{$data.rute_all|default:''|upper}" readonly="readonly" style="text-align: center;" />
+            </td>
+            <td>
+                <input type="text" name="flight_no[]" size="10" maxlength="10" value="{$data.flight_no|default:''|upper}" style="text-align: center;" {if $data.ao_used_score eq '1' or $data.ad_used_score eq '1'}readonly="1"{/if}/>
+            </td>
+            <td>
+                <input type="text" name="etd[]" size="5" maxlength="5" value="{$data.etd|default:''|substr:0:5}" style="text-align: center;" class="waktu {if $data.ao_used_score eq '1'}stay-readonly{/if}" readonly="readonly" />
+            </td>
+            <td>
+                <input type="text" name="eta[]" size="5" maxlength="5" value="{$data.eta|default:''|substr:0:5}" style="text-align: center;" class="waktu {if $data.ad_used_score eq '1'}stay-readonly{/if}" readonly="readonly" />
+            </td>
+            <td>
+                {for $i=1 to 7} 
+                <label style="float: none;">
+                    <input type="checkbox" name="dos[{$no}][{$i}]" value="{$i}" {if $data.doop.$i eq $i}checked="checked"{/if} {if $data.ao_used_score eq '1' or $data.ad_used_score eq '1'}disabled="1"{/if}>{$i}
+                </label>
+                {/for}
+            </td>
+            <td>
+                <input type="text" name="izin_start_date[]" size="10" maxlength="10" value="{$data.start_date|default:''}" class="tanggal {if $data.ao_used_score eq '1' and $data.ad_used_score eq '1'}stay-readonly{/if}" readonly="readonly" style="text-align: center; font-weight: bold;" {if $data.ao_used_score eq '1' or $data.ad_used_score eq '1'}readonly="1"{/if}/>
+            </td>
+            <td>
+                <input type="text" name="izin_expired_date[]" size="10" maxlength="10" value="{$data.end_date|default:''}" class="tanggal {if $data.ao_used_score eq '1' and $data.ad_used_score eq '1'}stay-readonly{/if}" readonly="readonly" style="text-align: center; font-weight: bold;" {if $data.ao_used_score eq '1' or $data.ad_used_score eq '1'}readonly="1"{/if}/>
+            </td>
+        </tr>
+        {$no = $no + 1}
+        {foreachelse}
+        <tr>
+            <td colspan="7">Data rute tidak ditemukan!</td>
+        </tr>
+        {/foreach}
+        </table>
+    </div>
+    <table class="table-form" width='100%'>
+        <tr class="submit-box">
+            <td align='right'>
+                <input type="submit" name="save" value="Simpan" class="submit-button" />
+            </td>
+        </tr>
+    </table>
+</form>
+<script>
+$(document).ready(function() {
+    $("#formDef").submit(function(e) {
+        $("input:disabled").removeAttr("disabled");
+        $("select:disabled").removeAttr("disabled");
+    });
+});
+</script>

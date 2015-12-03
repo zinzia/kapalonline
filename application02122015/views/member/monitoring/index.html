@@ -1,0 +1,106 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Data Monitoring</a><span></span>
+        <small>Flight Approval</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="search-box">
+    <h3><a href="#">Search</a></h3>
+    <form action="{$config->site_url('member/monitoring/proses_cari')}" method="post">
+        <table class="table-search" width="100%" border="0">
+            <tr>
+                <th width="10%">Nomor</th>
+                <td width="15%">
+                    <input name="document_no" type="text" value="{$search.document_no|default:''}" size="20" maxlength="40" placeholder="-- semua --" />
+                </td>
+                <th width="15%">Jenis Penerbangan</th>
+                <td width="15%">
+                    <select name="data_type" class="data_flight">
+                        <option value="">-- semua --</option>
+                        <option value="berjadwal" {if $search.data_type|default:'' eq 'berjadwal'}selected="selected"{/if}>BERJADWAL</option>
+                        <option value="tidak berjadwal" {if $search.data_type|default:'' eq 'tidak berjadwal'}selected="selected"{/if}>TIDAK BERJADWAL</option>
+                        <option value="bukan niaga" {if $search.data_type|default:'' eq 'bukan niaga'}selected="selected"{/if}>BUKAN NIAGA</option>
+                    </select>    
+                </td>
+                <td width="15%">
+                    <select name="data_flight" class="data_flight">
+                        <option value="">-- semua --</option>
+                        <option value="domestik" {if $search.data_flight|default:'' eq 'domestik'}selected="selected"{/if}>DOMESTIK</option>
+                        <option value="internasional" {if $search.data_flight|default:'' eq 'internasional'}selected="selected"{/if}>INTERNASIONAL</option>
+                    </select>  
+                </td>
+                <td width='30%' align='right'>
+                    <input name="save" type="submit" value="Tampilkan" />
+                    <input name="save" type="submit" value="Reset" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info">{$pagination.data|default:''}&nbsp;Total&nbsp;<strong>{$pagination.total|default:0}</strong>&nbsp;Record&nbsp;</li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width='4%'>No</th>
+        <th width='10%'>Nomor Permohonan</th>
+        <th width='11%'>Nomor Penerbangan</th>
+        <th width='14%'>Jenis Penerbangan</th>
+        <th width='14%'>Tanggal</th>
+        <th width='14%'>Rute</th>
+        <th width='15%'>Remark</th>
+        <th width='10%'>Status</th>
+        <th width='8%'></th>
+    </tr>
+    {$no = 1}
+    {foreach from=$rs_id item=result}
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+        <td align="center">{$no++}.</td>
+        <td align="center">{$result.document_no|upper}</td>
+        <td align="center">{$result.flight_no}</td>
+        <td align="center">{$result.data_type|upper}<br>{$result.data_flight|upper}</td>
+        <td align="center">
+            {if $result.date_start|default:'' eq "0000-00-00"}
+                {$result.date_end_upto|date_format:"%d%b%y"|upper}
+            {else}
+                {$result.date_start|date_format:"%d%b%y"|upper}
+            {/if}
+            /
+            {if $result.date_end|default:'' eq "0000-00-00"}
+                {$result.date_start_upto|date_format:"%d%b%y"|upper}
+            {else}
+                {$result.date_end|date_format:"%d%b%y"|upper}
+            {/if}
+        </td>
+        <td align="center">{$result.rute_all|upper}</td>
+        <td>{$result.services_nm|upper}</td>
+        <td>{$result.task_nm|upper}</td>
+        <td align="center">
+            <a href="{$config->site_url('member/monitoring/'|cat:$result.group_link|cat:'/'|cat:$result.data_id|default:'')}" class="button-edit">
+                {if $result.selisih_hari == 0 && substr($result.selisih_waktu,0,2) == 00}
+                {substr($result.selisih_waktu,3,2)} minutes
+                {else if $result.selisih_hari == 0}
+                {substr($result.selisih_waktu,0,2)} hour
+                {else}
+                {$result.selisih_hari} day
+                {/if}
+            </a>
+        </td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="8">Data not found!</td>
+    </tr>
+    {/foreach}
+</table>

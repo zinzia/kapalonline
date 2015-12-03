@@ -1,0 +1,333 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Permohonan Direvisi</a><span></span>
+        <a href="{$config->site_url('member/pending_izin')}">Izin Rute Penerbangan</a><span></span>
+        <small>{$detail.group_nm}</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('member/pending_izin')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" />Back to Waiting List</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="step-box">
+    <ul>
+        <li>
+            <a href="{$config->site_url('izin_pending_internasional/perubahan/index/'|cat:$detail.registrasi_id)}" class="normal"><b>Step 1</b><br />Data Permohonan</a>
+        </li>
+        <li>
+            <a href="{$config->site_url('izin_pending_internasional/perubahan/list_rute/'|cat:$detail.registrasi_id)}" class="normal"><b>Step 2</b><br />Data Rute Penerbangan</a>
+        </li>
+        <li>
+            <a href="{$config->site_url('izin_pending_internasional/perubahan/list_slot/'|cat:$detail.registrasi_id)}" class="normal"><b>Step 3</b><br />Slot Clearance</a>
+        </li>
+        <li>
+            <a href="{$config->site_url('izin_pending_internasional/perubahan/list_files/'|cat:$detail.registrasi_id)}"><b>Step 4</b><br />File Attachment</a>
+        </li>
+        <li>
+            <a href="{$config->site_url('izin_pending_internasional/perubahan/review/'|cat:$detail.registrasi_id)}" class="active"><b>Step 5</b><br />Review Permohonan</a>
+        </li>
+    </ul>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('izin_pending_internasional/perubahan/list_files/'|cat:$detail.registrasi_id)}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" />Previous Step</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="clear"></div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('izin_pending_internasional/perubahan/send_process')}" method="post">
+    <input type="hidden" name="registrasi_id" value="{$detail.registrasi_id|default:''}">
+    <table class="table-form" width="100%">
+        <tr>
+            <td colspan="4" align='center'>
+                <b style="font-size: 16px;">PERMOHONAN {$detail.group_nm|upper}</b>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" align='center'>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                <span style="text-decoration: underline;">Tanggal Surat Permohonan</span><br /><i>Request Letter Date</i>
+            </td>
+            <td><b>{$dtm->get_full_date($detail.izin_request_letter_date)|default:''|upper}</b></td>
+            <td width='20%'>
+                <span style="text-decoration: underline;">Nomor Surat Permohonan</span><br /><i>Request Letter Number</i>
+            </td>
+            <td width='30%'><b>{$detail.izin_request_letter|default:''|upper}</b></td>
+        </tr>
+        <tr>
+            <td width='20%'>
+                <span style="text-decoration: underline;">Rute Pairing</span><br /><i>Pair Routes</i>
+            </td>
+            <td width='30%'><b>{$detail.izin_rute_start} / {$detail.izin_rute_end}</b></td>
+            <td><span style="text-decoration: underline;">Penunjukkan Oleh</span><br /><i>Appointment By</i></td>
+            <td><b>{$detail.penanggungjawab|default:''|upper}</b></td>
+        </tr>   
+        <tr>
+            <td>
+                <span style="text-decoration: underline;">Jenis Penerbangan</span><br /><i>Flight Type</i>
+            </td>
+            <td><b>{$detail.pax_cargo|upper}</b></td>
+            <td><span style="text-decoration: underline;">Jabatan</span><br /><i>Job Title</i></td>
+            <td><b>{$detail.jabatan|default:''|upper}</b></td>
+        </tr>  
+        <tr>
+            <td>
+                <span style="text-decoration: underline;">Season Code</span><br /><i>For IASM Airport</i>
+            </td>
+            <td colspan="3"><b>{$detail.izin_season|default:''|upper}</b></td>
+        </tr>
+    </table>
+    <div style="margin: 0 0 5px 0; padding: 10px; border: 1px solid #ddd; font-size: 11px; font-family: helvetica;">
+        <h3 style="font-family: helvetica; font-size: 12px;">Data Rute Penerbangan Yang Sebelumnya</h3>
+        <table class="table-view" width="100%">
+            <tr style="font-weight: bold;">
+                <td width="4%" align='center'>No</td>
+                <td width="9%" align='center'>Rute</td>
+                <td width="9%" align='center'>Tipe<br />Pesawat</td>
+                <td width="9%" align='center'>Nomor<br />Penerbangan</td>
+                <td width="9%" align='center'>ETD <br />( LT )</td>
+                <td width="9%" align='center'>ETA <br />( LT )</td>
+                <td width="9%" align='center'>Hari <br />Operasi</td>
+                <td width="9%" align='center'>Frekuensi</td>
+                <td width="9%" align='center'>Total <br />Frekuensi</td>
+                <td width="12%" align='center'>Tanggal <br />Mulai</td>
+                <td width="12%" align='center'>Tanggal <br />Berakhir</td>
+            </tr>
+            {foreach from=$rs_old key=no item=rute}
+            {$i = 1}
+            {$rowspan = $rute|count}
+            {foreach from=$rute item=data}
+            <tr {$row_style[$data.rute_all]}>
+                {if $rowspan <= 1}
+                <td align="center" style="color: black;">{$no}.</td>
+                {elseif $i eq 1}
+                <td align="center" rowspan="{$rowspan}" style="color: black;">{$no}.</td>
+                {/if}
+                <td align="center">{$data.rute_all|default:'-'}</td>
+                <td align="center">{$data.tipe|default:'-'}</td>
+                <td align="center">{$data.flight_no|default:'-'}</td>
+                <td align="center">{$data.etd|default:'-'|substr:0:5}</td>
+                <td align="center">{$data.eta|default:'-'|substr:0:5}</td>   
+                <td align="center">{$data.doop|default:'-'}</td>
+                <td align="center">{$data.frekuensi}X</td>
+                {if $rowspan <= 1}
+                <td align="center" style="color: blue;">
+                    {$pairing_old[$data.izin_id]} / 
+                    {$frekuensi_old[$data.izin_id]}X
+                </td>
+                {elseif $i eq 1}
+                <td align="center" rowspan="{$rowspan}" style="color: blue;">
+                    {$pairing_old[$data.izin_id]} / 
+                    {$frekuensi_old[$data.izin_id]}X
+                </td>
+                {/if}
+                <td align="center">{$dtm->get_full_date($data.start_date, 'ins')|upper}</td>
+                <td align="center">{$dtm->get_full_date($data.end_date, 'ins')|upper}</td>
+            </tr>
+            {$i = $i + 1}
+            {foreachelse}
+            <tr>
+                <td align="center" style="color: black;">{$no}.</td>
+                <td colspan="10">Data rute tidak ditemukan!</td>
+            </tr>
+            {/foreach}
+            {foreachelse}
+            <tr>
+                <td colspan="11">Data rute tidak ditemukan!</td>
+            </tr>
+            {/foreach}
+            <tr>
+                <td colspan="8" align="right">Jumlah Frekuensi / Minggu</td>
+                <td align="center"><b>{$total_old}X</b></td>
+                <td align="center"></td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+    <div style="margin: 0 0 5px 0; padding: 10px; border: 1px solid #ddd; font-size: 11px; font-family: helvetica;">
+        <h3 style="font-family: helvetica; font-size: 12px;">Perubahan Rute Penerbangan  Yang Diajukan</h3>
+        <table class="table-view" width="100%">
+            <tr style="font-weight: bold;">
+                <td width="4%" align='center'>No</td>
+                <td width="9%" align='center'>Rute</td>
+                <td width="9%" align='center'>Tipe<br />Pesawat</td>
+                <td width="9%" align='center'>Nomor<br />Penerbangan</td>
+                <td width="9%" align='center'>ETD <br /><small>Waktu Lokal</small></td>
+                <td width="9%" align='center'>ETA <br /><small>Waktu Lokal</small></td>
+                <td width="9%" align='center'>Hari <br />Operasi</td>
+                <td width="9%" align='center'>Frekuensi</td>
+                <td width="9%" align='center'>Total <br />Frekuensi</td>
+                <td width="12%" align='center'>Tanggal <br />Mulai</td>
+                <td width="12%" align='center'>Tanggal <br />Berakhir</td>
+            </tr>
+            {$total_frekuensi = 0}
+            {foreach from=$rs_id key=no item=rute}
+            {$i = 1}
+            {$rowspan = $rute|count}
+            {foreach from=$rute item=data}
+            <tr {$row_style[$data.rute_all]}>
+                {if $rowspan <= 1}
+                <td align="center" style="color: black;">{$no}.</td>
+                {elseif $i eq 1}
+                <td align="center" rowspan="{$rowspan}" style="color: black;">{$no}.</td>
+                {/if}
+                <td align="center">{$data.rute_all|default:'-'}</td>
+                <td align="center">{$data.tipe|default:'-'}</td>
+                <td align="center">{$data.flight_no|default:'-'}</td>
+                <td align="center">{$data.etd|default:'-'|substr:0:5}</td>
+                <td align="center">{$data.eta|default:'-'|substr:0:5}</td>   
+                <td align="center">{$data.doop|default:'-'}</td>
+                <td align="center">{$data.frekuensi}X</td>
+                {if $rowspan <= 1}
+                <td align="center" style="color: blue;">
+                    {if $izin_st[$data.izin_id] neq 'pencabutan'}            
+                    {$pairing[$data.izin_id]} / {$frekuensi[$data.izin_id]}X
+                    {$total_frekuensi = $total_frekuensi + $frekuensi[$data.izin_id]}
+                    {else}         
+                    <span style="color: red;">( {$pairing[$data.izin_id]} / {$frekuensi[$data.izin_id]}X )</span>
+                    {/if}
+                </td>
+                {elseif $i eq 1}
+                <td align="center" rowspan="{$rowspan}" style="color: blue;">
+                    {if $izin_st[$data.izin_id] neq 'pencabutan'}
+                    {$pairing[$data.izin_id]} / {$frekuensi[$data.izin_id]}X
+                    {$total_frekuensi = $total_frekuensi + $frekuensi[$data.izin_id]}
+                    {else}
+                    <span style="color: red;">( {$pairing[$data.izin_id]} / {$frekuensi[$data.izin_id]}X )</span>
+                    {/if}
+                </td>
+                {/if}
+                <td align="center">{$dtm->get_full_date($data.start_date, 'ins')|upper}</td>
+                <td align="center">{$dtm->get_full_date($data.end_date, 'ins')|upper}</td>
+            </tr>
+            {$i = $i + 1}
+            {/foreach}
+            {foreachelse}
+            <tr>
+                <td colspan="11">Data rute belum diinputkan!</td>
+            </tr>
+            {/foreach}
+            <tr>
+                <td colspan="8" align="right">Total Jumlah Frekuensi / Minggu</td>
+                <td align="center">
+                    {if $total_old eq $total_frekuensi}
+                    <b>{$total_frekuensi}X</b>
+                    {else}
+                    <b style="color: red;">{$total_frekuensi}X</b>
+                    {/if}
+                </td>
+                <td align="center">
+                    <b>{$dtm->get_full_date($total.start_date, 'ins')|upper}</b> 
+                </td>
+                <td align="center">
+                    <b>{$dtm->get_full_date($total.end_date, 'ins')|upper}</b>
+                </td>
+            </tr>
+            {if $total.frekuensi neq $total_old}
+            <tr>
+                <td colspan="8" align="right">
+                    {if $total_old < $total_frekuensi}
+                    Penambahan Frekuensi Dari Rute Sebelumnya
+                    {/if}
+                    {if $total_old > $total_frekuensi}
+                    Pengurangan Frekuensi Dari Rute Sebelumnya
+                    {/if}
+                </td>
+                <td align="center">
+                    {if $total_old > $total_frekuensi}
+                    <b style="color: red;">( {$total_old-$total_frekuensi} X )</b>
+                    {/if}
+                    {if $total_old < $total_frekuensi}
+                    <b style="color: blue;">{$total_frekuensi-$total_old}X</b>
+                    {/if}
+                </td>
+                <td align="center"></td>
+                <td align="center"></td>
+            </tr>
+            {/if}
+        </table>
+    </div>
+    {if $is_used_score neq 2}
+    <table class="table-form" width="100%">
+        <tr>
+            <td colspan="5">
+                <b>Slot Clearance Attachment :</b>
+            </td>
+        </tr>
+        <tr>
+            <th width="5%" align="center">No</th>
+            <th width="30%" align="center">Subject Surat</th>
+            <th width="20%" align="center">Nomor Surat</th>
+            <th width="25%" align="center">Perihal</th>
+            <th width="20%" align="center">File Attachment</th>
+        </tr>
+        {$no = 1}
+        {foreach from=$rs_slot item=data}
+        <tr>
+            <td align="center">{$no++}.</td>
+            <td>{$data.slot_subject}</td>
+            <td>
+                <span style="text-decoration: underline;">{$data.slot_number}</span><br /> 
+                Tanggal : {$dtm->get_full_date($data.slot_date, 'ins')}
+            </td>
+            <td>{$data.slot_desc}</td>
+            <td align="center" style="font-size: 10px;">
+                <a href="{$config->site_url('member/monitoring_izin/slot_download/'|cat:$detail.registrasi_id|cat:'/'|cat:$data.slot_id)}">{$data.slot_file_name}</a>
+            </td>
+        </tr>
+        {foreachelse}
+        <tr>
+            <td colspan="5">Data slot clearance belum diinputkan!</td>
+        </tr>
+        {/foreach}
+    </table>
+    {/if}
+    <table class="table-form" width="100%">
+        <tr>
+            <td colspan="3">
+                <b>File persyaratan yang wajib di sertakan adalah sebagai berikut :</b>
+            </td>
+        </tr>
+        {$no = 1}
+        {foreach from=$rs_files item=data}
+        <tr>
+            <td width='5%' align="center">
+                {$no++}.
+            </td>
+            <td width='35%'>
+                {$data.ref_name}
+            </td>
+            <td width="60%">
+                {if $data.ref_id|in_array:$file_uploaded}
+                <a href="{$config->site_url('member/monitoring_izin/files_download/'|cat:$detail.registrasi_id|cat:'/'|cat:$data.ref_id)}">{$name_uploaded[$data.ref_id]}</a>
+                {else}
+                -
+                {/if}
+            </td>
+        </tr>
+        {/foreach}
+    </table>
+    <table class="table-form" width='100%'>
+        <tr class="submit-box">
+            <td colspan="2">
+                Apakah anda yakin dengan data permohonan diatas?
+            </td>
+            <td colspan="2" align='right'>
+                <input type="submit" name="save" value="Kirim Permohonan" class="reset-button" onclick="return confirm('Apakah anda yakin akan mengirim data permohonan diatas?')" />
+            </td>
+        </tr>
+    </table>
+</form>

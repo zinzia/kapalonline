@@ -1,0 +1,52 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Web Management</a><span></span>
+        <small>News</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info"><strong>{$total} Records</strong></li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('web/news/add/')}"><img src="{$BASEURL}resource/doc/images/icon/add-icon.png" alt="" /> Add Data</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width="4%">No</th>
+        <th width="49%">Judul</th>
+        <th width="20%">Post date</th>
+        <th width="15%">Post by</th>
+        <th width="12%"></th>
+    </tr>
+    {$no = 1}
+    {foreach from=$rs_id item=result}
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+        <td align='center'>{$no++}.</td>
+        <td><b>{$result.news_title|upper}</b></td>
+        <td align="center">{$dtm->get_full_date($result.news_post_date)}</td>
+        <td align="center">{$result.operator_name}</td>
+        <td align="center">
+            <a href="{$config->site_url('web/news/edit/'|cat:$result.news_id)}" class="button-edit">Edit</a>
+            <a href="{$config->site_url('web/news/delete_process/'|cat:$result.news_id)}" class="button-hapus" onclick="return confirm('Apakah anda yakin akan menghapus data berikut ini?');">Hapus</a>
+        </td>
+    </tr>    
+    {foreachelse}
+    <tr>
+        <td colspan="5">Data not found!</td>
+    </tr>
+    {/foreach}
+</table>

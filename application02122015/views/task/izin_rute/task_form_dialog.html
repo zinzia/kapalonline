@@ -1,0 +1,260 @@
+<!-- form notes -->
+<div id="form-notes" style="display: none;">
+    <form id='form-tambah-notes' method='post' action ='#'>
+        <input type="hidden" name="izin_id" id="notes_izin_id" value="" />
+        <table class='table-input' width='100%'>
+            <tr>
+                <td align="center"><input type='text' name='notes' value='' size='50' maxlength='100' id="notes_value" style="text-align: center;" /></td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <input type='submit' value='Simpan' class='submit-button' style="float: none;" />
+                </td>
+            </tr>
+        </table>
+        <div id="ajax-loader-notes" style="display: none; margin: 0 auto;">
+            <br />
+            <img src="{$BASEURL}resource/doc/images/icon/ajax-loader-star.gif" alt="" style="height: 18px; vertical-align: middle;" />
+            <small>Please Wait</small>
+        </div>
+    </form>
+</div>
+<!-- form catatan permohonan -->
+<div id="form-catatan" style="display: none;">
+    <div style="height: 170px; overflow: auto; margin-bottom: 10px;" id="form-catatan-list">
+        <table class='table-input' width='100%' style="font-family: tahoma; font-size: 11px;">
+            {$no = 1}
+            {foreach from=$rs_process item=data}
+            <tr>
+                <td width='5%' align='center'>{$no++}</td>
+                <td width='40%'><span style="text-decoration: underline;">{$data.operator_name|lower|capitalize}</span>,<br />{$dtm->get_full_date($data.mdd_finish, 'ins')}</td>
+                <td width='55%' style="color: #0055cc;">{$data.catatan}</td>
+            </tr>
+            {foreachelse}
+            <tr>
+                <td>
+                    Belum ada catatan yang diinputkan!
+                </td>
+            </tr>
+            {/foreach}
+        </table>
+    </div>
+    <form id='form-tambah-catatan' method='post' action ='#'>
+        <input type="hidden" name="registrasi_id" value="{$detail.registrasi_id|default:''}">
+        <input type="hidden" name="process_id" value="{$detail.process_id|default:''}">
+        <table class='table-input' width='100%'>
+            <tr>
+                <td align="center">
+                    <p style="margin: 0 0 5px 0; padding: 0; font-family: tahoma; font-size: 11px;">Catatan saya :</p>
+                    <textarea name="catatan" cols="70" rows="2" placeholder="Isikan catatan anda disini" id="catatan_value" style="font-family: tahoma; font-size: 11px;">{$detail.catatan}</textarea>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <input type='submit' value='Simpan' class='submit-button' style="float: none;" />
+                </td>
+            </tr>
+        </table>
+        <div id="ajax-loader-catatan" style="display: none; margin: 0 auto;">
+            <br />
+            <img src="{$BASEURL}resource/doc/images/icon/ajax-loader-star.gif" alt="" style="height: 18px; vertical-align: middle;" />
+            <small>Please Wait</small>
+        </div>
+    </form>
+</div>
+<!-- form telaah staff -->
+<div id="form-telaah" style="display: none;">
+    <form action="{$config->site_url('task/izin_rute/telaah_process/')}" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="registrasi_id" value="{$detail.registrasi_id|default:''}">
+        <input type="hidden" name="url_path" value="{$url_path|default:''}">
+        {if $com_user.role_id neq '45' && $com_user.role_id neq '63' && $com_user.role_id neq '44'}
+        <table class='table-input' width='100%' style="font-family: tahoma; font-size: 11px;">
+            <tr>
+                <td width='100%'>
+                    Draft Telaah : <a href="{$config->site_url({'task/telaah_regulator/download'})}" style="color: #0074cc;">draft_telaah.docx</a>
+                </td>
+            </tr>
+            <tr>
+                <td width='100%'>
+                    <input type="file" name="telaah_file" />
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <input type='submit' value='Simpan' class='submit-button' style="float: none;" />
+                </td>
+            </tr>
+        </table>
+        {/if}
+        <table class='table-input' width='100%' style="font-family: tahoma; font-size: 11px;">
+            <tr>
+                <td>
+                    Telah diupload : <br />
+                    {if $telaah neq ''}
+                    <a href="{$config->site_url('task/izin_rute/telaah_download/'|cat:$detail.registrasi_id)}" style="color: #0074cc;">{$telaah.telaah_file}</a>
+                    {else}
+                    -
+                    {/if}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Oleh : <br /><b>{$telaah.operator_name|upper|default:'-'}</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Tanggal : <br /><b>{$dtm->get_full_date($telaah.telaah_date)|default:'-'|upper}</b>                    
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<!-- form slot -->
+<div id="form-slot" style="display: none;">
+    <div style="height: 345px; overflow: auto;">
+        <p style="margin: 0; padding: 5px; font-size: 11px; font-weight: bold;">
+            Slot Attachment ( Non IASM )
+        </p>
+        <table class="table-view" width="100%">
+            {$no = 1}
+            {foreach from=$rs_slot item=data}
+            <tr>
+                <td align="center" width='8%'>{$no++}.</td>
+                <td width='37%'>
+                    <span style="text-decoration: underline;">{$data.slot_subject}</span>
+                    <br />
+                    {$data.slot_number}
+                </td>
+                <td align="center" width='20%'>
+                    {$dtm->get_full_date($data.slot_date)}
+                </td>
+                <td align="center" width='35%'>
+                    <a href="{$config->site_url('task/izin_rute/slot_download/'|cat:$detail.registrasi_id|cat:'/'|cat:$data.slot_id)}" style="color: #0074cc;">{$data.slot_file_name}</a>
+                </td>
+            </tr>
+            {foreachelse}
+            <tr>
+                <td colspan="4">-</td>
+            </tr>
+            {/foreach}
+        </table>
+        <p style="margin: 0; padding: 5px; font-size: 11px; font-weight: bold;">
+            Slot Clearance ( IASM )
+        </p>
+        <table class="table-view" width="100%">
+            <tr style="font-weight: bold; font-size: 10px;">
+                <td align="center" width='5%'>No</td>
+                <td align="center" width='11%'>Rute</td>
+                <td align="center" width='8%'>Tipe</td>
+                <td align="center" width='8%'>Flight No</td>
+                <td align="center" width='8%'>ETD <br />( UTC )</td>
+                <td align="center" width='8%'>ETA <br />( UTC )</td>
+                <td align="center" width='10%'>DOS</td>
+                <td align="center" width='8%'>RON</td>
+                <td align="center" width='15%'>Start</td>
+                <td align="center" width='15%'>End</td>
+            </tr>
+            {$no = 1}
+            {foreach from=$rs_slot_iasm item=data}
+            <tr>
+                <td align="center" width='5%'>{$no++}.</td>
+                <td align="center" width='11%'>{$data.rute_all}</td>
+                <td align="center" width='8%'>{$data.tipe}</td>
+                <td align="center" width='8%'>{$data.flight_no}</td>
+                <td align="center" width='8%'>{$data.etd|default:'-'|substr:0:5}</td>
+                <td align="center" width='8%'>{$data.eta|default:'-'|substr:0:5}</td>
+                <td align="center" width='10%'>{$data.doop}</td>
+                <td align="center" width='8%'>{$data.roon}</td>
+                <td align="center" width='15%'>{$data.start_date}</td>
+                <td align="center" width='15%'>{$data.end_date}</td>
+            </tr>
+            {foreachelse}
+            <tr>
+                <td colspan="10">-</td>
+            </tr>
+            {/foreach}
+        </table>
+    </div>
+</div>
+<!-- form files -->
+<div id="form-files" style="display: none;">
+    <div style="height: 395px; overflow: auto;">
+        <form action="{$config->site_url('task/izin_rute/file_process')}" method="post">
+            <input type="hidden" name="registrasi_id" value="{$detail.registrasi_id|default:''}">
+            <input type="hidden" name="url_path" value="{$url_path|default:''}">
+            <table class="table-input" width="100%" style="font-family: tahoma; font-size: 11px;">
+                {$no = 1}
+                {$verified_by = ''}
+                {$verified_date = ''}
+                {foreach from=$rs_files item=data}
+                {if $verified_by eq ''}
+                {$verified_by = $data.check_by}
+                {$verified_date = $data.check_date}
+                {/if}
+                <tr>
+                    <td width='5%' align="center">
+                        {$no++}.
+                    </td>
+                    <td width='45%'>
+                        {$data.ref_name}
+                    </td>
+                    <td width="40%">
+                        {if $data.file_id neq ''}
+                        <a href="{$config->site_url('task/izin_rute/files_download/'|cat:$data.file_id)}" style="color: #0074cc;">{$data.file_name}</a>
+                        {else}
+                        Belum ada file yang di upload!
+                        {/if}
+                    </td>
+                    <td width="10%" align='center'>
+                        <input type="checkbox" name="izin_files[{$data.file_id}]" {if $data.file_check eq '1'}checked="checked"{/if} value="1" />
+                    </td>
+                </tr>
+                {/foreach}
+                <tr>
+                    <td colspan="2">
+                        Verified at {$dtm->get_full_date($verified_date)|default:'-'}, <br /> By {$verified_by|default:'Belum di verifikasi!'}
+                    </td>
+                    <td colspan="2" align='right'>
+                        {if $com_user.role_id neq '45' && $com_user.role_id neq '63' && $com_user.role_id neq '44'}
+                        <input type="submit" name="save" value="Verifikasi Berkas Permohonan" class="submit-button" />
+                        {/if}
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+<!-- form pencabutan -->
+<div id="form-pencabutan" style="display: none;">
+    <div style="height: 345px; overflow: auto;">
+        <p style="margin: 0; padding: 5px; font-size: 11px; font-weight: bold;">
+            Files Attachment - Surat Pencabutan Izin Rute Penerbangan
+        </p>
+        <table class="table-view" width="100%">
+            <tr style="font-weight: bold;">
+                <td align="center">No</td>
+                <td width='25%' align="center">Perihal</td>
+                <td width='20%' align="center">Nomor Surat</td>
+                <td width='20%' align="center">Tanggal Surat</td>
+                <td width='30%' align="center"></td>
+            </tr>
+            {$no = 1}
+            {foreach from=$rs_pencabutan item=data}
+            <tr>
+                <td align="center" width='5%'>{$no++}.</td>
+                <td width='25%'>{$data.letter_subject}</td>
+                <td width='20%' align="center">{$data.letter_number}</td>
+                <td align="center" width='20%' align="center">{$dtm->get_full_date($data.letter_date)}</td>
+                <td align="center" width='30%' align="center">
+                    <a href="{$config->site_url('task/izin_rute/letter_download/'|cat:$detail.registrasi_id|cat:'/'|cat:$data.letter_id)}" style="color: #0074cc;">{$data.letter_file_name}</a>
+                </td>
+            </tr>
+            {foreachelse}
+            <tr>
+                <td colspan="5">-</td>
+            </tr>
+            {/foreach}
+        </table>
+    </div>
+</div>

@@ -1,0 +1,92 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        // dropdown menu
+        $(".group").click(function() {
+            $(this).toggleClass('down');
+            $('.group-box').toggleClass('down');
+            $('.group-box').slideToggle(100);
+            return false;
+        });
+    });
+</script>
+<div class="breadcrum">
+    <p>
+        <a href="#">Pendaftaran</a><span></span>
+        <small>Rute Luar Negeri</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<div class="content-dashboard">
+    <h4>
+        <a href="#" class="group">
+            Pilihan Permohonan Izin Rute Penerbangan
+        </a>
+    </h4>
+    <div class="clear"></div>
+    <div style="display: none;" class="group-box">
+        {foreach from=$rs_group item=data}
+        <div class="map-box">
+            <p>
+                <a href="{$config->site_url('member/registration_internasional/disclaimer/'|cat:$data.group_id)}">
+                    <img src="{$BASEURL}resource/doc/images/icon/{$data.group_alias|lower}.icon.png" alt="" />
+                    {$data.group_nm}<br />
+                    <small>{$data.group_desc}</small>
+                </a>
+            </p>
+        </div>
+        {/foreach}
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info">Total ( <b style="color: red;">Belum Dikirim</b> ) <u>{$total|default:0} Permohonan Izin Rute Penerbangan Internasional</u></li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+</div>
+<table class="table-view" width="100%">
+    <tr>
+        <th width='5%'>No</th>
+        <th width='10%'>Jenis<br />Penerbangan</th>
+        <th width='30%'>Jenis Permohonan</th>
+        <th width='20%'>Diinput Oleh</th>
+        <th width='15%'>Tanggal</th>
+        <th width='20%'></th>
+    </tr>
+    {$no = 1}
+    {foreach from=$rs_id item=result}
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+        <td align="center">{$no++}.</td>
+        <td align="center">{$result.izin_flight|upper}</td>
+        <td>{$result.izin_rute_start|upper} / {$result.izin_rute_end|upper}<br>({$result.group_nm|upper})</td>
+        <td align="center">{$result.operator_name|upper}</td>
+        <td align="center">{$dtm->get_full_date($result.mdd, 'ins')|upper}</td>
+        <td align="center">
+            <a href="{$config->site_url($result.group_link|cat:'/index/'|cat:$result.registrasi_id|default:'')}" class="button-edit">
+                {if $result.selisih_hari == 0 && substr($result.selisih_waktu,0,2) == 00}
+                {substr($result.selisih_waktu,3,2)} minutes
+                {else if $result.selisih_hari == 0}
+                {substr($result.selisih_waktu,0,2)} hour
+                {else}
+                {$result.selisih_hari} day
+                {/if}
+            </a>
+            <a href="{$config->site_url('member/registration_internasional/delete_process/'|cat:$result.registrasi_id|default:'')}" onclick="return confirm('Apakah anda yakin akan menghapus data ini?')" class="button-hapus">
+                Delete
+            </a>
+        </td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="7">Data not found!</td>
+    </tr>
+    {/foreach}
+</table>

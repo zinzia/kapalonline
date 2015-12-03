@@ -1,0 +1,108 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Pendaftaran Izin Rute</a><span></span>
+        <small>{$detail.group_nm}</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('member/registration_domestik/')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" />Back to Draft List</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="step-box">
+    <ul>
+        <li>
+            <a href="{$config->site_url('izin_domestik/perubahan/index/'|cat:$detail.registrasi_id)}" class="normal"><b>Step 1</b><br />Data Permohonan</a>
+        </li>
+        <li>
+            <a href="{$config->site_url('izin_domestik/perubahan/list_rute/'|cat:$detail.registrasi_id)}"><b>Step 2</b><br />Data Rute Penerbangan</a>
+        </li>
+        <li>
+            <a href="{$config->site_url('izin_domestik/perubahan/list_slot/'|cat:$detail.registrasi_id)}" class="active"><b>Step 3</b><br />Slot Clearance</a>
+        </li>
+        <li>
+            <a href="#" class="normal"><b>Step 4</b><br />File Attachment</a>
+        </li>
+        <li>
+            <a href="#" class="normal"><b>Step 5</b><br />Review Permohonan</a>
+        </li>
+    </ul>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info">
+                    Surat Permohonan : <span style="text-decoration: underline;">{$detail.izin_request_letter|default:'-'}</span>, 
+                    <br />
+                    Tanggal : <span style="text-decoration: underline;">{$dtm->get_full_date($detail.izin_request_letter_date)|default:'-'}</span>, ( For {$detail.izin_season} )
+                    <br />
+                    Rute : <b>{$detail.izin_rute_start} / {$detail.izin_rute_end}</b>
+                </li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('izin_domestik/perubahan/list_rute/'|cat:$detail.registrasi_id)}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" />Previous Step</a></li>
+            <li><a href="{$config->site_url('izin_domestik/perubahan/slot_add/'|cat:$detail.registrasi_id)}"><img src="{$BASEURL}resource/doc/images/icon/add-icon.png" alt="" /> Tambah Data Slot Clearance</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="clear"></div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width="5%">No</th>
+        <th width="25%">Subject Surat</th>
+        <th width="20%">Nomor Surat</th>
+        <th width="20%">Perihal</th>
+        <th width="15%">File Attachment</th>
+        <th width="15%"></th>
+    </tr>
+    {$no = 1}
+    {foreach from=$rs_id item=data}
+    <tr>
+        <td align="center">{$no++}.</td>
+        <td>{$data.slot_subject}</td>
+        <td>
+            {$data.slot_number}<br />
+            Tanggal : {$dtm->get_full_date($data.slot_date, 'ins')}
+        </td>
+        <td>{$data.slot_desc}</td>
+        <td align="center" style="font-size: 10px;">
+            <a href="{$config->site_url('izin_domestik/perubahan/slot_download/'|cat:$detail.registrasi_id|cat:'/'|cat:$data.slot_id)}">{$data.slot_file_name}</a>
+        </td>
+        <td align="center">
+            <a href="{$config->site_url('izin_domestik/perubahan/slot_edit/'|cat:$detail.registrasi_id|cat:'/'|cat:$data.slot_id)}" class="button-edit">Edit</a>
+            <a href="{$config->site_url('izin_domestik/perubahan/slot_delete/'|cat:$detail.registrasi_id|cat:'/'|cat:$data.slot_id)}" class="button-hapus" onclick="return confirm('Apakah anda yakin akan menghapus baris berikut ini!');">Hapus</a>
+        </td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="6">Data slot clearance belum diinputkan!</td>
+    </tr>
+    {/foreach}
+</table>
+<form action="{$config->site_url('izin_domestik/perubahan/list_slot_process')}" method="post">
+    <input type="hidden" name="registrasi_id" value="{$detail.registrasi_id|default:''}">
+    <table class="table-form" width='100%'>
+        <tr class="submit-box">
+            <td colspan="2">
+                Pastikan data yang anda masukkan adalah data yang benar!
+            </td>
+            <td colspan="2" align='right'>
+                <input type="submit" name="save" value="Lanjutkan" class="submit-button" />
+            </td>
+        </tr>
+    </table>
+</form>

@@ -1,0 +1,142 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Registration</a><span></span>
+        <small>Flight Approval Angkutan Udara Niaga Berjadwal</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('member/pending/aunb_rute_fa/'|cat:$result.data_id)}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" />Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="dashboard">
+    <table class="table-form" width="100%">
+        <tr>
+            <td><h3>Catatan Perbaikan</h3></td>
+        </tr>
+        <tr>
+            <td>
+                <div class="notification red">
+                    <p>{$message.catatan|upper}</p>
+                    <div class="clear"></div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('member/pending/aunb_rute_fa_vv_process')}" method="post">
+    <input type="hidden" name="data_id" value="{$result.data_id|default:''}">
+    <input type="hidden" name="data_flight" value="{$result.data_flight|default:''}">
+    <input type="hidden" name="vv_aircraft_type" value="{$schedule.aircraft_type|default:''}">
+    <input type="hidden" name="vv_izin_start_date" value="{$schedule.izin_start_date|default:''}">
+    <input type="hidden" name="vv_izin_expired_date" value="{$schedule.izin_expired_date|default:''}">
+    <input type="hidden" name="vv_dos" value="{$schedule.dos|default:''}">
+    <input type="hidden" name="vv_pairing" value="{$schedule.pairing|default:''}">
+    <input type="hidden" name="vv_rute_all" value="{$schedule.rute_all|default:''}">
+    <input type="hidden" name="vv_flight_no" value="{$schedule.flight_no|default:''}">    
+    <input type="hidden" name="vv_etd" value="{$schedule.etd|default:''}">
+    <input type="hidden" name="vv_eta" value="{$schedule.eta|default:''}">
+    <input type="hidden" name="vv_etd_utc" value="{$schedule.etd_utc|default:''}">
+    <input type="hidden" name="vv_eta_utc" value="{$schedule.eta_utc|default:''}">
+
+    <table class="table-form" width='100%'>
+        <tr class="submit-box">
+            <td>
+                Untuk penerbangan Vice Versa (VV), pilih rute dari daftar slot dibawah.
+            </td>
+        </tr>
+    </table>
+
+    <table id="tblDef" class="table-view" width="100%">
+    <tr style="font-weight: bold;">
+        <td width="5%" align='center'>No</<td>
+        <td width="15%" align='center'>Rute</td>
+        <td width="11%" align='center'>Tipe Pesawat</td>
+        <td width="11%" align='center'>Nomor Penerbangan</td>
+        <td width="11%" align='center'>ETD <br />(waktu lokal)</td>
+        <td width="11%" align='center'>ETA <br />(waktu lokal)</td>
+        <td width="11%" align='center'>ETD <br />(UTC)</td>
+        <td width="11%" align='center'>ETA <br />(UTC)</td>
+        <td width="11%" align='center'>Tanggal Efektif</td>
+        <td align='center'></td>
+    </tr>
+    <tr class="stay-same-color" style="background-color:#b0cbeb;">
+        <td align="center">&nbsp;</td>
+        <td align="center">{$schedule.rute_all}</td>
+        <td align="center">{$schedule.aircraft_type}</td>
+        <td align="center">{$schedule.flight_no}</td>
+        <td align="center">{$schedule.etd}</td>
+        <td align="center">{$schedule.eta}</td>
+        <td align="center">{$schedule.etd_utc}</td>
+        <td align="center">{$schedule.eta_utc}</td>
+        <td align="center">{$dtm->get_full_date($schedule.izin_start_date, 'ins')|upper}<br/>{$dtm->get_full_date($schedule.izin_expired_date, 'ins')|upper}</td>
+        <td align="center">&nbsp;</td>
+    </tr>
+    {$no = 0}
+    {foreach from=$score item=data}
+    {$no = $no + 1}
+    <tr>
+        <td align="center">{$no}.</td>
+        <td align="center">{$data.rute_all}</td>
+        <input type="hidden" name="rute_all[]" value="{$data.rute_all}">
+        <td align="center">{$data.aircraft_type}</td>
+        <input type="hidden" name="aircraft_type[]" value="{$data.aircraft_type}">
+        <td align="center">{$data.flight_no}</td>
+        <input type="hidden" name="flight_no[]" value="{$data.flight_no}">
+        
+        <td align="center">{$data.etd}</td>
+        <td align="center">{$data.eta}</td>
+        <input type="hidden" name="etd[]" value="{$data.etd}">
+        <input type="hidden" name="eta[]" value="{$data.eta}">
+        <td align="center">{$data.etd_utc}</td>
+        <td align="center">{$data.eta_utc}</td>
+        <input type="hidden" name="etd_utc[]" value="{$data.etd_utc}">
+        <input type="hidden" name="eta_utc[]" value="{$data.eta_utc}">
+        <input type="hidden" name="dos[]" value="{$data.dos}">
+        <td align="center">{$dtm->get_full_date($data.izin_start_date, 'ins')|upper}<br/>{$dtm->get_full_date($data.izin_expired_date, 'ins')|upper}</td>
+        <td align="center">
+            <label><input type="radio" name="slot_selected" value="{$no}"/></label>
+        </td>
+        <input type="hidden" name="izin_start_date[]" value="{$data.izin_start_date}">
+        <input type="hidden" name="izin_expired_date[]" value="{$data.izin_expired_date}">
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="10">Data slot untuk penerbangan Vice Versa (VV) tidak ditemukan!</td>
+    </tr>
+    {/foreach}
+    </table>
+    <table class="table-form" width='100%'>
+        <tr class="submit-box">
+            <td>
+                Untuk penerbangan Vice Versa (VV), pilih rute dari daftar slot diatas.
+            </td>
+            <td align='right'>
+                <input type="submit" name="save" value="Simpan" class="submit-button" />
+            </td>
+        </tr>
+    </table>
+</form>
+<script type="text/javascript">
+</script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $(".submit-button").attr("disabled", "disabled");
+    $("input[name=slot_selected]:radio").unbind("change").change(function(){
+        if ($("input[name=slot_selected]:checked").val() != ""){
+            var index = parseInt($("input[name=slot_selected]:checked").val());
+            index = index + 1;
+            $("#tblDef tr").not(".stay-same-color").css("background-color","");
+            $("#tblDef tr:eq("+index+")").css("background-color","#eaf5ff");
+            $(".submit-button").removeAttr("disabled");
+        }
+    });
+});
+</script>

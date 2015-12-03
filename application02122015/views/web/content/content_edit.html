@@ -1,0 +1,41 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Web Management</a><span></span>
+        <a href="{$config->site_url('web/content')}">Web Content</a><span></span>
+        <small>{$content.content_title|upper|default:''}</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('web/content/web_content_lang/'|cat:$content.data_id)}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" /> Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('web/content/edit_content_process')}" method="post">
+    <input name="data_id" type="hidden" value="{$content.data_id|default:''}" />
+    <input name="lang_id" type="hidden" value="{$lang_id|default:''}" />
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="2">Edit Item</th>
+        </tr>
+        <tr>
+            <td width='20%'>Content</td>
+            <td width='80%'>
+                <textarea name="content_value" rows="20" cols="100">{$result.content_value|default:''}</textarea>
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="2">
+                <input type="submit" name="save" value="Simpan" class="submit-button" />
+                <input type="reset" name="save" value="Reset" class="reset-button" />
+            </td>
+        </tr>
+    </table>
+</form>

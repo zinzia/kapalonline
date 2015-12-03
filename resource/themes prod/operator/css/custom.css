@@ -1,0 +1,72 @@
+/* custom css */
+
+.dashboard-profile-disclaimer {
+    float: left;
+    margin: 0 20px 0 0;
+    padding: 0;
+    width: 100%;
+    overflow: hidden;
+    font-family: tahoma;
+}
+
+
+.dashboard-profile-disclaimer h4 {
+    margin: 0 0 5px 0;
+    padding: 10px 0;
+    font-size: 12px;
+    font-family: tahoma;
+    color: #E16A00;
+    background-color: #fff;
+    border-top: 1px solid #D5DBDC;
+    border-bottom: 1px solid #D5DBDC;
+}
+
+.dashboard-profile-disclaimer h5 {
+    margin: 0 0 10px 0;
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+    font-family: tahoma;
+    font-weight: normal;
+    color: #656667;
+    background-color: #fff;
+}
+
+.dashboard-profile-disclaimer .info {
+    margin: 0 0 1px 0;
+    padding: 5px 0;
+}
+
+.dashboard-profile-disclaimer .info p{
+    margin: 0;
+    padding: 0 5px;
+    text-align: right;
+    color: #6B7430;
+    font-size: 11px;
+    font-weight: normal;
+}
+
+.dashboard-profile-disclaimer .list {
+    margin: 0;
+    padding: 0;
+    background-color: #F9F9FA;
+    font-family: tahoma;
+}
+
+.dashboard-profile-disclaimer .list p{
+    margin: 0;
+    padding: 0;
+    font-size: 11px;
+    font-family: arial;
+    border-bottom: 1px dotted #fff;
+}
+
+.dashboard-profile-disclaimer .list a{
+    margin: 0;
+    padding: 5px 10px;
+    text-decoration: none;
+    display: block;
+    color: #444;
+    line-height: 16px;
+    border-bottom: 1px solid #fff;
+}

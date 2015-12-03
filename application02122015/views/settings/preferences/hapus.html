@@ -1,0 +1,37 @@
+<div class="head-content">
+    <h3>System Preferences</h3>
+    <div class="head-content-nav">
+        <ul>
+            <li><a href="#" class="active">Hapus Data</a></li>
+            <li><a href="{$config->site_url('settings/adminpreferences/add')}"><img src="{$BASEURL}resource/doc/images/icon/add-icon.png" alt="" /> Add Data</a></li>
+            <li><a href="{$config->site_url('settings/adminpreferences/')}">List Data</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('settings/adminpreferences/process_delete')}" method="post">
+    <input type="hidden" name="pref_id" value="{$result.pref_id|default:''}" />
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="2">Hapus System Preferences</th>
+        </tr>
+        <tr>
+            <td width="25%">Group *</td>
+            <td width="75%">{$result.pref_group|default:''}</td>
+        </tr>
+        <tr>
+            <td>Name *</td>
+            <td>{$result.pref_nm|default:''}</td>
+        </tr>
+        <tr>
+            <td>Value *</td>
+            <td>{$result.pref_value|default:''}</td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="submit" name="save" value="Hapus" class="edit-button" /> </td>
+        </tr>
+    </table>
+</form>

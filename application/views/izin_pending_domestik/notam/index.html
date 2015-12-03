@@ -1,0 +1,150 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        /*
+         * COMBO BOX
+         */
+        $("#combobox").select2({
+            placeholder: "Pilih Nomor Izin Rute Yang Terdaftar",
+            allowClear: true,
+        });
+        // date picker
+        $(".tanggal").datepicker({
+            showOn: 'both',
+            changeMonth: true,
+            changeYear: true,
+            buttonImage: '{$BASEURL}/resource/doc/images/icon/calendar.gif',
+            buttonImageOnly: true,
+            dateFormat: 'yy-mm-dd',
+            maxDate: '0'
+        });
+    });
+    function prev() {
+        var confirmation = confirm("Apakah anda yakin membatalkan pengajuan ini?");
+        if (confirmation == true) {
+            window.location = "{$config->site_url('izin_pending_domestik/notam/batalkan/'|cat:$result.registrasi_id)}";
+        }
+    }
+</script>
+<div class="breadcrum">
+    <p>
+        <a href="#">Pendaftaran Izin Rute</a><span></span>
+        <small>PERMOHONAN {$detail.group_nm|upper}</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('member/pending_izin/')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" />Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="step-box">
+    <ul>
+        <li>
+            <a href="{$config->site_url('izin_pending_domestik/notam/index/'|cat:$detail.registrasi_id)}" class="active"><b>Step 1</b><br />Data Permohonan</a>
+        </li>
+        <li>
+            <a href="#" class="normal"><b>Step 2</b><br />Data Rute Penerbangan</a>
+        </li>
+        {if $airport.is_all_used_score neq 1}
+        <li>
+            <a href="#" class="normal"><b>Step 3</b><br />Slot Clearance</a>
+        </li>
+        <li>
+            <a href="#" class="normal"><b>Step 4</b><br />File Attachment</a>
+        </li>
+        <li>
+            <a href="#" class="normal"><b>Step 5</b><br />Review Permohonan</a>
+        </li>
+        {else}
+        <li>
+            <a href="#" class="normal"><b>Step 3</b><br />File Attachment</a>
+        </li>
+        <li>
+            <a href="#" class="normal"><b>Step 4</b><br />Review Permohonan</a>
+        </li>
+        {/if}
+    </ul>
+    <div class="clear"></div>
+</div>
+<div class="dashboard">
+    <table class="table-form" width="100%">
+        <tr>
+            <td><h3>Catatan Perbaikan</h3></td>
+        </tr>
+        <tr>
+            <td>
+                <div class="notification red">
+                    <p>{$message.catatan|upper}</p>
+                    <div class="clear"></div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('izin_pending_domestik/notam/edit_process')}" method="post">
+    <input type="hidden" name="registrasi_id" value="{$result.registrasi_id|default:''}">
+    <table class="table-form" width="100%">
+        <tr>
+            <td colspan="4" align='center'>
+                <b style="font-size: 16px;">PERMOHONAN {$detail.group_nm|upper}</b>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" align='center'>&nbsp;</td>
+        </tr>
+        <tr>
+            <td width='20%'>
+                <span style="text-decoration: underline;">Tanggal Surat Permohonan</span><br /><i>Request Letter Date</i>
+            </td>
+            <td width='35%'>
+                <input type="text" name="izin_request_letter_date" size="10" maxlength="10" value="{$result.izin_request_letter_date|default:''}" class="tanggal" readonly="readonly" style="text-align: center; font-weight: bold;" />
+            </td>
+            <td width='20%'>
+                <span style="text-decoration: underline;">Penunjukkan Oleh</span><br /><i>Appointment By</i>
+            </td>
+            <td width='25%'>
+                <input type="text" name="penanggungjawab" size="20" maxlength="50" value="{$result.penanggungjawab|default:''|upper}" />
+            </td>
+        </tr> 
+        <tr>
+            <td>
+                <span style="text-decoration: underline;">Nomor Surat Permohonan</span><br /><i>Request Letter Number</i>
+            </td>
+            <td>
+                <input type="text" name="izin_request_letter" size="25" maxlength="50" value="{$result.izin_request_letter|default:''|upper}" style="font-weight: bold;" />
+            </td>
+            <td><span style="text-decoration: underline;">Jabatan</span><br /><i>Job Title</i></td>
+            <td>
+                <input type="text" name="jabatan" size="20" maxlength="50" value="{$result.jabatan|default:''|upper}" />
+            </td>
+        <tr>
+            <td>
+                <span style="text-decoration: underline;">Kode Rute</span><br /><i>Routes Code</i>
+            </td>
+            <td colspan="3">
+                <select name="kode_izin" id="combobox">
+                    <option value=""></option>
+                    {foreach from=$rs_id item=data}
+                    <option value="{$data.kode_izin|default:''}" {if $detail.kode_izin|default:'' eq $data.kode_izin|default:''}selected="selected"{/if}>{$data.kode_izin|upper} / {$data.izin_rute_start|upper} / {$data.izin_rute_end|upper}</option>
+                    {/foreach}
+                </select>
+            </td>
+        </tr>       
+    </table>
+    <table class="table-form" width='100%'>
+        <tr class="submit-box">
+            <td>
+                <input name="save" value="Batalkan" class="submit-button" type="button" onclick="prev();" />
+            </td>
+            <td align='right'>
+                <input type="submit" name="save" value="Simpan dan Lanjutkan" class="submit-button" />
+            </td>
+        </tr>
+    </table>
+</form>

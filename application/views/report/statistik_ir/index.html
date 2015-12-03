@@ -1,0 +1,273 @@
+<script type="text/javascript">
+    $(document).ready(function () {
+        // --
+        $(".bulan").select2({
+            placeholder: "-- Bulan --",
+            width: 130,
+            allowClear: true
+        });
+        $(".tahun").select2({
+            placeholder: "-- Tahun --",
+            width: 100,
+            allowClear: true
+        });
+        $(".airlines_id").select2({
+            placeholder: "-- Semua --",
+            width: 300,
+            allowClear: true
+        });
+    });
+</script>
+<style type="text/css">
+    .bulan .select2-choice {
+        width: 120px !important;
+        font-weight: bold;
+    }
+    .bulan .select2-default {
+        width: 120px !important;
+        font-weight: bold;
+    }
+    .tahun .select2-choice {
+        width: 90px !important;
+    }
+    .tahun .select2-default {
+        width: 90px !important;
+    }
+    .airlines_id .select2-choice {
+        width: 290px !important;
+    }
+    .airlines_id .select2-default {
+        width: 290px !important;
+    }
+</style>
+<div class="breadcrum">
+    <p>
+        <a href="#">Data Report</a><span></span>
+        <small>Rekapitulasi Pengajuan Izin Rute</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="search-box">
+    <h3><a href="#">Pencarian</a></h3>
+    <form action="{$config->site_url('report/statistik_ir/proses_cari')}" method="post">
+        <table class="table-search" width="100%" border="0">
+            <tr>
+                <th width="5%">Periode</th>
+                <td width="30%">
+                    <select name="bulan" class="bulan">
+                        <option value=""></option>
+                        {foreach from=$rs_bulan key=index item=value}
+                        <option value="{$index}" {if $search.bulan|default:'' eq $index}selected="selected"{/if}>{$value|upper}</option>
+                        {/foreach}
+                    </select>
+                    <select name="tahun" class="tahun">
+                        <option value=""></option>
+                        {foreach from=$rs_tahun item=value}
+                        <option value="{$value}" {if $search.tahun|default:'' eq $value}selected="selected"{/if}>{$value}</option>
+                        {/foreach}
+                    </select>
+                </td>
+                <th width="5%">Operator</th>
+                <td width="35%">
+                    <select name="airlines_id" class="airlines_id">
+                        <option value=""></option>
+                        {foreach from=$rs_airlines item=value}
+                        <option value="{$value.airlines_id|default:''}" {if $search.airlines_id|default:'' eq $value.airlines_id|default:''}selected="selected"{/if}>{$value.airlines_nm|upper|default:''}</option>
+                        {/foreach}
+                    </select>
+                </td>
+                <td align='right'>
+                    <input name="save" type="submit" value="Tampilkan" />
+                    <input name="save" type="submit" value="Reset" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="navigation">
+    <div class="navigation">
+        <div class="navigation-button">
+            <ul>
+                <li><a href="{$config->site_url('report/statistik_ir/download/')}"><img src="{$BASEURL}resource/doc/images/icon/download-icon.png" alt="" /> Download Excel</a></li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<div class="statistik-box">
+    <table class="table-view" width='100%'>
+        <tr style="text-align: center;">
+            <td rowspan="2" width='15%'>
+                Status<br />Permohonan FA
+            </td>
+            <td width='10%' colspan="2"><b>BARU</b></td>
+            <td width='10%' colspan="2"><b>PERPANJANGAN</b></td>
+            <td width='10%' colspan="2"><b>PENUNDAAN</b></td>
+            <td width='10%' colspan="2"><b>PERUBAHAN</b></td>
+            <td width='10%' colspan="2"><b>PENAMBAHAN <br> FREKUENSI</b></td>
+            <td width='10%' colspan="2"><b>PENGURANGAN <br> FREKUENSI</b></td>
+            <td width='10%' colspan="2"><b>PENCABUTAN</b></td>
+            <td width='10%' colspan="2" style="background-color: #F4F4F4;"><b>MIGRASI</b></td>
+            <td width='5%' rowspan="2"><b>TOTAL</b></td>
+        </tr>
+        <tr style="text-align: center;">
+            <td>Dalam<br />Negeri</td>
+            <td>Luar<br />Negeri</td>
+            <td>Dalam<br />Negeri</td>
+            <td>Luar<br />Negeri</td>
+            <td>Dalam<br />Negeri</td>
+            <td>Luar<br />Negeri</td>
+            <td>Dalam<br />Negeri</td>
+            <td>Luar<br />Negeri</td>
+            <td>Dalam<br />Negeri</td>
+            <td>Luar<br />Negeri</td>
+            <td>Dalam<br />Negeri</td>
+            <td>Luar<br />Negeri</td> 
+            <td>Dalam<br />Negeri</td>
+            <td>Luar<br />Negeri</td> 
+            <td style="background-color: #F4F4F4;">Dalam<br />Negeri</td>
+            <td style="background-color: #F4F4F4;">Luar<br />Negeri</td>            
+        </tr>
+        <tr>
+            <td>Belum diproses</td>
+            <td align='center'>{$total_waiting = $total_waiting + $data.baru.domestik.waiting.in_airlines}{$data.baru.domestik.waiting.in_airlines|number_format:0:'.':','|default:'0'}</td>
+            <td align='center'>{$total_waiting = $total_waiting + $data.baru.internasional.waiting.in_airlines}{$data.baru.internasional.waiting.in_airlines|number_format:0:'.':','}</td>
+            <td align='center'>{$total_waiting = $total_waiting + $data.perpanjangan.domestik.waiting.in_airlines}{$data.perpanjangan.domestik.waiting.in_airlines|number_format:0:'.':','}</td>
+            <td align='center'>{$total_waiting = $total_waiting + $data.perpanjangan.internasional.waiting.in_airlines}{$data.perpanjangan.internasional.waiting.in_airlines|number_format:0:'.':','}</td>
+            <td align='center'>{$total_waiting = $total_waiting + $data.penundaan.domestik.waiting.in_airlines}{$data.penundaan.domestik.waiting.in_airlines|number_format:0:'.':','}</td>
+            <td align='center'>{$total_waiting = $total_waiting + $data.penundaan.internasional.waiting.in_airlines}{$data.penundaan.internasional.waiting.in_airlines|number_format:0:'.':','}</td>                        
+            <td align='center'>{$total_waiting = $total_waiting + $data.perubahan.domestik.waiting.in_airlines}{$data.perubahan.domestik.waiting.in_airlines|number_format:0:'.':','|default:'0'}</td>
+            <td align='center'>{$total_waiting = $total_waiting + $data.perubahan.internasional.waiting.in_airlines}{$data.perubahan.internasional.waiting.in_airlines|number_format:0:'.':','}</td>
+            <td align='center'>{$total_waiting = $total_waiting + $data.frekuensi_add.domestik.waiting.in_airlines}{$data.frekuensi_add.domestik.waiting.in_airlines|number_format:0:'.':','}</td>
+            <td align='center'>{$total_waiting = $total_waiting + $data.frekuensi_add.internasional.waiting.in_airlines}{$data.frekuensi_add.internasional.waiting.in_airlines|number_format:0:'.':','}</td>
+            <td align='center'>{$total_waiting = $total_waiting + $data.frekuensi_delete.domestik.waiting.in_airlines}{$data.frekuensi_delete.domestik.waiting.in_airlines|number_format:0:'.':','|default:'0'}</td>
+            <td align='center'>{$total_waiting = $total_waiting + $data.frekuensi_delete.internasional.waiting.in_airlines}{$data.frekuensi_delete.internasional.waiting.in_airlines|number_format:0:'.':','}</td>
+            <td align='center'>{$total_waiting = $total_waiting + $data.penghentian.domestik.waiting.in_airlines}{$data.penghentian.domestik.waiting.in_airlines|number_format:0:'.':','}</td>
+            <td align='center'>{$total_waiting = $total_waiting + $data.penghentian.internasional.waiting.in_airlines}{$data.penghentian.internasional.waiting.in_airlines|number_format:0:'.':','}</td>
+            <td align='center' style="background-color: #F4F4F4;">{$data.migrasi.domestik.waiting.in_airlines|number_format:0:'.':','}</td>
+            <td align='center' style="background-color: #F4F4F4;">{$data.migrasi.internasional.waiting.in_airlines|number_format:0:'.':','}</td>
+            <td align='center'>{$total = $total + $total_waiting}{$total_waiting|number_format:0:'.':','}</td>
+        </tr>
+        <tr>
+            <td>Sedang dalam proses</td>
+            <td align='center'>{$total_process = $total_process + $data.baru.domestik.waiting.in_staff}{$data.baru.domestik.waiting.in_staff|number_format:0:'.':','|default:'0'}</td>
+            <td align='center'>{$total_process = $total_process + $data.baru.internasional.waiting.in_staff}{$data.baru.internasional.waiting.in_staff|number_format:0:'.':','}</td>
+            <td align='center'>{$total_process = $total_process + $data.perpanjangan.domestik.waiting.in_staff}{$data.perpanjangan.domestik.waiting.in_staff|number_format:0:'.':','}</td>
+            <td align='center'>{$total_process = $total_process + $data.perpanjangan.internasional.waiting.in_staff}{$data.perpanjangan.internasional.waiting.in_staff|number_format:0:'.':','}</td>
+            <td align='center'>{$total_process = $total_process + $data.penundaan.domestik.waiting.in_staff}{$data.penundaan.domestik.waiting.in_staff|number_format:0:'.':','}</td>
+            <td align='center'>{$total_process = $total_process + $data.penundaan.internasional.waiting.in_staff}{$data.penundaan.internasional.waiting.in_staff|number_format:0:'.':','}</td>                        
+            <td align='center'>{$total_process = $total_process + $data.perubahan.domestik.waiting.in_staff}{$data.perubahan.domestik.waiting.in_staff|number_format:0:'.':','|default:'0'}</td>
+            <td align='center'>{$total_process = $total_process + $data.perubahan.internasional.waiting.in_staff}{$data.perubahan.internasional.waiting.in_staff|number_format:0:'.':','}</td>
+            <td align='center'>{$total_process = $total_process + $data.frekuensi_add.domestik.waiting.in_staff}{$data.frekuensi_add.domestik.waiting.in_staff|number_format:0:'.':','}</td>
+            <td align='center'>{$total_process = $total_process + $data.frekuensi_add.internasional.waiting.in_staff}{$data.frekuensi_add.internasional.waiting.in_staff|number_format:0:'.':','}</td>
+            <td align='center'>{$total_process = $total_process + $data.frekuensi_delete.domestik.waiting.in_staff}{$data.frekuensi_delete.domestik.waiting.in_staff|number_format:0:'.':','|default:'0'}</td>
+            <td align='center'>{$total_process = $total_process + $data.frekuensi_delete.internasional.waiting.in_staff}{$data.frekuensi_delete.internasional.waiting.in_staff|number_format:0:'.':','}</td>
+            <td align='center'>{$total_process = $total_process + $data.penghentian.domestik.waiting.in_staff}{$data.penghentian.domestik.waiting.in_staff|number_format:0:'.':','}</td>
+            <td align='center'>{$total_process = $total_process + $data.penghentian.internasional.waiting.in_staff}{$data.penghentian.internasional.waiting.in_staff|number_format:0:'.':','}</td>
+            <td align='center' style="background-color: #F4F4F4;">{$data.migrasi.domestik.waiting.in_staff|number_format:0:'.':','}</td>
+            <td align='center' style="background-color: #F4F4F4;">{$data.migrasi.internasional.waiting.in_staff|number_format:0:'.':','}</td>
+            <td align='center'>{$total = $total + $total_process}{$total_process|number_format:0:'.':','}</td>
+
+        </tr>
+        <tr>
+            <td>Telah diterbitkan</td>
+            <td align='center'>{$total_terbit = $total_terbit + $data.baru.domestik.approved.in_staff}{$data.baru.domestik.approved.in_staff|number_format:0:'.':','|default:'0'}</td>
+            <td align='center'>{$total_terbit = $total_terbit + $data.baru.internasional.approved.in_staff}{$data.baru.internasional.approved.in_staff|number_format:0:'.':','}</td>
+            <td align='center'>{$total_terbit = $total_terbit + $data.perpanjangan.domestik.approved.in_staff}{$data.perpanjangan.domestik.approved.in_staff|number_format:0:'.':','}</td>
+            <td align='center'>{$total_terbit = $total_terbit + $data.perpanjangan.internasional.approved.in_staff}{$data.perpanjangan.internasional.approved.in_staff|number_format:0:'.':','}</td>
+            <td align='center'>{$total_terbit = $total_terbit + $data.penundaan.domestik.approved.in_staff}{$data.penundaan.domestik.approved.in_staff|number_format:0:'.':','}</td>
+            <td align='center'>{$total_terbit = $total_terbit + $data.penundaan.internasional.approved.in_staff}{$data.penundaan.internasional.approved.in_staff|number_format:0:'.':','}</td>                        
+            <td align='center'>{$total_terbit = $total_terbit + $data.perubahan.domestik.approved.in_staff}{$data.perubahan.domestik.approved.in_staff|number_format:0:'.':','|default:'0'}</td>
+            <td align='center'>{$total_terbit = $total_terbit + $data.perubahan.internasional.approved.in_staff}{$data.perubahan.internasional.approved.in_staff|number_format:0:'.':','}</td>
+            <td align='center'>{$total_terbit = $total_terbit + $data.frekuensi_add.domestik.approved.in_staff}{$data.frekuensi_add.domestik.approved.in_staff|number_format:0:'.':','}</td>
+            <td align='center'>{$total_terbit = $total_terbit + $data.frekuensi_add.internasional.approved.in_staff}{$data.frekuensi_add.internasional.approved.in_staff|number_format:0:'.':','}</td>
+            <td align='center'>{$total_terbit = $total_terbit + $data.frekuensi_delete.domestik.approved.in_staff}{$data.frekuensi_delete.domestik.approved.in_staff|number_format:0:'.':','|default:'0'}</td>
+            <td align='center'>{$total_terbit = $total_terbit + $data.frekuensi_delete.internasional.approved.in_staff}{$data.frekuensi_delete.internasional.approved.in_staff|number_format:0:'.':','}</td>
+            <td align='center'>{$total_terbit = $total_terbit + $data.penghentian.domestik.approved.in_staff}{$data.penghentian.domestik.approved.in_staff|number_format:0:'.':','}</td>
+            <td align='center'>{$total_terbit = $total_terbit + $data.penghentian.internasional.approved.in_staff}{$data.penghentian.internasional.approved.in_staff|number_format:0:'.':','}</td>
+            <td align='center' style="background-color: #F4F4F4;">{$data.migrasi.domestik.approved.in_staff|number_format:0:'.':','}</td>
+            <td align='center' style="background-color: #F4F4F4;">{$data.migrasi.internasional.approved.in_staff|number_format:0:'.':','}</td>
+            <td align='center'>{$total = $total + $total_terbit}{$total_terbit|number_format:0:'.':','}</td>
+        </tr>
+        <tr>
+            <td>Ditolak</td>
+            <td align='center'>{$total_reject = $total_reject + $data.baru.domestik.rejected.in_staff}{$data.baru.domestik.rejected.in_staff|number_format:0:'.':','|default:'0'}</td>
+            <td align='center'>{$total_reject = $total_reject + $data.baru.internasional.rejected.in_staff}{$data.baru.internasional.rejected.in_staff|number_format:0:'.':','}</td>
+            <td align='center'>{$total_reject = $total_reject + $data.perpanjangan.domestik.rejected.in_staff}{$data.perpanjangan.domestik.rejected.in_staff|number_format:0:'.':','}</td>
+            <td align='center'>{$total_reject = $total_reject + $data.perpanjangan.internasional.rejected.in_staff}{$data.perpanjangan.internasional.rejected.in_staff|number_format:0:'.':','}</td>
+            <td align='center'>{$total_reject = $total_reject + $data.penundaan.domestik.rejected.in_staff}{$data.penundaan.domestik.rejected.in_staff|number_format:0:'.':','}</td>
+            <td align='center'>{$total_reject = $total_reject + $data.penundaan.internasional.rejected.in_staff}{$data.penundaan.internasional.rejected.in_staff|number_format:0:'.':','}</td>                        
+            <td align='center'>{$total_reject = $total_reject + $data.perubahan.domestik.rejected.in_staff}{$data.perubahan.domestik.rejected.in_staff|number_format:0:'.':','|default:'0'}</td>
+            <td align='center'>{$total_reject = $total_reject + $data.perubahan.internasional.rejected.in_staff}{$data.perubahan.internasional.rejected.in_staff|number_format:0:'.':','}</td>
+            <td align='center'>{$total_reject = $total_reject + $data.frekuensi_add.domestik.rejected.in_staff}{$data.frekuensi_add.domestik.rejected.in_staff|number_format:0:'.':','}</td>
+            <td align='center'>{$total_reject = $total_reject + $data.frekuensi_add.internasional.rejected.in_staff}{$data.frekuensi_add.internasional.rejected.in_staff|number_format:0:'.':','}</td>
+            <td align='center'>{$total_reject = $total_reject + $data.frekuensi_delete.domestik.rejected.in_staff}{$data.frekuensi_delete.domestik.rejected.in_staff|number_format:0:'.':','|default:'0'}</td>
+            <td align='center'>{$total_reject = $total_reject + $data.frekuensi_delete.internasional.rejected.in_staff}{$data.frekuensi_delete.internasional.rejected.in_staff|number_format:0:'.':','}</td>
+            <td align='center'>{$total_reject = $total_reject + $data.penghentian.domestik.rejected.in_staff}{$data.penghentian.domestik.rejected.in_staff|number_format:0:'.':','}</td>
+            <td align='center'>{$total_reject = $total_reject + $data.penghentian.internasional.rejected.in_staff}{$data.penghentian.internasional.rejected.in_staff|number_format:0:'.':','}</td>
+            <td align='center' style="background-color: #F4F4F4;">{$data.migrasi.domestik.rejected.in_staff|number_format:0:'.':','}</td>
+            <td align='center' style="background-color: #F4F4F4;">{$data.migrasi.internasional.rejected.in_staff|number_format:0:'.':','}</td>
+            <td align='center'>{$total = $total + $total_reject}{$total_reject|number_format:0:'.':','}</td>
+        </tr>
+        <tr class="blink-row" style="font-weight: bold;">
+            <td>TOTAL</td>
+            <td align='center'>{$data.baru.domestik.waiting.in_airlines + $data.baru.domestik.waiting.in_staff + $data.baru.domestik.approved.in_staff + $data.baru.domestik.rejected.in_staff|number_format:0:'.':','|default:'0'}</td>
+            <td align='center'>{$data.baru.internasional.waiting.in_airlines + $data.baru.internasional.waiting.in_staff + $data.baru.internasional.approved.in_staff + $data.baru.internasional.rejected.in_staff|number_format:0:'.':','|default:'0'}</td>
+            <td align='center'>{$data.perpanjangan.domestik.waiting.in_airlines + $data.perpanjangan.domestik.waiting.in_staff + $data.perpanjangan.domestik.approved.in_staff + $data.perpanjangan.domestik.rejected.in_staff|number_format:0:'.':','|default:'0'}</td>
+            <td align='center'>{$data.perpanjangan.internasional.waiting.in_airlines + $data.perpanjangan.internasional.waiting.in_staff + $data.perpanjangan.internasional.approved.in_staff + $data.perpanjangan.internasional.rejected.in_staff|number_format:0:'.':','|default:'0'}</td>
+            <td align='center'>{$data.penundaan.domestik.waiting.in_airlines + $data.penundaan.domestik.waiting.in_staff + $data.penundaan.domestik.approved.in_staff + $data.penundaan.domestik.rejected.in_staff|number_format:0:'.':','|default:'0'}</td>
+            <td align='center'>{$data.penundaan.internasional.waiting.in_airlines + $data.penundaan.internasional.waiting.in_staff + $data.penundaan.internasional.approved.in_staff + $data.penundaan.internasional.rejected.in_staff|number_format:0:'.':','|default:'0'}</td>
+            <td align='center'>{$data.perubahan.domestik.waiting.in_airlines + $data.perubahan.domestik.waiting.in_staff + $data.perubahan.domestik.approved.in_staff + $data.perubahan.domestik.rejected.in_staff|number_format:0:'.':','|default:'0'}</td>
+            <td align='center'>{$data.perubahan.internasional.waiting.in_airlines + $data.perubahan.internasional.waiting.in_staff + $data.perubahan.internasional.approved.in_staff + $data.perubahan.internasional.rejected.in_staff|number_format:0:'.':','|default:'0'}</td>
+            <td align='center'>{$data.frekuensi_add.domestik.waiting.in_airlines + $data.frekuensi_add.domestik.waiting.in_staff + $data.frekuensi_add.domestik.approved.in_staff + $data.frekuensi_add.domestik.rejected.in_staff|number_format:0:'.':','|default:'0'}</td>
+            <td align='center'>{$data.frekuensi_add.internasional.waiting.in_airlines + $data.frekuensi_add.internasional.waiting.in_staff + $data.frekuensi_add.internasional.approved.in_staff + $data.frekuensi_add.internasional.rejected.in_staff|number_format:0:'.':','|default:'0'}</td>
+            <td align='center'>{$data.frekuensi_delete.domestik.waiting.in_airlines + $data.frekuensi_delete.domestik.waiting.in_staff + $data.frekuensi_delete.domestik.approved.in_staff + $data.frekuensi_delete.domestik.rejected.in_staff|number_format:0:'.':','|default:'0'}</td>
+            <td align='center'>{$data.frekuensi_delete.internasional.waiting.in_airlines + $data.frekuensi_delete.internasional.waiting.in_staff + $data.frekuensi_delete.internasional.approved.in_staff + $data.frekuensi_delete.internasional.rejected.in_staff|number_format:0:'.':','|default:'0'}</td>
+            <td align='center'>{$data.penghentian.domestik.waiting.in_airlines + $data.penghentian.domestik.waiting.in_staff + $data.penghentian.domestik.approved.in_staff + $data.penghentian.domestik.rejected.in_staff|number_format:0:'.':','|default:'0'}</td>
+            <td align='center'>{$data.penghentian.internasional.waiting.in_airlines + $data.penghentian.internasional.waiting.in_staff + $data.penghentian.internasional.approved.in_staff + $data.penghentian.internasional.rejected.in_staff|number_format:0:'.':','|default:'0'}</td>
+            <td align='center' style="background-color: #F4F4F4;">{$data.migrasi.domestik.waiting.in_airlines + $data.migrasi.domestik.waiting.in_staff + $data.migrasi.domestik.approved.in_staff + $data.migrasi.domestik.rejected.in_staff|number_format:0:'.':','|default:'0'}</td>
+            <td align='center' style="background-color: #F4F4F4;">{$data.migrasi.internasional.waiting.in_airlines + $data.migrasi.internasional.waiting.in_staff + $data.migrasi.internasional.approved.in_staff + $data.migrasi.internasional.rejected.in_staff|number_format:0:'.':','|default:'0'}</td>
+            <td align='center'>{$total|number_format:0:'.':','}</td>
+        </tr>
+    </table>
+</div>
+<div class="info-box" style="width:50%; float:left;">
+    <h4>Info Jumlah Persetujuan Izin Rute Selama Tahun</h4>
+    <div id="chart_ir">
+        <script type="text/javascript">
+            var chart = new FusionCharts("{$BASEURL}resource/doc/charts/StackedColumn2D.swf", "chart_pelayanan", "100%", "252", "0", "1");
+            chart.setDataURL("{$config->site_url('report/statistik_ir/data_chart_ir')}");
+            chart.render("chart_ir");
+        </script> 
+    </div>
+</div>
+<div class="info-box" style="width:50%; float:left;">
+    <h4>Pemrosesan Izin Rute Terlama</h4>        
+    <table class="table-view" width="100%">    
+        <tr style="text-align: center;">
+            <td width="6%">No</td>
+            <td width="42%">Nama</td>
+            <td width="26%">Jumlah IR</td>
+            <td width="26%">Rata-Rata</td>
+        </tr>
+        {$no = 1}
+        {foreach from=$rs_id item=data}
+        {if $no < 6}
+        <tr>
+            <td align="center">{$no++}.</td>
+            <td>{$data.operator_name|upper}</td>        
+            <td align="center">{$data.total_proses|upper}</td>
+            <td align="center">{$data.response_time|upper}</td>
+        </tr>
+        {/if}        
+        {foreachelse}
+        <tr>
+            <td colspan="5">Data not found!</td>
+        </tr>
+        {/foreach}
+        <tr style="text-align : right">
+            <td colspan="5"><a style="font-size: 11px; font-family: Tahoma;" href="{$config->site_url('report/sla_ir')}">detail</a><span></span></td>
+        </tr>
+    </table>    
+</div>
+<div class="clear"></div>

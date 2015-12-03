@@ -1,0 +1,36 @@
+<div class="head-content">
+    <h3>Navigation</h3>
+    <div class="head-content-nav">
+        <ul>
+            <li><a href="{$config->site_url('settings/adminmenu')}" class="active">Web Portal</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width="5%">No</th>
+        <th width="20%">Nama Portal</th>
+        <th width="40%">Judul</th>
+        <th width="20%">Jumlah Menu</th>
+        <th width="15%"></th>
+    </tr>
+    {foreach from=$rs_id key=no item=result}
+    <tr {if ($no % 2) <> 0}class="blink-row"{/if}>
+        <td>{$no + 1}.</td>
+        <td>{$result.portal_nm}</td>
+        <td>{$result.site_title}</td>
+        <td align="center">{$result.total_menu}</td>
+        <td align="center">
+            <a href="{$config->site_url({'settings/adminmenu/navigation/'|cat:$result.portal_id})}" class="button-edit">Edit Menu</a>
+        </td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="5">Empty</td>
+    </tr>
+    {/foreach}
+</table>

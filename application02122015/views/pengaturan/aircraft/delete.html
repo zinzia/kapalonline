@@ -1,0 +1,43 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <a href="{$config->site_url('pengaturan/aircraft')}">Tipe Pesawat</a><span></span>
+        <small>Delete Data</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('pengaturan/aircraft/delete_process')}" method="post" onsubmit="return confirm('Apakah anda yakin akan menghapus data berikut ini?')">
+    <input name="aircraft_id" type="hidden" value="{$result.aircraft_id|default:''}" />
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="4">Hapus Tipe Pesawat</th>
+        </tr>
+        <tr>
+            <th colspan="4">Apakah anda yakin akan menghapus data dibawah ini?</th>
+        </tr>
+        <tr>
+            <td width="15%">Pembuat</td>
+            <td width="35%">{$result.aircraft_manufacture|default:''}</td>
+            <td width="15%">Tipe</td>
+            <td width="35%">{$result.aircraft_model|default:''}</td>
+        </tr>  
+        <tr>
+            <td>Tahun Pembuatan</td>
+            <td>{$result.aircraft_product_year|default:''}</td>
+            <td>Standard Capacity</td>
+            <td>{$result.aircraft_std_capacity|default:''}</td>
+        </tr>
+        <tr>
+            <td width="15%">Deskripsi</td>
+            <td width="35%" colspan="3">{$result.aircraft_desc|default:''}</td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="4">
+                <input type="submit" name="save" value="Delete" class="reset-button" />
+            </td>
+        </tr>
+    </table>
+</form>

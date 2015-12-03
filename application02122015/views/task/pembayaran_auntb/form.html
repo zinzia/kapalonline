@@ -1,0 +1,62 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Task Manager</a><span></span>
+        <small>Pembayaran AUNTB</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('task/pembayaran_auntb/pembayaran_process')}" method="post" name="payment" onsubmit="return cek_invoice()">
+    <div class="search-box">
+        <h3><a href="#">Nota Pembayaran</a></h3>
+        <table class="table-search" width="100%" border="0">
+            <tr>
+            <td width="15%">Nomor Nota Pembayaran</td>
+            <td width="2%">:</td>
+            <td width="35%">
+                <input name="payment_invoice" type="text" id="payment_invoice" value="{$result.payment_invoice|default:''}" size="45" maxlength="100" />
+                <em>* wajib diisi</em>
+            </td>
+                <td>
+                    <input name="save" type="submit" value="Bayar" />
+                </td>
+            </tr>
+        </table>
+    </div>
+    <table class="table-view" width="100%">
+        <tr>
+            <th width='4%'>No</th>
+            <th width='30%'>Nomor FA</th>
+            <th width='26%'>Operator</th>
+            <th width='20%'>Berjadwal / <br />Tidak Berjadwal</th>
+            <th width='20%'>Domestik / <br />Internasional</th>
+        </tr>
+        {$no = 1}
+        {foreach from=$rs_id item=result}
+        <input type="hidden" name="data_id[]" value="{$result.data_id|default:''}">
+        <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+            <td align="center">{$no++}.</td>
+            <td align="center">{$result.published_no}</td>
+            <td>{$result.airlines_nm|upper}</td>
+            <td align="center">{$result.data_type|upper}</td>
+            <td align="center">{$result.data_flight|upper}</td>
+        </tr>
+        {foreachelse}
+        <tr>
+            <td colspan="5">Data not found!</td>
+        </tr>
+        {/foreach}
+    </table>
+</form>
+
+<script type="text/javascript">
+    function cek_invoice() {
+        var payment = document.forms["payment"]["payment_invoice"].value;
+        if (payment == null || payment == "") {
+            alert("Nomor nota pembayaran belum diisi!");
+            return false;
+        }
+    }
+</script>

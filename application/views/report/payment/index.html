@@ -1,0 +1,150 @@
+<!-- javascript -->
+<script type="text/javascript">
+    function toggle(source) {
+        var checkboxes = document.getElementsByName("data_id[]");
+        for (var i = 0, n = checkboxes.length; i < n; i++) {
+            checkboxes[i].checked = source.checked;
+        }
+        ;
+    }
+</script>
+<div class="breadcrum">
+    <p>
+        <a href="#">Penagihan dan Pembayaran</a><span></span>
+        <a href="#">Flight Approval</a><span></span>
+        <small>Waiting List Pembayaran Permohonan FA</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="content-dashboard">
+    <h4>
+        <a class="group down" href="#">
+            Rekapitulasi Penagihan dan Pembayaran Flight Approval
+        </a>
+    </h4>
+    <div class="clear"></div>
+    <div class="group-box down" style="">
+        <div class="map-box">
+            <p>
+                <a href="#">
+                    <img alt="" src="{$BASEURL}resource/doc/images/icon/payment.success.png">
+                     Pembayaran Berhasil<br>
+                     <small>Domestik : <b>{$rs_rekap_bayar.success_dom|default:0}</b> pembayaran</small><br/>
+                     <small>Internasional : <b>{$rs_rekap_bayar.success_int|default:0}</b> pembayaran</small>
+                </a>
+            </p>
+        </div>
+        <div class="map-box">
+            <p>
+                <a href="#">
+                    <img alt="" src="{$BASEURL}resource/doc/images/icon/payment.pending.png">
+                     Pembayaran Pending<br>
+                     <small>Domestik : <b>{$rs_rekap_bayar.pending_dom|default:0}</b> pembayaran</small><br/>
+                     <small>Internasional : <b>{$rs_rekap_bayar.pending_int|default:0}</b> pembayaran</small>
+                </a>
+            </p>
+        </div>
+        <div class="map-box">
+            <p>
+                <a href="#">
+                    <img alt="" src="{$BASEURL}resource/doc/images/icon/payment.warning.png">
+                    Kelebihan Bayar<br>
+                    <small>Domestik : <b>{$rs_rekap_bayar.lebih_bayar_dom|default:0}</b> pembayaran</small><br/>
+                    <small>Internasional : <b>{$rs_rekap_bayar.lebih_bayar_int|default:0}</b> pembayaran</small>
+                </a>
+            </p>
+        </div>
+        <div class="map-box">
+            <p>
+                <a href="#">
+                    <img alt="" src="{$BASEURL}resource/doc/images/icon/payment.failed.png">
+                    Kekurangan Bayar<br>
+                    <small>Domestik : <b>{$rs_rekap_bayar.kurang_bayar_dom|default:0}</b> pembayaran</small><br/>
+                     <small>Internasional : <b>{$rs_rekap_bayar.kurang_bayar_int|default:0}</b> pembayaran</small>
+                </a>
+            </p>
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="sub-nav-content">
+    <ul>
+        <li><a class="active" href="{$config->site_url('report/payment')}">Waiting List Pembayaran Permohonan FA</a></li>
+        <li><a href="{$config->site_url('report/payment/history')}">History Pembayaran Permohonan FA</a></li>
+    </ul>
+</div>
+<div class="clear"></div>
+<div class="sub-content">
+    <!-- notification template -->
+    {include file="base/templates/notification.html"}
+    <!-- end of notification template-->
+    <div class="search-box">
+        <h3><a href="#">Search</a></h3>
+        <form action="{$config->site_url('report/payment/proses_cari')}" method="post">
+            <table class="table-search" width="100%" border="0">
+                <tr>
+                    <th width="5%">Nomor</th>
+                    <td width="33%">
+                        <input name="published_no" type="text" value="{$search.published_no|default:''}" size="30" maxlength="30" />
+                        <select name="data_flight">
+                            <option value="domestik" {if $search.data_flight|default:'' eq 'domestik'}selected="selected"{/if}>Domestik</option>
+                            <option value="internasional" {if $search.data_flight|default:'' eq 'internasional'}selected="selected"{/if}>Internasional</option>
+                        </select>
+                    </td>
+                    <td align="right">
+                        <input name="save" type="submit" value="Tampilkan" />
+                        <input name="save" type="submit" value="Reset" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div class="navigation">
+        <div class="pageRow">
+            <div class="pageNav">
+                <ul>
+                    <li class="info">Total&nbsp;<strong>{$total|default:0}</strong>&nbsp;Record&nbsp;</li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="navigation">
+            <div class="navigation-button">
+                <ul>
+                    <li><a href="{$config->site_url('report/payment/download_payment/')}"><img src="{$BASEURL}resource/doc/images/icon/download-icon.png" alt="" /> Download Excel</a></li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <form action="{$config->site_url('report/payment/form_payment')}" method="post">
+        <table class="table-view" width="100%">
+            <tr>
+                <th width='4%'>No</th>
+                <th width='20%'>Nomor FA</th>
+                <th width='20%'>Airline</th>
+                <th width='15%'>Berjadwal / <br />Tidak Berjadwal</th>
+                <th width='15%'>Domestik / <br />Internasional</th>
+                <th width='10%'>Jumlah Tagihan</th>
+                <th width='16%'>Batas Bayar</th>
+            </tr>
+            {$no = 1}
+            {foreach from=$rs_id item=result}
+            <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+                <td align="center">{$no++}.</td>
+                <td>{$result.published_no}</td>
+                <td>{$result.airlines_nm|upper}</td>
+                <td>{$result.data_type|upper}</td>
+                <td align="center">{$result.data_flight|upper}</td>
+                <td align="right">{$tarif[$result.data_flight]|default:0|number_format:0:",":"."}</td>
+                <td align="center">{$dtm->get_full_date($result.payment_due_date)|upper}</td>
+            </tr>
+            {foreachelse}
+            <tr>
+                <td colspan="7">Data not found!</td>
+            </tr>
+            {/foreach}
+        </table>
+    </form>
+</div>
+

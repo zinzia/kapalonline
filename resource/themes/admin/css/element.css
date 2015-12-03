@@ -1,0 +1,167 @@
+/* CSS Document */
+/* created by chow-2011 */
+
+/* search box */
+
+.search-box {
+    margin: 0 0 5px 0;
+    padding: 10px;
+    background-image: url('../img/search-box-bg.png');
+    background-position: left top;
+    background-repeat: repeat-x;
+    background-color: #E6ECF1;
+    border: 1px solid #DAE4EC;
+}
+
+.search-box h3 {
+    margin: 0 0 10px 0;
+    padding: 0;
+    font-size: 12px;
+    font-family: tahoma;
+    color: #454545;
+}
+
+.search-box h3 a{
+    margin: 0;
+    padding: 0 0 0 20px;
+    text-decoration: none;
+    color: #454545;
+    background-image: url('../img/search-box-h3-right.gif');
+    background-position: center left;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+}
+
+.search-box h3 a.down{
+    margin: 0;
+    padding: 0 0 0 20px;
+    text-decoration: none;
+    color: #454545;
+    background-image: url('../img/search-box-h3-down.gif');
+    background-position: center left;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+}
+
+/* Notification ==========================================================*/
+
+.notification {
+    margin: 0 0 5px 0;
+    padding: 3px 5px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    color: #FFFFFF;
+    font-size: 12px;
+}
+
+.notification strong {
+    margin: 0;
+    padding: 0;
+    color: #ffee61;
+}
+
+.notification p {
+    margin: 2px 0;
+    padding: 0;
+    color: #fff;
+    font-size: 12px;
+}
+
+.notification ul {
+    margin: 0;
+    padding: 0;
+}
+
+.notification li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: #fff;
+    font-size: 12px;
+}
+
+.notification.red {
+    background-color: #f1878a;
+    border: 1px solid #dd686b;
+}
+
+.notification.green {
+    background-color: #96b776;
+    border: 1px solid #719c48;
+}
+
+/* Pagination */
+
+.pageRow {
+    margin: 0 0 5px 0;
+    padding: 0;
+    font-size: 11px;
+    width: 100%;
+    clear: both;
+}
+
+.pageNav {
+    float: right;
+    margin: 0;
+    padding: 0;
+}
+
+.pageNav ul {
+    float: right;
+    margin: 0;
+    padding: 0;
+}
+
+.pageNav li {
+    float: left;
+    margin: 0 0 0 2px;
+    padding: 0;
+    color: #686869;
+    list-style: none;
+}
+
+.pageNav li.info {
+    padding: 5px 0 0 0;
+}
+
+.pageNav a {
+    margin: 0;
+    padding: 5px 0 0 0;
+    color: #3B5998;
+    text-decoration: none;
+    height: 19px;
+    width: 24px;
+    background-image: url("../img/pagination-bg.png");
+    font-size: 11px;
+    text-align: center;
+    display: block;
+}
+
+.pageNav a:hover {
+    background-image: url("../img/pagination-bg-hover.png");
+}
+
+.pageNav a.active {
+    color: #000;
+    background-image: url("../img/pagination-bg-active.png");
+}
+
+.pageNav a.special {
+    background-image: none;
+}
+
+.pageNav a.special:hover {
+    text-decoration: underline;
+    color: #2157C9;
+}
+
+.pageNav p {
+    margin: 0;
+    padding: 0;
+    color: #686869;
+}
+
+.pageNav p strong {
+    color: #536aa5;
+}

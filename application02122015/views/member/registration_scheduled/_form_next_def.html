@@ -1,0 +1,272 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        // timepicker
+        $('.waktu').not(".stay-readonly").timepicker({
+            showPeriodLabels: false
+        });
+    });
+</script>
+<div class="breadcrum">
+    <p>
+        <a href="#">Registration</a><span></span>
+        <small>Flight Approval Angkutan Udara Niaga Berjadwal</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('member/registration_scheduled/')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" />Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="step-box">
+    <ul>
+        <li>
+            <a href="{$config->site_url('member/registration_scheduled/add/'|cat:$result.data_id)}" class="normal"><b>Step 1</b><br />Domestic / International</a>
+        </li>
+        <li>
+            <a href="{$config->site_url('member/registration_scheduled/form/'|cat:$result.data_id)}"><b>Step 2</b><br />Flight Approval</a>
+        </li>
+        <li>
+            <a href="{$config->site_url('member/registration_scheduled/rute_fa/'|cat:$result.data_id)}" class="active"><b>Step 3</b><br />Data Slot Penerbangan</a>
+        </li>
+        <li>
+            <a href="#" class="normal"><b>Step 4</b><br />File Attachment</a>
+        </li>
+    </ul>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('member/registration_scheduled/rute_fa_done')}" method="post" onsubmit="return validation()">
+    <input type="hidden" name="data_id" value="{$result.data_id|default:''}">
+    <input type="hidden" name="data_flight" value="{$result.data_flight|default:''}">
+    <input type="hidden" name="mode" value="{$mode}">
+    
+    <table class="table-form" width='100%'>
+    <tr>
+        <td colspan="4"><span style="text-decoration: underline;">Data Rute</span> <br /><i>Slot Clearance</i></td>
+    </tr>
+    <tr>
+        <td width='3%'>1)</td>
+        <td width='28%'><span style="text-decoration: underline;">Sifat Rute</span><br /><i>Rute Status</i></td>
+        <td width='1%'>:</td>
+        <td>
+            <select name="pairing" id="pairing" {if $result.is_used_score eq '1' or $result.is_used_score_2 eq '1'}disabled="1"{/if}>
+                <option value="VV" {if $result.pairing eq 'VV'}selected="selected"{/if}>Pergi Pulang (VV)</option>
+                <option value="OW" {if $result.pairing eq 'OW'}selected="selected"{/if}>One Way Services (OW)</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>2)</td>
+        <td width='28%'><span style="text-decoration: underline;">Nomor Penerbangan</span><br /><i>Flight Number</i></td>
+        <td width='1%'>:</td>
+        <td>
+        {if $result.is_used_score neq 1}
+        <input name="flight_no" type="text" value="{$result.flight_no|default:''}" size="10" maxlength="7" style="text-align: center;" class="xinput-go" />         
+        {else}
+        <input name="flight_no" type="text" value="{$result.flight_no|default:''}" size="10" maxlength="7" style="text-align: center;" class="xinput-go" readonly="1" />
+        {/if}
+        {if $result.is_used_score_2 neq 1}
+        <input name="flight_no_2" type="text" value="{$result.flight_no_2|default:''}" size="10" maxlength="7" style="text-align: center;" class="xinput-back" />
+        {else}
+        <input name="flight_no_2" type="text" value="{$result.flight_no_2|default:''}" size="10" maxlength="7" style="text-align: center;" class="xinput-back" readonly="1" />
+        {/if}
+        </td>
+    </tr>
+    {$no=3}
+    {foreach from=$remark_field item=data}
+    <tr>
+        <td>{$no})</td>
+        {$no = $no + 1}
+        <td>{$data.rules_name|default:''}</td>
+        <td>:</td>
+        <td>
+            {if $data.rules_type|default:'area' eq "area"}
+            <textarea name="{$data.rules_field|default:''}" cols="40" rows="5">{$result[$data.rules_field]|default:''}</textarea>
+            <em>* wajib diisi</em>
+            {else}
+            {if $data.rules_field eq "nomor_slot"}
+                {if $result.is_used_score neq 1}
+                    <input type="text" class="bandara_1 xinput-go" id="{$data.rules_field|default:''}" readonly="readonly" size="5" value="{$orig}">
+                    <input type="text" name="{$data.rules_field|default:''}" value="{$result[$data.rules_field]|default:''}" size="{$data.rules_size}" class="{$data.rules_class|default:''} xinput-go" />
+                    <em>* wajib diisi</em>
+                    <br style="margin-bottom:15px;" />
+                {/if}
+                {if $result.is_used_score_2 neq 1}
+                    <input type="text" class="bandara_2 xinput-back" id="{$data.rules_field|default:''|cat:'_2'}" readonly="readonly" size="5" value="{$dest}">
+                    <input type="text" name="{$data.rules_field|default:''|cat:'_2'}" value="{$result[$data.rules_field|cat:'_2']|default:''}" size="{$data.rules_size}" class="{$data.rules_class|default:''} xinput-back" />
+                    <em class="xinput-back">* wajib diisi</em>
+                {/if}
+            {elseif $data.rules_field eq "eta" or $data.rules_field eq "etd"}
+                {if $data.rules_field eq "eta"}
+                    {if $result.is_used_score_2 neq 1}
+                        <input type="text" class="bandara_2 xinput-go" id="{$data.rules_field|default:''|cat:'_2'}" readonly="readonly" size="5" value="{$dest}">
+                        <input type="text" name="{$data.rules_field|default:''}" value="{$result[$data.rules_field]|default:''}" size="{$data.rules_size}" class="{$data.rules_class|default:''} xinput-go" {if $data.rules_class eq "waktu"}readonly="readonly" style="text-align: center;" placeholder="LT"{/if} onchange="time_converter_{$data.rules_field|default:''}(this.value)" />
+                        {if $data.rules_class|default:'' eq "waktu"}
+                        <input type="text" name="{$data.rules_field|default:''|cat:'_utc'}" id="{$data.rules_field|default:''|cat:'_utc'}" value="{$result[$data.rules_field|cat:'_utc']|default:''}" size="{$data.rules_size}" readonly="readonly" style="text-align: center;" placeholder="UTC" class="xinput-go" />
+                        {/if}                            
+                    {else}
+                        <input type="text" class="bandara_2 xinput-go" id="{$data.rules_field|default:''|cat:'_2'}" readonly="readonly" size="5" value="{$dest}">
+                        <input type="text" name="{$data.rules_field|default:''}" value="{$result[$data.rules_field]|default:''}" size="{$data.rules_size}" class="{$data.rules_class|default:''} stay-readonly xinput-go" {if $data.rules_class eq "waktu"}readonly="readonly" style="text-align: center;" placeholder="LT"{/if} />
+                        {if $data.rules_class|default:'' eq "waktu"}
+                        <input type="text" name="{$data.rules_field|default:''|cat:'_utc'}" value="{$result[$data.rules_field|cat:'_utc']|default:''}" size="{$data.rules_size}" readonly="readonly" style="text-align: center;" placeholder="UTC" class="xinput-go" />
+                        {/if}                        
+                    {/if}
+                    <em>* wajib diisi</em>
+                    <br style="margin-bottom:15px;" />
+                    {if $result.is_used_score neq 1}
+                        <input type="text" class="bandara_1 xinput-back" id="{$data.rules_field|default:''}" readonly="readonly" size="5" value="{$orig}" style="{if $result.pairing neq 'VV'}display:none;{/if}">
+                        <input type="text" name="{$data.rules_field|default:''|cat:'_2'}" value="{$result[$data.rules_field|cat:'_2']|default:''}" size="{$data.rules_size}" class="{$data.rules_class|default:''} xinput-back" {if $data.rules_class eq "waktu"}readonly="readonly" style="text-align: center;{if $result.pairing neq 'VV'}display:none;{/if}" placeholder="LT"{/if} onchange="time_converter_{$data.rules_field|default:''|cat:'_2'}(this.value)" />
+                        {if $data.rules_class|default:'' eq "waktu"}
+                        <input type="text" name="{$data.rules_field|default:''|cat:'_2_utc'}" id="{$data.rules_field|default:''|cat:'_2_utc'}" value="{$result[$data.rules_field|cat:'_2_utc']|default:''}" size="{$data.rules_size}" readonly="readonly" style="text-align: center;{if $result.pairing neq 'VV'}display:none;{/if}" placeholder="UTC" class="xinput-back" />
+                        {/if}
+                    {else}
+                        <input type="text" class="bandara_1 xinput-back" id="{$data.rules_field|default:''}" readonly="readonly" size="5" value="{$orig}" style="{if $result.pairing neq 'VV'}display:none;{/if}">
+                        <input type="text" name="{$data.rules_field|default:''|cat:'_2'}" value="{$result[$data.rules_field|cat:'_2']|default:''}" size="{$data.rules_size}" class="{$data.rules_class|default:''} stay-readonly xinput-back" {if $data.rules_class eq "waktu"}readonly="readonly" style="text-align: center;{if $result.pairing neq 'VV'}display:none;{/if}" placeholder="LT"{/if} />
+                        {if $data.rules_class|default:'' eq "waktu"}
+                        <input type="text" name="{$data.rules_field|default:''|cat:'_2_utc'}" value="{$result[$data.rules_field|cat:'_2_utc']|default:''}" size="{$data.rules_size}" readonly="readonly" style="text-align: center;{if $result.pairing neq 'VV'}display:none;{/if}" placeholder="UTC" class="xinput-back" />
+                        {/if}
+                    {/if}                        
+                    <em class="xinput-back">* wajib diisi</em>                    
+                {/if}
+                {if $data.rules_field eq "etd"}
+                    {if $result.is_used_score neq 1}
+                        <input type="text" class="bandara_1 xinput-go" id="{$data.rules_field|default:''}" readonly="readonly" size="5" value="{$orig}">
+                        <input type="text" name="{$data.rules_field|default:''}" value="{$result[$data.rules_field]|default:''}" size="{$data.rules_size}" class="{$data.rules_class|default:''} xinput-go" {if $data.rules_class eq "waktu"}readonly="readonly" style="text-align: center;" placeholder="LT"{/if} onchange="time_converter_{$data.rules_field|default:''}(this.value)" />
+                        {if $data.rules_class|default:'' eq "waktu"}
+                        <input type="text" name="{$data.rules_field|default:''|cat:'_utc'}" id="{$data.rules_field|default:''|cat:'_utc'}" value="{$result[$data.rules_field|cat:'_utc']|default:''}" size="{$data.rules_size}" readonly="readonly" style="text-align: center;" placeholder="UTC" class="xinput-go" />
+                        {/if}
+                    {else}
+                        <input type="text" class="bandara_1 xinput-go" id="{$data.rules_field|default:''}" readonly="readonly" size="5" value="{$orig}">
+                        <input type="text" name="{$data.rules_field|default:''}" value="{$result[$data.rules_field]|default:''}" size="{$data.rules_size}" class="{$data.rules_class|default:''} stay-readonly xinput-go" {if $data.rules_class eq "waktu"}readonly="readonly" style="text-align: center;" placeholder="LT"{/if} />
+                        {if $data.rules_class|default:'' eq "waktu"}
+                        <input type="text" name="{$data.rules_field|default:''|cat:'_utc'}" value="{$result[$data.rules_field|cat:'_utc']|default:''}" size="{$data.rules_size}" readonly="readonly" style="text-align: center;" placeholder="UTC" class="xinput-go" />
+                        {/if}
+                    {/if}
+                    <em>* wajib diisi</em>
+                    <br style="margin-bottom:15px;" />
+                    {if $result.is_used_score_2 neq 1}
+                        <input type="text" class="bandara_2 xinput-back" id="{$data.rules_field|default:''|cat:'_2'}" readonly="readonly" size="5" value="{$dest}" style="{if $result.pairing neq 'VV'}display:none;{/if}">
+                        <input type="text" name="{$data.rules_field|default:''|cat:'_2'}" value="{$result[$data.rules_field|cat:'_2']|default:''}" size="{$data.rules_size}" class="{$data.rules_class|default:''} xinput-back" {if $data.rules_class eq "waktu"}readonly="readonly" style="text-align: center;{if $result.pairing neq 'VV'}display:none;{/if}" placeholder="LT"{/if} onchange="time_converter_{$data.rules_field|default:''|cat:'_2'}(this.value)" />
+                        {if $data.rules_class|default:'' eq "waktu"}
+                        <input type="text" name="{$data.rules_field|default:''|cat:'_2_utc'}" id="{$data.rules_field|default:''|cat:'_2_utc'}" value="{$result[$data.rules_field|cat:'_2_utc']|default:''}" size="{$data.rules_size}" readonly="readonly" style="text-align: center;{if $result.pairing neq 'VV'}display:none;{/if}" placeholder="UTC" class="xinput-back" />
+                        {/if}
+                    {else}
+                        <input type="text" class="bandara_2 xinput-back" id="{$data.rules_field|default:''|cat:'_2'}" readonly="readonly" size="5" value="{$dest}" style="{if $result.pairing neq 'VV'}display:none;{/if}">
+                        <input type="text" name="{$data.rules_field|default:''|cat:'_2'}" value="{$result[$data.rules_field|cat:'_2']|default:''}" size="{$data.rules_size}" class="{$data.rules_class|default:''} stay-readonly xinput-back" {if $data.rules_class eq "waktu"}readonly="readonly" style="text-align: center;{if $result.pairing neq 'VV'}display:none;{/if}" placeholder="LT"{/if} />
+                        {if $data.rules_class|default:'' eq "waktu"}
+                        <input type="text" name="{$data.rules_field|default:''|cat:'_2_utc'}" value="{$result[$data.rules_field|cat:'_2_utc']|default:''}" size="{$data.rules_size}" readonly="readonly" style="text-align: center;{if $result.pairing neq 'VV'}display:none;{/if}" placeholder="UTC" class="xinput-back" />
+                        {/if}
+                    {/if}
+                    <em class="xinput-back">* wajib diisi</em>
+                {/if}
+            {else}
+                <input type="text" name="{$data.rules_field|default:''}" value="{$result[$data.rules_field]|default:''}" size="{$data.rules_size}" class="{$data.rules_class|default:''}" />
+            {/if}
+            {/if}
+        </td>
+    </tr>
+    {/foreach}
+    </table>
+
+    <table class="table-form" width='100%'>
+        <tr class="submit-box">
+            <td colspan="2">
+                &nbsp;
+            </td>
+            <td colspan="2" align='right'>
+                <input type="submit" name="save" value="Lanjutkan" class="submit-button" />
+            </td>
+        </tr>
+    </table>
+</form>
+
+<!-- validation -->
+<script type="text/javascript">
+    function time_converter_etd(temp) {
+        var bandara = document.getElementById("etd").value;
+        var sendData = {
+            bandara: bandara,
+            time: temp,
+        };
+        $.ajax({
+            type: "POST",
+            url: "{$BASEURL}index.php/member/registration_scheduled/time_converter/",
+            dataType: "json",
+            data: sendData,
+            success: function (results) {
+                document.getElementById("etd_utc").value = results;
+            },
+        });
+    }
+
+    function time_converter_etd_2(temp) {
+        var bandara = document.getElementById("etd_2").value;
+        var sendData = {
+            bandara: bandara,
+            time: temp,
+        };
+        $.ajax({
+            type: "POST",
+            url: "{$BASEURL}index.php/member/registration_scheduled/time_converter/",
+            dataType: "json",
+            data: sendData,
+            success: function (results) {
+                document.getElementById("etd_2_utc").value = results;
+            },
+        });
+    }
+
+    function time_converter_eta(temp) {
+        var bandara = document.getElementById("eta").value;
+        var sendData = {
+            bandara: bandara,
+            time: temp,
+        };
+        $.ajax({
+            type: "POST",
+            url: "{$BASEURL}index.php/member/registration_scheduled/time_converter/",
+            dataType: "json",
+            data: sendData,
+            success: function (results) {
+                document.getElementById("eta_utc").value = results;
+            },
+        });
+    }
+
+    function time_converter_eta_2(temp) {
+        var bandara = document.getElementById("eta_2").value;
+        var sendData = {
+            bandara: bandara,
+            time: temp,
+        };
+        $.ajax({
+            type: "POST",
+            url: "{$BASEURL}index.php/member/registration_scheduled/time_converter/",
+            dataType: "json",
+            data: sendData,
+            success: function (results) {
+                document.getElementById("eta_2_utc").value = results;
+            },
+        });
+    }
+
+    $(document).ready(function() {
+        $(".xinput-back").hide();
+        // onchange
+        $("#pairing").change(function() {
+            var pairing = $(this).val();
+            if (pairing === 'VV') {
+                $(".xinput-back").show();
+            } else {
+                $(".xinput-back").hide();
+            }
+        });
+        $("#pairing").trigger("change");
+    });
+</script>

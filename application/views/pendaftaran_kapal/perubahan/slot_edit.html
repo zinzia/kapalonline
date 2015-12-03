@@ -1,0 +1,110 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        // date picker
+        $(".tanggal").datepicker({
+            showOn: 'both',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: '1940:2015',
+            buttonImage: '{$BASEURL}/resource/doc/images/icon/calendar.gif',
+            buttonImageOnly: true,
+            dateFormat: 'yy-mm-dd',
+        });
+    });
+</script>
+<div class="breadcrum">
+    <p>
+        <a href="#">Pendaftaran Izin Rute</a><span></span>
+        <small>{$detail.group_nm}</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info">
+                    Surat Permohonan : <span style="text-decoration: underline;">{$detail.izin_request_letter|default:'-'}</span>, 
+                    <br />
+                    Tanggal : <span style="text-decoration: underline;">{$dtm->get_full_date($detail.izin_request_letter_date)|default:'-'}</span>, ( For {$detail.izin_season} )
+                    <br />
+                    Rute : <b>{$detail.izin_rute_start} / {$detail.izin_rute_end}</b>
+                </li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('izin_domestik/perubahan/list_slot/'|cat:$detail.registrasi_id)}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" />Back to Slot List</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="clear"></div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('izin_domestik/perubahan/edit_slot_process')}" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="registrasi_id" value="{$detail.registrasi_id|default:''}" />
+    <input type="hidden" name="slot_id" value="{$result.slot_id|default:''}" />
+    <table class="table-form" width="100%">
+        <tr>
+            <td width="20%">
+                <span style="text-decoration: underline;">Subyek Surat</span><br /><i>Letter Subject</i>
+            </td>
+            <td width="80%">
+                <input type="text" name="slot_subject" value="{$result.slot_subject}" size="70" maxlength="100" />
+            </td>
+        </tr>    
+        <tr>
+            <td width="20%">
+                <span style="text-decoration: underline;">Nomor Surat</span><br /><i>Letter Number</i>
+            </td>
+            <td width="80%">
+                <input type="text" name="slot_number" value="{$result.slot_number}" size="40" maxlength="50" />
+            </td>
+        </tr>   
+        <tr>
+            <td width="20%">
+                <span style="text-decoration: underline;">Tanggal Surat</span><br /><i>Letter Date</i>
+            </td>
+            <td width="80%">
+                <input type="text" name="slot_date" value="{$result.slot_date}" size="10" maxlength="10" class="tanggal" readonly="readonly" style="text-align: center;" />
+            </td>
+        </tr>   
+        <tr>
+            <td width="20%">
+                <span style="text-decoration: underline;">Perihal</span><br /><i>Letter Description</i>
+            </td>
+            <td width="80%">
+                <input type="text" name="slot_desc" value="{$result.slot_desc}" size="50" maxlength="50" />
+            </td>
+        </tr>   
+        <tr>
+            <td width="20%">
+                <span style="text-decoration: underline;">Lampiran Berkas</span><br /><i>File Attachment</i>
+            </td>
+            <td width="80%">
+                <input type="file" name="slot_file_name" />
+                <small>* 1024KB, pdf|jpeg|jpg|docx|doc|xls|xlsx</small>
+            </td>
+        </tr> 
+        <tr>
+            <td></td>
+            <td>
+                Uploaded Files : <a href="{$config->site_url('izin_domestik/perubahan/slot_download/'|cat:$detail.registrasi_id|cat:'/'|cat:$result.slot_id)}">{$result.slot_file_name}</a>
+            </td>
+        </tr>
+    </table>
+    <table class="table-form" width='100%'>
+        <tr class="submit-box">
+            <td>
+                Penting! wajib diisi semua field diatas!
+            </td>
+            <td align='right'>
+                <input type="submit" name="save" value="Simpan" class="submit-button" />
+            </td>
+        </tr>
+    </table>
+</form>

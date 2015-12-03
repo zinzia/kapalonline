@@ -1,0 +1,182 @@
+<script type="text/javascript">
+    $(function() {
+        $(".login").jCryption({
+            getKeysURL: "{$config->site_url('information/member/crypt?getPublicKey=true')}",
+            handshakeURL: "{$config->site_url('information/member/crypt?handshake=true')}"
+        });
+    });
+</script>
+<h3>{$member_title}</h3>
+{if !empty($com_user)}
+<div class="content">
+    <img src="{$com_user.operator_photo}" style="height: 128px; width: auto;" alt="" />
+    <ul style="list-style: none;">
+        <li><b>{$com_user.operator_name}, ({$com_user.airlines_nm})</b></li>
+        <li>{$com_user.operator_phone}</li>
+        <li>{$com_user.operator_address}</li>
+        <li>{$com_user.user_mail}</li>
+    </ul>
+    <p>
+        <a href="{$config->site_url('member/welcome')}" style="text-decoration: none; color: #FF00BA;">Back to your private menu? Click Here!</a>
+    </p>
+    <div class="clear"></div>
+</div>
+{elseif $login_st|default:'' eq ''}
+<div class="content">
+    <form action="{$config->site_url('information/member/login_process')}" method="post" autocomplete="off" class="login">
+        <input type="hidden" name="{$token_nm}" value="{$token}"/>
+        <table class="table-input" width="100%">
+            <tbody>
+                <tr>
+                    <td colspan="5">
+                        Gunakan fasilitas pelayanan Flight Approval Online di Pendaftaran Kapal Online untuk mempermudah dan mempercepat proses permohonan Flight Approval anda disini!
+                    </td>
+                </tr>
+                <tr>
+                    <td width="10%">User Name</td>
+                    <td width="20%">
+                        <input name="username" maxlength="30" type="text" autocomplete="off"/>
+                    </td>
+                    <td width="10%">Password</td>
+                    <td width="20%">
+                        <input name="pass" maxlength="30" type="password" autocomplete="off"/>
+                    </td>
+                    <td width="40%">
+                        {$captcha.image|default:''}
+                        <input type="text" name="captcha" size="10" maxlength="10" style="background-color:#f7ecbc;color:#000" />
+                        <button class="submit-button">Login</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4"></td>
+                    <td>
+                        <a href="{$config->site_url('information/member/forget_password')}">{$member_forget}</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+{elseif $login_st|default:'' eq 'error'}
+<div class="content">
+    <form action="{$config->site_url('information/member/login_process')}" method="post" autocomplete="off" class="login">
+        <input type="hidden" name="{$token_nm}" value="{$token}"/>
+        <table class="table-input" width="100%">
+            <tbody>
+                <tr>
+                    <td colspan="5">
+                        Gunakan fasilitas pelayanan Flight Approval Online di Pendaftaran Kapal Online untuk mempermudah dan mempercepat proses permohonan Flight Approval anda disini!
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5" class="blink-row">
+                        Username dan Password anda tidak ditemukan! Hubungi administrator Pendaftaran Kapal Online jika mengalami kesulitan.
+                    </td>
+                </tr>
+                <tr>
+                    <td width="10%">User Name</td>
+                    <td width="20%">
+                        <input name="username" maxlength="30" type="text" autocomplete="off"/>
+                    </td>
+                    <td width="10%">Password</td>
+                    <td width="20%">
+                        <input name="pass" maxlength="30" type="password" autocomplete="off"/>
+                    </td>
+                    <td width="40%">
+                       {$captcha.image|default:''}
+                        <input type="text" name="captcha" size="10" maxlength="10" style="background-color:#f7ecbc;color:#000" />
+                        <button class="submit-button">Login</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4"></td>
+                    <td>
+                        <a href="{$config->site_url('information/member/forget_password')}">Lupa password? Klik Disini!</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+{elseif $login_st|default:'' eq 'locked'}
+<div class="content">
+    <form action="{$config->site_url('information/member/login_process')}" method="post" autocomplete="off" class="login">
+        <input type="hidden" name="{$token_nm}" value="{$token}"/>
+        <table class="table-input" width="100%">
+            <tbody>
+                <tr>
+                    <td colspan="5">
+                        Gunakan fasilitas pelayanan Flight Approval Online di Pendaftaran Kapal Online untuk mempermudah dan mempercepat proses permohonan Flight Approval anda disini!
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5" class="blink-row">
+                        Account anda tidak bisa digunakan! Hubungi administrator Pendaftaran Kapal Online jika mengalami kesulitan.
+                    </td>
+                </tr>
+                <tr>
+                    <td width="10%">User Name</td>
+                    <td width="20%">
+                        <input name="username" maxlength="30" type="text" autocomplete="off"/>
+                    </td>
+                    <td width="10%">Password</td>
+                    <td width="20%">
+                        <input name="pass" maxlength="30" type="password" autocomplete="off"/>
+                    </td>
+                    <td width="40%">
+                        {$captcha.image|default:''}
+                        <input type="text" name="captcha" size="10" maxlength="10" style="background-color:#f7ecbc;color:#000" />
+                        <button class="submit-button">Login</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4"></td>
+                    <td>
+                        <a href="{$config->site_url('information/member/forget_password')}">Lupa password? Klik Disini!</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+{else}
+<div class="content">
+    <form action="{$config->site_url('information/member/login_process')}" method="post" autocomplete="off" class="login">
+        <input type="hidden" name="{$token_nm}" value="{$token}"/>
+        <table class="table-input" width="100%">
+            <tbody>
+                <tr>
+                    <td colspan="5">
+                        Gunakan fasilitas pelayanan Flight Approval Online di Pendaftaran Kapal Online untuk mempermudah dan mempercepat proses permohonan Flight Approval anda disini!
+                    </td>
+                </tr>
+                <tr>
+                    <td width="10%">User Name</td>
+                    <td width="20%">
+                        <input name="username" maxlength="30" type="text" autocomplete="off"/>
+                    </td>
+                    <td width="10%">Password</td>
+                    <td width="20%">
+                        <input name="pass" maxlength="30" type="password" autocomplete="off"/>
+                    </td>
+                    <td width="40%">
+                        {$captcha.image|default:''}
+                        <input type="text" name="captcha" size="10" maxlength="10" style="background-color:#f7ecbc;color:#000" />
+                        <button class="submit-button">Login</button> 
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4"></td>
+                    <td>
+                        <a href="{$config->site_url('information/member/forget_password')}">{$member_forget}</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+{/if}
+<br />
+<br />
+<br />
+<br />

@@ -1,0 +1,201 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        // date picker
+        $(".tanggal_from").datepicker({
+            showOn: 'both',
+            buttonImage: '{$BASEURL}/resource/doc/images/icon/calendar.gif',
+            buttonImageOnly: true,
+            dateFormat: 'yy-mm-dd',
+            maxDate: {$hari_pengajuan.batasan|default:'0'},
+            onClose: function( selectedDate ) {
+                $( ".tanggal_to" ).datepicker( "option", "minDate", selectedDate );
+            }
+        }).datepicker("setDate", "{$search.tanggal_from|default:'new Date()'}");
+        $(".tanggal_to").datepicker({
+            showOn: 'both',
+            buttonImage: '{$BASEURL}/resource/doc/images/icon/calendar.gif',
+            buttonImageOnly: true,
+            dateFormat: 'yy-mm-dd',
+            maxDate: {$hari_pengajuan.batasan|default:'0'},
+        }).datepicker("setDate", "{$search.tanggal_to|default:'new Date()'}");
+        // --
+        $(".bulan").select2({
+            placeholder: "-- Bulan --",
+            width: 130,
+            allowClear: true
+        });
+        $(".tahun").select2({
+            placeholder: "-- Tahun --",
+            width: 100,
+            allowClear: true
+        });
+        $(".airlines_nm").select2({
+            placeholder: "-- Semua --",
+            width: 300,
+            allowClear: true
+        });
+    });
+</script>
+<style type="text/css">
+    .bulan .select2-choice {
+        width: 120px !important;
+        font-weight: bold;
+    }
+    .bulan .select2-default {
+        width: 120px !important;
+        font-weight: bold;
+    }
+    .tahun .select2-choice {
+        width: 90px !important;
+    }
+    .tahun .select2-default {
+        width: 90px !important;
+    }
+    .airlines_nm .select2-choice {
+        width: 290px !important;
+    }
+    .airlines_nm .select2-default {
+        width: 290px !important;
+    }
+</style>
+<div class="dashboard-welcome">
+    <h3>{$tanggal.hari}, {$tanggal.tanggal}</h3>
+    <div class="search-box">
+        <form action="{$config->site_url('helpdesk/dashboard/proses_cari')}" method="post">
+            <table class="table-search" width="100%" border="0">
+                <tr>
+                    <th width="5%">Periode</th>
+                    <td width="30%">
+                        <select name="bulan" class="bulan">
+                            <option value=""></option>
+                            {foreach from=$rs_bulan key=index item=value}
+                            <option value="{$index}" {if $search.bulan|default:'' eq $index}selected="selected"{/if}>{$value}</option>
+                            {/foreach}
+                        </select>
+                        <select name="tahun" class="tahun">
+                            <option value=""></option>
+                            {foreach from=$rs_tahun item=value}
+                            <option value="{$value}" {if $search.tahun|default:'' eq $value}selected="selected"{/if}>{$value}</option>
+                            {/foreach}
+                        </select>
+                    </td>
+                    <th width="5%">Operator</th>
+                    <td width="35%">
+                        <select name="airlines_nm" class="airlines_nm">
+                            <option value=""></option>
+                            {foreach from=$rs_airlines item=value}
+                            <option value="{$value.airlines_nm|default:''}" {if $search.airlines_nm|default:'' eq $value.airlines_nm|default:''}selected="selected"{/if}>{$value.airlines_nm|default:''}</option>
+                            {/foreach}
+                        </select>
+                    </td>
+                    <td align="right">
+                        <input name="save" type="submit" value="Tampilkan" />
+                        <input name="save" type="submit" value="Reset" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div class="navigation">
+        <div class="navigation">
+            <div class="navigation-button">
+                <ul>
+                    <li><a href="{$config->site_url('helpdesk/dashboard/download/')}"><img src="{$BASEURL}resource/doc/images/icon/download-icon.png" alt="" /> Download Excel</a></li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div class="statistik-box">
+        <table class="table-view" width='100%'>
+            <tr style="text-align: center;">
+                <td rowspan="2" width='25%'>
+                    Status<br />Permohonan FA
+                </td>
+                <td colspan="2"><b>BERJADWAL</b></td>
+                <td colspan="2"><b>TIDAK<br />BERJADWAL</b></td>
+                <td colspan="2"><b>BUKAN<br />NIAGA</b></td>
+                <td rowspan="2"><b>TOTAL</b></td>
+            </tr>
+            <tr style="text-align: center;">
+                <td width='11%'>Dalam<br />Negeri</td>
+                <td width='11%'>Luar<br />Negeri</td>
+                <td width='11%'>Dalam<br />Negeri</td>
+                <td width='11%'>Luar<br />Negeri</td>
+                <td width='11%'>Dalam<br />Negeri</td>
+                <td width='11%'>Luar<br />Negeri</td>
+            </tr>
+            <tr>
+                <td>Belum diproses</td>
+                <td align='center'>{$data_belum.berjadwal.domestik|number_format:0:'.':','|default:'0'}</td>
+                <td align='center'>{$data_belum.berjadwal.internasional|number_format:0:'.':','}</td>
+                <td align='center'>{$data_belum.tidak_berjadwal.domestik|number_format:0:'.':','}</td>
+                <td align='center'>{$data_belum.tidak_berjadwal.internasional|number_format:0:'.':','}</td>
+                <td align='center'>{$data_belum.bukan_niaga.domestik|number_format:0:'.':','}</td>
+                <td align='center'>{$data_belum.bukan_niaga.internasional|number_format:0:'.':','}</td>
+                <td align='center'>{$total_belum|number_format:0:'.':','}</td>
+            </tr>
+            <tr>
+                <td>Sedang dalam proses</td>
+                <td align='center'>{$data.waiting.berjadwal.domestik - $data_belum.berjadwal.domestik|number_format:0:'.':','}</td>
+                <td align='center'>{$data.waiting.berjadwal.internasional - $data_belum.berjadwal.internasional|number_format:0:'.':','}</td>
+                <td align='center'>{$data.waiting.tidak_berjadwal.domestik - $data_belum.tidak_berjadwal.domestik|number_format:0:'.':','}</td>
+                <td align='center'>{$data.waiting.tidak_berjadwal.internasional - $data_belum.tidak_berjadwal.internasional|number_format:0:'.':','}</td>
+                <td align='center'>{$data.waiting.bukan_niaga.domestik - $data_belum.bukan_niaga.domestik|number_format:0:'.':','}</td>
+                <td align='center'>{$data.waiting.bukan_niaga.internasional - $data_belum.bukan_niaga.internasional|number_format:0:'.':','}</td>
+                <td align='center'>{$total_awaiting - $total_belum|number_format:0:'.':','}</td>
+            </tr>
+            <tr>
+                <td>Telah diterbitkan</td>
+                <td align='center'>{$data.approved.berjadwal.domestik|number_format:0:'.':','}</td>
+                <td align='center'>{$data.approved.berjadwal.internasional|number_format:0:'.':','}</td>
+                <td align='center'>{$data.approved.tidak_berjadwal.domestik|number_format:0:'.':','}</td>
+                <td align='center'>{$data.approved.tidak_berjadwal.internasional|number_format:0:'.':','}</td>
+                <td align='center'>{$data.approved.bukan_niaga.domestik|number_format:0:'.':','}</td>
+                <td align='center'>{$data.approved.bukan_niaga.internasional|number_format:0:'.':','}</td>
+                <td align='center'>{$total_approved|number_format:0:'.':','}</td>
+            </tr>
+            <tr>
+                <td>Ditolak</td>
+                <td align='center'>{$data.rejected.berjadwal.domestik|number_format:0:'.':','}</td>
+                <td align='center'>{$data.rejected.berjadwal.internasional|number_format:0:'.':','}</td>
+                <td align='center'>{$data.rejected.tidak_berjadwal.domestik|number_format:0:'.':','}</td>
+                <td align='center'>{$data.rejected.tidak_berjadwal.internasional|number_format:0:'.':','}</td>
+                <td align='center'>{$data.rejected.bukan_niaga.domestik|number_format:0:'.':','}</td>
+                <td align='center'>{$data.rejected.bukan_niaga.internasional|number_format:0:'.':','}</td>
+                <td align='center'>{$total_rejected|number_format:0:'.':','}</td>
+            </tr>
+            <tr class="blink-row" style="font-weight: bold;">
+                <td>TOTAL</td>
+                <td align='center'>{$data.waiting.berjadwal.domestik + $data.approved.berjadwal.domestik + $data.rejected.berjadwal.domestik}</td>
+                <td align='center'>{$data.waiting.berjadwal.internasional + $data.approved.berjadwal.internasional + $data.rejected.berjadwal.internasional}</td>
+                <td align='center'>{$data.waiting.tidak_berjadwal.domestik + $data.approved.tidak_berjadwal.domestik + $data.rejected.tidak_berjadwal.domestik}</td>
+                <td align='center'>{$data.waiting.tidak_berjadwal.internasional + $data.approved.tidak_berjadwal.internasional + $data.rejected.tidak_berjadwal.internasional}</td>
+                <td align='center'>{$data.waiting.bukan_niaga.domestik + $data.approved.bukan_niaga.domestik + $data.rejected.bukan_niaga.domestik}</td>
+                <td align='center'>{$data.waiting.bukan_niaga.internasional + $data.approved.bukan_niaga.internasional + $data.rejected.bukan_niaga.internasional}</td>
+                <td align='center'>{$total|number_format:0:'.':','}</td>
+            </tr>
+        </table>
+    </div>
+    <div class="info-box" style="width:50%; float:left;">
+        <h4>Live Update Pelayanan Persetujuan Terbang</h4>
+        <div id="chart_permohonan">
+            <script type="text/javascript">
+                var chart = new FusionCharts("{$BASEURL}resource/doc/charts/Pie2D.swf", "chart_permohonan", "100%", "275", "0", "1");
+                chart.setDataURL("{$config->site_url('helpdesk/dashboard/data_chart_pie')}");
+                chart.render("chart_permohonan");
+            </script> 
+        </div>
+    </div>
+    <div class="info-box" style="width:50%; float:left;">
+        <h4>Pelayanan Persetujuan Terbang Selama Tahun {$search.tahun}</h4>
+        <div id="chart_pelayanan">
+            <script type="text/javascript">
+                var chart = new FusionCharts("{$BASEURL}resource/doc/charts/StackedColumn2D.swf", "chart_pelayanan", "100%", "252", "0", "1");
+                chart.setDataURL("{$config->site_url('helpdesk/dashboard/data_chart')}");
+                chart.render("chart_pelayanan");
+            </script> 
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>

@@ -1,0 +1,74 @@
+<div class="head-content">
+    <h3>Navigation - {$portal.portal_nm|default:''}</h3>
+    <div class="head-content-nav">
+        <ul>
+            <li><a href="{$config->site_url('settings/adminmenu/add/'|cat:$portal.portal_id)}" class="active"><img src="{$BASEURL}resource/doc/images/icon/add-icon.png" alt="" /> Add Menu</a></li>
+            <li><a href="{$config->site_url('settings/adminmenu/navigation/'|cat:$portal.portal_id)}">List Menu</a></li>
+            <li><a href="{$config->site_url('settings/adminmenu')}">Web Portal</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('settings/adminmenu/process_add')}" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="portal_id" value="{$portal.portal_id|default:''}" />
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="2">Tambah Menu</th>
+        </tr>
+        <tr>
+            <td width="25%">Induk Menu</td>
+            <td width="75%">
+                <select name="parent_id">
+                    <option value="0"></option>
+                    {$list_parent|default:''}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Judul Menu</td>
+            <td><input type="text" name="nav_title" maxlength="100" size="50" value="{$result.nav_title|default:''}" /></td>
+        </tr>
+        <tr>
+            <td>Deskripsi</td>
+            <td><input type="text" name="nav_desc" maxlength="255" size="70" value="{$result.nav_desc|default:''}" /></td>
+        </tr>
+        <tr>
+            <td>Alamat Menu</td>
+            <td><input type="text" name="nav_url" maxlength="255" size="40" value="{$result.nav_url|default:''}" /></td>
+        </tr>
+        <tr>
+            <td>Urutan</td>
+            <td><input type="text" name="nav_no" maxlength="5" size="5" value="{$result.nav_no|default:''}" /></td>
+        </tr>
+        <tr>
+            <td>Digunakan</td>
+            <td>
+                <select name="active_st">
+                    <option value="1"{if {$result.active_st|default:''} == "1"}selected="selected"{/if}>Ya</option>
+                    <option value="0" {if {$result.active_st|default:''} == "0"}selected="selected"{/if}>Tidak</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Ditampilkan</td>
+            <td>
+                <select name="display_st">
+                    <option value="1"{if {$result.display_st|default:''} == "1"}selected="selected"{/if}>Ya</option>
+                    <option value="0" {if {$result.display_st|default:''} == "0"}selected="selected"{/if}>Tidak</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Navigation Icon</td>
+            <td colspan="3">
+                <input type="file" name="nav_icon" size="50" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="submit" name="save" value="Simpan" class="edit-button" /> </td>
+        </tr>
+    </table>
+</form>

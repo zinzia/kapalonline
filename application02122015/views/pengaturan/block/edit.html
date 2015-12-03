@@ -1,0 +1,44 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <a href="{$config->site_url('pengaturan/block')}">Block Airlines</a><span></span>
+        <small>Edit Data</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('pengaturan/block')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" /> Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('pengaturan/block/edit_process')}" method="post" onsubmit="return confirm('Apakah anda yakin akan membuka akses untuk Airlines tersebut?')">
+    <input type="hidden" name="block_id" value="{$result.block_id|default:''}" />
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="4">Open Registration for Airlines</th>
+        </tr>
+        <tr>
+            <td width="20%">Alasan</td>
+            <td width="80%">{$detail.block_reason|default:''|nl2br}</td>
+        </tr>
+        <tr>
+            <td>Operator / Airlines</td>
+            <td>{$detail.airlines_nm|upper|default:''}</td>
+        </tr> 
+        <tr>
+            <td>Penanggungjawab</td>
+            <td>{$detail.operator_name|default:''|upper}, {$dtm->get_full_date($detail.block_date|default:'')|upper}</td>
+        </tr> 
+        <tr class="submit-box">
+            <td align="center" colspan="2">
+                <input type="submit" name="save" value="OPEN" class="submit-button" />
+            </td>
+        </tr>
+    </table>
+</form>

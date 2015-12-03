@@ -1,0 +1,165 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        // date picker
+        $(".tanggal").datepicker({
+            showOn: 'both',
+            changeMonth: true,
+            changeYear: true,
+            buttonImage: '{$BASEURL}/resource/doc/images/icon/calendar.gif',
+            buttonImageOnly: true,
+            dateFormat: 'yy-mm-dd',
+        });
+        // Pairing
+        var reverseString = function(string) {
+            return string.split('-').reverse().join('-');
+        };
+        // rute
+        $(".rute-start").change(function() {
+            $(".rute-end").val('');
+            $(".rute-end").val(reverseString($(this).val()));
+        });
+        /*
+         * COMBO BOX
+         */
+        $(".rute-start").select2({
+            placeholder: "Pilih Izin Rute Pada SIUP",
+            allowClear: true,
+            width: 200
+        });
+    });
+</script>
+<style type="text/css">
+    .select2-choice {
+        width: 190px !important;
+    }
+    .select2-default {
+        width: 190px !important;
+    }
+</style>
+<div class="breadcrum">
+    <p>
+        <a href="#">Pendaftaran Izin Rute</a><span></span>
+        <small>{$detail.group_nm}</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('member/registration_internasional/')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" />Back to Draft List</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="step-box">
+    <ul>
+        <li>
+            <a href="{$config->site_url('izin_internasional/baru/index/'|cat:$detail.izin_id)}" class="active"><b>Step 1</b><br />Data Permohonan</a>
+        </li>
+        <li>
+            <a href="#" class="normal"><b>Step 2</b><br />Data Rute Penerbangan</a>
+        </li>
+        <li>
+            <a href="#" class="normal"><b>Step 3</b><br />Slot Clearance</a>
+        </li>
+        <li>
+            <a href="#" class="normal"><b>Step 4</b><br />File Attachment</a>
+        </li>
+        <li>
+            <a href="#" class="normal"><b>Step 5</b><br />Review Permohonan</a>
+        </li>
+    </ul>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('izin_internasional/baru/edit_process')}" method="post">
+    <input type="hidden" name="registrasi_id" value="{$result.registrasi_id|default:''}">
+    <table class="table-form" width="100%">
+        <tr>
+            <td colspan="4" align='center'>
+                <b style="font-size: 16px;">PERMOHONAN {$detail.group_nm|upper}</b>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" align='center'>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                <span style="text-decoration: underline;">Tanggal Surat Permohonan</span><br /><i>Request Letter Date</i>
+            </td>
+            <td>
+                <input type="text" name="izin_request_letter_date" size="10" maxlength="10" value="{$result.izin_request_letter_date|default:''}" class="tanggal" readonly="readonly" style="text-align: center; font-weight: bold;" />
+            </td>
+            <td width='20%'>
+                <span style="text-decoration: underline;">Nomor Surat Permohonan</span><br /><i>Request Letter Number</i>
+            </td>
+            <td width='25%'>
+                <input type="text" name="izin_request_letter" size="25" maxlength="50" value="{$result.izin_request_letter|default:''|upper}" style="font-weight: bold;" />
+            </td>
+        </tr>
+        <tr>
+            <td width='20%'>
+                <span style="text-decoration: underline;">Rute Pairing</span><br /><i>Pair Routes</i>
+            </td>
+            <td width='35%'>
+                {if $com_user.airlines_nationality eq 'nasional'}
+                <select name="izin_rute_start" class="rute-start">
+                    <option value=""></option>
+                    {foreach from=$rs_rute item=data}
+                    {if $data->jenis_penerbangan eq 'Internasional'}
+                    <option value="{$data->rute_asal}-{$data->rute_tujuan}" {if ($data->rute_asal|cat:'-'|cat:$data->rute_tujuan) eq $result.izin_rute_start}selected="selected"{/if}>{$data->rute_asal}-{$data->rute_tujuan}</option>
+                    {/if}
+                    {/foreach}
+                </select>
+                {/if}
+                {if $com_user.airlines_nationality eq 'asing'}
+                <input type="text" name="izin_rute_start" size="10" maxlength="7" value="{$result.izin_rute_start|default:''|upper}" style="text-align: center;" class="rute-start" placeholder="ex: CGK-SIN" />
+                {/if}
+                &nbsp;
+                &nbsp;
+                <input type="text" name="izin_rute_end" size="10" value="{$result.izin_rute_end|default:''|upper}" style="text-align: center;" readonly="readonly" class="rute-end" placeholder="Automatic" />
+            </td>
+            <td><span style="text-decoration: underline;">Penunjukkan Oleh</span><br /><i>Appointment By</i></td>
+            <td>
+                <input type="text" name="penanggungjawab" size="20" maxlength="50" value="{$result.penanggungjawab|default:''|upper}" />
+            </td>
+        </tr>   
+        <tr>
+            <td>
+                <span style="text-decoration: underline;">Jenis Penerbangan</span><br /><i>Flight Type</i>
+            </td>
+            <td>
+                <select name="pax_cargo">
+                    {if $com_user.airlines_type eq 'penumpang'}
+                    <option value="penumpang" {if $result.pax_cargo eq 'penumpang'}selected="selected"{/if}>PENUMPANG</option>
+                    {/if}
+                    {if $com_user.airlines_type eq 'kargo'}
+                    <option value="cargo" {if $result.pax_cargo eq 'cargo'}selected="selected"{/if}>KARGO</option>
+                    {/if}
+                </select>
+            </td>
+            <td><span style="text-decoration: underline;">Jabatan</span><br /><i>Job Title</i></td>
+            <td>
+                <input type="text" name="jabatan" size="20" maxlength="50" value="{$result.jabatan|default:''|upper}" />
+            </td>
+        </tr>  
+        <tr>
+            <td>
+                <span style="text-decoration: underline;">Season Code</span><br /><i>For IASM Airport</i>
+            </td>
+            <td colspan="3">
+                <input type="text" name="izin_season" size="11" maxlength="3" value="{$result.izin_season|default:''|upper}" style="text-align: center;" placeholder="Wajib diisi" />
+            </td>
+        </tr>
+    </table>
+    <table class="table-form" width='100%'>
+        <tr class="submit-box">
+            <td>Semua field wajib diisi! kesalahan pada format input merupakan tanggungjawab pengguna dan akan dikembalikan (Revisi) pada pemohon!</td>
+            <td align='right'>
+                <input type="submit" name="save" value="Simpan dan Lanjutkan" class="submit-button" />
+            </td>
+        </tr>
+    </table>
+</form>

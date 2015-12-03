@@ -1,0 +1,89 @@
+<!-- javascript -->
+<script type="text/javascript">
+    function toggle(source) {
+        var checkboxes = document.getElementsByName("data_id[]");
+        for (var i = 0, n = checkboxes.length; i < n; i++) {
+            checkboxes[i].checked = source.checked;
+        };
+    }
+</script>
+
+<div class="breadcrum">
+    <p>
+        <a href="#">Task Manager</a><span></span>
+        <small>Pembayaran AUNTB</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="search-box">
+    <h3><a href="#">Search</a></h3>
+    <form action="{$config->site_url('task/pembayaran_auntb/proses_cari')}" method="post">
+        <table class="table-search" width="100%" border="0">
+            <tr>
+                <th width="10%">Nomor</th>
+                <td width="15%">
+                    <input name="published_no" type="text" value="{$search.published_no|default:''}" size="40" maxlength="40" />
+                </td>
+                <th width="10%">Operator</th>
+                <td width="15%">
+                    <input name="airlines_nm" type="text" value="{$search.airlines_nm|default:''}" size="20" maxlength="50" />
+                </td>
+                <td>
+                    <input name="save" type="submit" value="Tampilkan" />
+                    <input name="save" type="submit" value="Reset" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info">{$pagination.data|default:''}&nbsp;Total&nbsp;<strong>{$pagination.total|default:0}</strong>&nbsp;Record&nbsp;</li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('task/pembayaran_auntb/form_pembayaran')}" method="post">
+    <table class="table-view" width="100%">
+        <tr>
+            <th width='4%'>No</th>
+            <th width='23%'>Nomor FA</th>
+            <th width='20%'>Operator</th>
+            <th width='15%'>Berjadwal / <br />Tidak Berjadwal</th>
+            <th width='15%'>Domestik / <br />Internasional</th>
+            <th width='10%'>Tanggal Harus Bayar</th>
+            <th width='13%'><input type="checkbox" onclick="toggle(this)" /></th>
+        </tr>
+        {$no = 1}
+        {foreach from=$rs_id item=result}
+        <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+            <td align="center">{$no++}.</td>
+            <td align="center">{$result.published_no}</td>
+            <td>{$result.airlines_nm|upper}</td>
+            <td align="center">{$result.data_type|upper}</td>
+            <td align="center">{$result.data_flight|upper}</td>
+            <td align="center">{$result.payment_due_date|date_format:"%d %b %Y"|upper}</td>
+            <td align="center">
+                <input type="checkbox" name="data_id[]" value="{$result.data_id|default:''}">
+            </td>
+        </tr>
+        {foreachelse}
+        <tr>
+            <td colspan="8">Data not found!</td>
+        </tr>
+        {/foreach}
+    </table>
+    <table class="table-form" width='100%'>
+        <tr class="submit-box">
+            <td align='right'>
+                <input type="submit" name="save" value="Lanjutkan" class="submit-button" />
+            </td>
+        </tr>
+    </table>
+</form>

@@ -1,0 +1,98 @@
+<script type="text/javascript">
+    function prev() {
+        window.location = "{$config->site_url('member/registration_unscheduled/form/'|cat:$result.data_id)}";
+    }
+</script>
+<div class="breadcrum">
+    <p>
+        <a href="#">Registration</a><span></span>
+        <small>Flight Approval Angkutan Udara Niaga Tidak Berjadwal</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('member/registration_unscheduled/')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" />Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="step-box">
+    <ul>
+        <li>
+            <a href="{$config->site_url('member/registration_unscheduled/add/'|cat:$result.data_id)}" class="normal"><b>Step 1</b><br />Domestic / International</a>
+        </li>
+        <li>
+            <a href="{$config->site_url('member/registration_unscheduled/form/'|cat:$result.data_id)}"><b>Step 2</b><br />Flight Approval</a>
+        </li>
+        <li>
+            <a href="{$config->site_url('member/registration_unscheduled/files/'|cat:$result.data_id)}" class="active"><b>Step 3</b><br />File Attachment</a>
+        </li>
+    </ul>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('member/registration_unscheduled/files_process')}" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="data_id" value="{$result.data_id|default:''}">
+    <table class="table-form" width="100%">
+        <tr>
+            <th colspan="5">File Attachment</th>
+        </tr>
+        <tr>
+            <td colspan="5">
+                File persyaratan yang wajib di sertakan adalah sebagai berikut :
+            </td>
+        </tr>
+        {$no = 1}
+        {foreach from=$rs_files item=data}
+        <tr>
+            <td width='5%' align="center">
+                {$no++}.
+            </td>
+            <td width='30%'>
+                {$data.ref_name}
+            </td>
+            <td width='20%'>
+                <input type="file" name="{$data.ref_field}" />
+            </td>
+            <td width='15%'>
+                <small>Maksimal {$data.ref_size}KB ({$data.ref_allowed|upper})</small>
+            </td>
+            <td width="30%">
+                {if $data.ref_id|in_array:$file_uploaded}
+                <a href="{$config->site_url('member/registration_unscheduled/files_download/'|cat:$result.data_id|cat:'/'|cat:$data.ref_id|cat:'/'|cat:$name_uploaded[$data.ref_id])}">{$name_uploaded[$data.ref_id]}</a>
+                {else}
+                Belum ada file yang di upload!
+                {/if}
+            </td>
+        </tr>
+        {/foreach}
+        <tr>
+            <td colspan="5"></td>
+        </tr>
+        <tr>
+            <td colspan="5" align="center">
+                <input type="submit" name="save" value="Upload Berkas" class='button-upload' />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="5"></td>
+        </tr>
+    </table>
+</form>
+<form action="{$config->site_url('member/registration_unscheduled/send_process')}" method="post">
+    <input type="hidden" name="data_id" value="{$result.data_id|default:''}">
+    <table class="table-form" width='100%'>
+        <tr class="submit-box">
+            <td colspan="2">
+                <input name="save" value="Sebelumnya" class="submit-button" type="button" onclick="prev();" />
+            </td>
+            <td colspan="2" align='right'>
+                <input type="submit" name="save" value="Kirim Permohonan" class="reset-button" onclick="return confirm('Apakah anda yakin akan mengirim permohonan ini?');" />
+            </td>
+        </tr>
+    </table>
+</form>

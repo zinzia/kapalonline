@@ -1,0 +1,82 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Task Manager</a><span></span>
+        <small>{$com_user.role_nm|upper}</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info"><strong>{$total|default:0}</strong> Record&nbsp;</li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width='4%'>No</th>
+        <th width='20%'>Operator</th>
+        <th width='13%'>Nomor Permohonan</th>
+        <th width='17%'>Jenis Penerbangan</th>
+        <th width='24%'>Tanggal</th>
+        <th width='5%'>Jumlah</th>
+        <th width='4%'></th>
+        <th width='13%'></th>
+    </tr>
+    {$no = 1}
+    {foreach from=$rs_id item=result}
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+        <td align="center">{$no++}.</td>
+        <td><b>{$result.airlines_nm|upper}</b></td>
+        <td align="center">{$result.document_no|upper}</td>
+        <td align="center">{$result.data_type|upper} {$result.data_flight|upper}</td>
+        <td align="center">
+            {if $result.data_flight eq "domestik"}
+                Tanggal : {$result.date_start|date_format:"%d %b %Y"|upper} / {$result.date_end|date_format:"%d %b %Y"|upper}
+            {else}
+                {if $result.date_start eq "0000-00-00"}
+                Tangal Masuk : - / -
+                {else}
+                Tangal Masuk : {$result.date_start|date_format:"%d %b %Y"|upper} / {$result.date_start_upto|date_format:"%d %b %Y"|upper}
+                {/if}
+                <br />
+                {if $result.date_start eq "0000-00-00"}
+                Tangal Masuk : - / -
+                {else}
+                Tangal Keluar : {$result.date_end|date_format:"%d %b %Y"|upper} / {$result.date_end_upto|date_format:"%d %b %Y"|upper}
+                {/if}
+            {/if}
+        </td>
+        <td align="center">{$result.registration_total}</td>
+        <td align="center">
+            {if $result.notes eq ''}
+            <img src="{$BASEURL}resource/doc/images/icon/icon.notes.blue.png" alt="" title="Tidak ada catatan" />
+            {else}
+            <img src="{$BASEURL}resource/doc/images/icon/icon.notes.red.png" alt="" title="Ada catatan khusus" />
+            {/if}
+        </td>
+        <td align="center">
+            <a href="{$config->site_url($result.task_link|cat:'/index/'|cat:$result.data_id|default:'')}" class="button-edit">
+                {if $result.selisih_hari == 0 && substr($result.selisih_waktu,0,2) == 00}
+                {substr($result.selisih_waktu,3,2)} minutes ago
+                {else if $result.selisih_hari == 0}
+                {substr($result.selisih_waktu,0,2)} hour ago
+                {else}
+                {$result.selisih_hari} day ago
+                {/if}
+            </a>
+        </td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="8">Data not found!</td>
+    </tr>
+    {/foreach}
+</table>

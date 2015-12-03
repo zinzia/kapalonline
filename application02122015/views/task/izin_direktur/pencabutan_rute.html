@@ -1,0 +1,160 @@
+<!-- include javascript -->
+{include file="task/izin_rute/task_javascript.html"}
+<!-- end of include javascript-->
+<script type="text/javascript">
+    $(document).ready(function () {
+        // select all
+        $("#proses-all").change(function () {
+            var proses = $("#proses-all").val();
+            $(".proses-item").val(proses);
+        });
+    });
+</script>
+<div class="breadcrum">
+    <p>
+        <a href="#">Task Manager Izin Rute</a><span></span>
+        <a href="#">{$task.task_nm}</a><span></span>
+        <small>{$detail.airlines_nm}</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info">
+                    <b>{$detail.group_nm|upper}</b> : 
+                    <br /> {$detail.izin_rute_start} / {$detail.izin_rute_end} ( Semua )
+                    <br />
+                    Input By : {$detail.pengirim|default:'-'}, {$dtm->get_full_date($detail.izin_request_date)|default:'-'}
+                </li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('task/izin_rute')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" /> Back to Waiting List</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="clear"></div>
+<div class="navigation" style="background-color: #eee; padding: 10px;">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('task/izin_direktur/back_process/'|cat:$detail.registrasi_id|cat:'/'|cat:$detail.process_id)}" onclick="return confirm('Apakah anda yakin akan mengirimkan data berikut ini ke {$prev.role_nm}?')"><img src="{$BASEURL}resource/doc/images/icon/arrow-left.png" alt="" /> Kirim ke {$prev.role_nm}</a></li>
+            <li><a href="{$config->site_url('task/izin_direktur/send_process/'|cat:$detail.registrasi_id|cat:'/'|cat:$detail.process_id)}" onclick="return confirm('Apakah anda yakin akan mengirimkan data berikut ini ke {$next.role_nm}?')"><img src="{$BASEURL}resource/doc/images/icon/arrow-right.png" alt="" /> Kirim ke {$next.role_nm}</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<div class="rute-box">
+    <h5>
+        <a href="#" class="drop-up">
+            Pencabutan Seluruh Rute Penerbangan :
+        </a>
+    </h5>
+    <table class="table-view" width="100%">
+        <tr style="font-weight: bold;">
+            <td width="4%" align='center'>No</td>
+            <td width="8%" align='center'>Rute</td>
+            <td width="7%" align='center'>Tipe<br />Pesawat</td>
+            <td width="8%" align='center'>Nomor<br />Penerbangan</td>
+            <td width="7%" align='center'>ETD <br />( LT )</td>
+            <td width="7%" align='center'>ETA <br />( LT )</td>
+            <td width="8%" align='center'>Hari <br />Operasi</td>
+            <td width="8%" align='center'>Frekuensi</td>
+            <td width="8%" align='center'>Total <br />Frekuensi</td>
+            <td width="20%" align='center'>Tanggal <br />Efektif</td>
+            <td width="15%" align='center'></td>
+        </tr>
+        {foreach from=$rs_id key=no item=rute}
+        {$i = 1}
+        {$rowspan = $rute|count}
+        {foreach from=$rute item=data}
+        <tr {$row_style[$data.rute_all]}>
+            {if $rowspan <= 1}
+            <td align="center" style="color: black;">{$no}.</td>
+            {elseif $i eq 1}
+            <td align="center" rowspan="{$rowspan}" style="color: black;">{$no}.</td>
+            {/if}
+            <td align="center">{$data.rute_all|default:'-'}</td>
+            <td align="center">{$data.tipe|default:'-'}</td>
+            <td align="center">{$data.flight_no|default:'-'}</td>
+            <td align="center">{$data.etd|default:'-'|substr:0:5}</td>
+            <td align="center">{$data.eta|default:'-'|substr:0:5}</td>   
+            <td align="center">{$data.doop|default:'-'}</td>
+            <td align="center">{$data.frekuensi}X</td>
+            {if $rowspan <= 1}
+            <td align="center" style="color: blue;">
+                {$pairing[$data.izin_id]} / 
+                {$frekuensi[$data.izin_id]}X
+            </td>
+            {elseif $i eq 1}
+            <td align="center" rowspan="{$rowspan}" style="color: blue;">
+                {$pairing[$data.izin_id]} / 
+                {$frekuensi[$data.izin_id]}X
+            </td>
+            {/if}
+            <td align="center">{$dtm->get_full_date($data.start_date, 'ins')|upper} / {$dtm->get_full_date($data.end_date, 'ins')|upper}</td>
+            {if $rowspan <= 1}
+            <td align="center">
+                {if $data.izin_approval eq 'approved'}
+                <b style="color: blue;">VALID</b>
+                {/if}
+                {if $data.izin_approval eq 'rejected'}
+                <b style="color: red;">REJECT</b>
+                {/if}
+                {if $data.izin_approval eq 'waiting'}
+                <b style="color: tomato;">WAITING</b>
+                {/if}
+            </td>
+            {elseif $i eq 1}
+            <td align="center" rowspan="{$rowspan}">
+                {if $data.izin_approval eq 'approved'}
+                <b style="color: blue;">VALID</b>
+                {/if}
+                {if $data.izin_approval eq 'waiting'}
+                <b style="color: tomato;">WAITING</b>
+                {/if}
+            </td>
+            {/if}
+        </tr>
+        {$i = $i + 1}
+        {foreachelse}
+        <tr>
+            <td align="center" style="color: black;">{$no}.</td>
+            <td colspan="10">Data rute belum diinputkan!</td>
+        </tr>
+        {/foreach}
+        {foreachelse}
+        <tr>
+            <td colspan="11">Data rute belum diinputkan!</td>
+        </tr>
+        {/foreach}
+        <tr>
+            <td colspan="9"></td>
+            <td align="center">
+                <b>{$dtm->get_full_date($total.start_date, 'ins')|upper}</b> / <b>{$dtm->get_full_date($total.end_date, 'ins')|upper}</b>
+            </td>
+            <td align="center"></td>
+        </tr>
+    </table>
+</div>
+<div class="action">
+    <div class="action-button">
+        <ul>
+            <li><a href="#" title="{$detail.registrasi_id}" id="button-catatan"><img src="{$BASEURL}resource/doc/images/icon/document_edit.png" alt="" />( {$total_catatan} ) Catatan Proses Permohonan</a></li>
+            <li><a href="#" title="{$detail.registrasi_id}" id="button-pencabutan"><img src="{$BASEURL}resource/doc/images/icon/todolist.png" alt="" />  Surat Permohonan Pencabutan</a></li>
+            <li><a href="{$config->site_url('task/izin_rute/preview_pencabutan_rute/'|cat:$detail.registrasi_id)}"><img src="{$BASEURL}resource/doc/images/icon/icon.failed.png" /> Draft Surat Penerbitan</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- include html -->
+{include file="task/izin_rute/task_form_dialog.html"}
+<!-- end of include html -->

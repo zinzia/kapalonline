@@ -1,0 +1,97 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Laporan Izin Rute Penerbangan</a><span></span>
+        <small>Rute Penerbangan {$search.data_flight|capitalize}</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="search-box">
+    <h3><a href="#">Search By</a></h3>
+    <form action="{$config->site_url('member/report_izin/proses_cari')}" method="post">
+        <table class="table-search" width="100%" border="0">
+            <tr>
+            <tr>    
+                <td width="10%">Periode / Season</td>
+                <td width="20%">
+                    <input type="text" name="season_cd" value="{$search.season_cd|upper}" size="5" maxlength="3" style="text-align: center;" />
+                    <select name="bulan">
+                        {foreach from=$rs_bulan key=i item=bulan}
+                        <option value="{$i}" {if $search.bulan|default:'' eq $i}selected="selected"{/if}>{$bulan|upper}</option>
+                        {/foreach}
+                    </select>
+                </td>
+                <td width="10%">
+                    <select name="tahun">
+                        {foreach from=$rs_tahun item=tahun}
+                        <option value="{$tahun}" {if $search.tahun|default:'' eq $tahun}selected="selected"{/if}>{$tahun}</option>
+                        {/foreach}
+                    </select>
+                </td>
+                <td width="15%">
+                    <select name="data_flight" class="data_flight">
+                        <option value="domestik" {if $search.data_flight|default:'' eq 'domestik'}selected="selected"{/if}>DOMESTIK</option>
+                        <option value="internasional" {if $search.data_flight|default:'' eq 'internasional'}selected="selected"{/if}>INTERNASIONAL</option>
+                    </select>  
+                </td>
+                <td width="15%">Airport ( IATA Code )</td>
+                <td width="10%">
+                    <input type="text" name="airport_iata_cd" value="{$search.airport_iata_cd|upper}" size="10" maxlength="3" placeholder="-- semua --" style="text-align: center;" />
+                </td>
+                <td align='right' align='20%'>
+                    <input name="save" type="submit" value="Tampilkan" />
+                    <input name="save" type="submit" value="Reset" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info"><strong>{$total|default:0}</strong> Rute Penerbangan</li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width="4%">No</th>
+        <th width="15%">Rute<br /> Penerbangan</th>
+        <th width="14%">Status <br />Penerbangan</th>
+        <th width="11%">Jenis <br />Pesawat</th>
+        <th width="8%">Kapasitas <br /> Pesawat</th>
+        <th width="10%">Frekuensi / <br /> Minggu</th>
+        <th width="10%">Kapasitas / <br /> Minggu</th>
+        <th width="10%">Kapasitas / <br /> Tahun</th>
+        <th width="10%">Masa Berlaku</th>
+        <th width="8%"></th>
+    </tr>
+    {foreach from=$rs_id item=result}
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+        <td align="center">{$no++}.</td>
+        <td align="center">{$result.izin_rute_start|upper} / {$result.izin_rute_end|upper}</td>
+        <td align="center">
+            {if $result.pairing eq 'VV'}Vice Versa{/if}
+            {if $result.pairing eq 'OW'}One Way Services{/if}
+        </td>
+        <td align="center">{$result.tipe|upper}</td>
+        <td align="center">{$result.capacity}</td>
+        <td align="center">{$result.total_frekuensi}X</td>
+        <td align="center">{$result.kapasitas_week|number_format:0:',':'.'}</td>
+        <td align="center">{$result.kapasitas_year|number_format:0:',':'.'}</td>
+        <td align="center">{$dtm->get_full_date($result.masa_berlaku, 'ins')|upper}</td>
+        <td align="center">
+            <a href="{$config->site_url('member/report_izin/detail/'|cat:$result.izin_rute_start|cat:'/'|cat:$result.izin_rute_end)}" class="button">Details</a>
+        </td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="10">Data not found!</td>
+    </tr>
+    {/foreach}
+</table>

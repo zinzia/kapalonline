@@ -1,0 +1,133 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        // date picker
+        $(".tanggal").datepicker({
+            showOn: 'both',
+            changeMonth: true,
+            changeYear: true,
+            buttonImage: '{$BASEURL}/resource/doc/images/icon/calendar.gif',
+            buttonImageOnly: true,
+            dateFormat: 'yy-mm-dd',
+        });
+    });
+</script>
+<div class="breadcrum">
+    <p>
+        <a href="#">Permohonan Direvisi</a><span></span>
+        <a href="{$config->site_url('member/pending_izin')}">Izin Rute Penerbangan</a><span></span>
+        <small>{$detail.group_nm}</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('member/pending_izin')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" />Back to Waiting List</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="step-box">
+    <ul>
+        <li>
+            <a href="{$config->site_url('izin_pending_internasional/baru/index/'|cat:$detail.izin_id)}" class="active"><b>Step 1</b><br />Data Permohonan</a>
+        </li>
+        <li>
+            <a href="#" class="normal"><b>Step 2</b><br />Data Rute Penerbangan</a>
+        </li>
+        <li>
+            <a href="#" class="normal"><b>Step 3</b><br />Slot Clearance</a>
+        </li>
+        <li>
+            <a href="#" class="normal"><b>Step 4</b><br />File Attachment</a>
+        </li>
+        <li>
+            <a href="#" class="normal"><b>Step 5</b><br />Review Permohonan</a>
+        </li>
+    </ul>
+    <div class="clear"></div>
+</div>
+<div class="dashboard">
+    <table class="table-form" width="100%">
+        <tr>
+            <td><h3>Catatan Perbaikan</h3></td>
+        </tr>
+        <tr>
+            <td>
+                {if $catatan neq ''}
+                <p style="color: #B72C0F; font-size: 12px;">{$catatan|lower}</p>
+                {else}
+                Tidak ada catatan yang diinputkan.
+                {/if}
+            </td>
+        </tr>
+    </table>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('izin_pending_internasional/baru/edit_process')}" method="post">
+    <input type="hidden" name="registrasi_id" value="{$result.registrasi_id|default:''}">
+    <input type="hidden" name="process_id" value="{$result.process_id|default:''}">
+    <table class="table-form" width="100%">
+        <tr>
+            <td colspan="4" align='center'>
+                <b style="font-size: 16px;">PERMOHONAN {$detail.group_nm|upper}</b>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" align='center'>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                <span style="text-decoration: underline;">Tanggal Surat Permohonan</span><br /><i>Request Letter Date</i>
+            </td>
+            <td>
+                <input type="text" name="izin_request_letter_date" size="10" maxlength="10" value="{$result.izin_request_letter_date|default:''}" class="tanggal" readonly="readonly" style="text-align: center; font-weight: bold;" />
+            </td>
+            <td width='20%'>
+                <span style="text-decoration: underline;">Nomor Surat Permohonan</span><br /><i>Request Letter Number</i>
+            </td>
+            <td width='30%'>
+                <input type="text" name="izin_request_letter" size="25" maxlength="50" value="{$result.izin_request_letter|default:''|upper}" style="font-weight: bold;" />
+            </td>
+        </tr>
+        <tr>
+            <td width='20%'>
+                <span style="text-decoration: underline;">Rute Pairing</span><br /><i>Pair Routes</i>
+            </td>
+            <td width='30%'><b>{$detail.izin_rute_start}</b> / <b>{$detail.izin_rute_end}</b></td>
+            <td><span style="text-decoration: underline;">Penunjukkan Oleh</span><br /><i>Appointment By</i></td>
+            <td>
+                <input type="text" name="penanggungjawab" size="20" maxlength="50" value="{$result.penanggungjawab|default:''|upper}" />
+            </td>
+        </tr>   
+        <tr>
+            <td>
+                <span style="text-decoration: underline;">Jenis Penerbangan</span><br /><i>Flight Type</i>
+            </td>
+            <td><b>{$detail.pax_cargo|upper}</b></td>
+            <td><span style="text-decoration: underline;">Jabatan</span><br /><i>Job Title</i></td>
+            <td>
+                <input type="text" name="jabatan" size="20" maxlength="50" value="{$result.jabatan|default:''|upper}" />
+            </td>
+        </tr>  
+        <tr>
+            <td>
+                <span style="text-decoration: underline;">Season Code</span><br /><i>For IASM Airport</i>
+            </td>
+            <td colspan="3"><b>{$detail.izin_season|default:''|upper}</b></td>
+        </tr>
+    </table>
+    <table class="table-form" width='100%'>
+        <tr class="submit-box">
+            <td>
+                <input type="submit" name="save" value="Batalkan Permohonan" class="reset-button" onclick="return confirm('Apakah anda yakin akan membatalkan permohonan ini?');" />
+            </td>
+            <td>Semua field wajib diisi! kesalahan pada format input merupakan tanggungjawab pengguna dan akan dikembalikan (Revisi) pada pemohon!</td>
+            <td align='right'>
+                <input type="submit" name="save" value="Simpan dan Lanjutkan" class="submit-button" />
+            </td>
+        </tr>
+    </table>
+</form>

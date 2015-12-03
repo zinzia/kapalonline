@@ -1,0 +1,25 @@
+<div class="head-content">
+    <h3>Navigation - {$portal.portal_nm|default:''}</h3>
+    <div class="head-content-nav">
+        <ul>
+            <li><a href="{$config->site_url('settings/adminmenu/add/'|cat:$portal.portal_id)}"><img src="{$BASEURL}resource/doc/images/icon/add-icon.png" alt="" /> Add Menu</a></li>
+            <li><a href="{$config->site_url('settings/adminmenu/navigation/'|cat:$portal.portal_id)}" class="active">List Menu</a></li>
+            <li><a href="{$config->site_url('settings/adminmenu')}">Web Portal</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width="5%"></th>
+        <th width="46%">Judul Menu</th>
+        <th width="20%">Alamat</th>
+        <th width="7%">Uses</th>
+        <th width="7%">Show</th>
+        <th width="15%"></th>
+    </tr>
+    {$rs_id|default:''}
+</table>

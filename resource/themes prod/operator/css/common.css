@@ -1,0 +1,156 @@
+/* CSS Document */
+/* created by chow-2011 */
+
+.common {
+    margin: 0;
+    padding: 0;
+    font-family: helvetica;
+    background-image: url("../img/common-bg.png");
+    background-position: top center;
+    background-repeat: repeat-x;
+}
+
+.page {
+    margin: 0 auto;
+    padding: 0;
+    width: 1200px;
+}
+
+.header {
+    margin: 0 0 5px 0;
+    padding: 10px;
+    height: 74px;
+    font-family: tahoma;
+    color: #fff;
+}
+
+.header img {
+    float: left;
+    margin: 0 20px 0 0;
+    padding: 0;
+    text-decoration: none;
+    height: 74px;
+}
+
+.header-title {
+    float: left;
+    margin: 0;
+    padding: 10px 0 0 0;
+    height: 64px;
+    width: 300px;
+    font-family: helvetica;
+}
+
+.header-title h1 {
+    margin: 0 0 5px 0;
+    padding: 0;
+    font-size: 16px;
+    color: #FFF;
+}
+
+.header-title h2 {
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: normal;
+    color: #FFF;
+}
+
+.header-link {
+    float: right;
+    margin: 0;
+    padding: 0;  
+    height: 74px;
+    width: 700px;
+}
+
+.header-link ul {
+    float: right;
+    margin: 0 0 2px 0;
+    padding: 0;  
+    list-style: none;
+    height: 35px;
+    width: 700px;
+}
+
+.header-link li {
+    float: right;
+    margin: 0;
+    padding: 0; 
+}
+
+.header-link li a {
+    margin: 0 0 0 20px;
+    padding: 6px;   
+    text-decoration: none;
+    color: #fff;
+    font-family: arial;
+    font-weight: normal;
+    font-size: 14px;
+    border-bottom: 2px solid #3B5874;
+}
+
+.header-link li a:hover {
+    color: #F97B0C;
+    text-decoration: none;
+    background-color: #fff;
+    border-bottom: 2px solid #F97B0C;
+}
+
+.header-link li a.active {
+    text-decoration: none;
+    border-bottom: 2px solid #F97B0C;
+}
+
+.header-link li a img {
+    margin: 6px 0 0 0;
+    padding: 0;
+    height: 12px;
+    width: 16px;
+    vertical-align: middle;
+}
+
+.header-link ul.languages li {
+    margin: 0 0 0 10px;
+}
+
+.header-link ul.languages li.info {
+    margin: 6px 20px 0 0;
+    padding: 0;
+    font-size: 11px;
+}
+
+.header-link ul.languages a {
+    margin: 0 0 0 5px;
+    padding: 2px 6px;  
+    color: #fff;
+    border: none;
+}
+
+.header-link ul.languages a:hover {
+    background: none;
+}
+
+.header-link ul.languages a.active {
+    color: #000;
+    text-decoration: none;
+    background-color: #ABC4DB;
+    border: 1px solid #F6F6F5;
+}
+
+.main-content {
+    margin: 0;
+    padding: 0;
+    clear: both;
+}
+
+.clear {
+    clear: both;
+}
+
+/*
+-moz-border-radius: 4px;
+-webkit-border-radius: 4px;
+border-radius: 4px;
+*/

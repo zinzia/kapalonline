@@ -1,0 +1,93 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Penerbitan Izin Rute / FA</a><span></span>
+        <small>Izin Rute Penerbangan</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="search-box">
+    <h3><a href="#">Search</a></h3>
+    <form action="{$config->site_url('stakeholder/published_izin/proses_cari')}" method="post">
+        <table class="table-search" width="100%" border="0">
+            <tr>
+                <td width="15%">Airlines</td>
+                <td width="30%">
+                    <select name="airlines_id" class="airlines_id">
+                        <option value="">-- semua --</option>
+                        {foreach from=$rs_airlines item=data}
+                            <option value="{$data.airlines_id|default:''}" {if $search.airlines_id|default:'' eq $data.airlines_id|default:''}selected="selected"{/if}>{$data.airlines_nm|upper}</option>
+                        {/foreach}
+                    </select>  
+                </td>
+                <td width="15%">
+                    <select name="data_flight" class="data_flight">
+                        <option value="">-- semua --</option>
+                        <option value="domestik" {if $search.data_flight|default:'' eq 'domestik'}selected="selected"{/if}>DOMESTIK</option>
+                        <option value="internasional" {if $search.data_flight|default:'' eq 'internasional'}selected="selected"{/if}>INTERNASIONAL</option>
+                    </select>  
+                </td>
+                <td width='40%' align='right' rowspan="2">
+                    <input name="save" type="submit" value="Tampilkan" />
+                    <input name="save" type="submit" value="Reset" />
+                </td>
+            </tr>
+            <tr>
+                <td>Nomor Penerbitan</td>
+                <td><input type="text" name="izin_published_letter" value="{$search.izin_published_letter|default:''}" size="40" style="text-align:center;" /></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info">Total&nbsp;<strong>{$pagination.total|default:0}</strong>&nbsp;Record&nbsp;</li>
+                {$pagination.data|default:''}
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width='4%'>No</th>
+        <th width='20%'>Surat<br />Permohonan</th>
+        <th width='19%'>Surat<br />Penerbitan</th>
+        <th width='10%'>Jenis<br />Penerbangan</th>
+        <th width='20%'>Rute<br />Perihal</th>
+        <th width='15%'>Pemohon</th>
+        <th width='12%'>Status<br /> Pembayaran</th>
+    </tr>
+    {foreach from=$rs_id item=result}
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+        <td align="center">{$no++}.</td>
+        <td align="center">{$result.izin_request_letter|upper|default:'-'}</td>
+        <td align="center">{$result.izin_published_letter|upper|default:'-'}</td>
+        <td align="center">{$result.izin_flight|upper}</td>
+        <td>{$result.izin_rute_start|upper} / {$result.izin_rute_end|upper}<br />{$result.group_nm|upper}</td>
+        <td align="center">
+            <span style="text-decoration: underline;">{$result.operator_name}</span>
+            <br />
+            {$dtm->get_date_only($result.izin_request_date)}
+        </td>
+        <td align="center">
+            {if $result.payment_st eq '11' || $result.payment_st eq '22'}
+            <a href="{$config->site_url('stakeholder/published_izin/'|cat:$result.group_alias|cat:'/'|cat:$result.registrasi_id|default:'')}" class="button-approve">
+                Download
+            </a>
+            {else}
+            <img src="{$BASEURL}resource/doc/images/icon/icon.waiting.png" alt="" /> Belum Bayar
+            {/if}
+        </td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="9">Data not found!</td>
+    </tr>
+    {/foreach}
+</table>

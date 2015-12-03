@@ -1,0 +1,31 @@
+<div class="head-content">
+    <h3>Edit Profil</h3>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('settings/adminprofile/edit_process')}" method="post">
+    <input type="hidden" name="user_name_old" value="{$result.user_name|default:''}" />
+    <input type="hidden" name="user_mail_old" value="{$result.user_mail|default:''}" />
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="2">Edit Profil</th>
+        </tr>
+        <tr>
+            <td>Email *</td>
+            <td><input type="text" name="user_mail" maxlength="50" size="30" value="{$result.user_mail|default:''}" /></td>
+        </tr>
+        <tr>
+            <td>User Name *</td>
+            <td><input type="text" name="user_name" maxlength="50" size="20" value="{$result.user_name|default:''}" /> </td>
+        </tr>
+        <tr>
+            <td>Password</td>
+            <td><input type="text" name="user_pass" maxlength="50" size="20" value="{$result.user_pass|default:''}" /></td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="submit" name="save" value="Simpan" class="edit-button" /> </td>
+        </tr>
+    </table>
+</form>

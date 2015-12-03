@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <!-- head -->
+    <head>
+        <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+        <meta name='description' content="{$site.meta_desc|default:''}" />
+        <meta name='keywords' content="{$site.meta_keyword|default:''}" />
+        <meta name='robots' content='index,follow' />
+        <title>{$page.nav_title|default:'Home'} - {$site.site_title|default:''}</title>
+        <link href="{$BASEURL}resource/doc/images/logo/logo.png" rel="SHORTCUT ICON" />
+        <!-- themes style -->
+        <link rel="stylesheet" type="text/css" href="{$THEMESPATH}" />
+        <!-- other style -->
+        {$LOAD_STYLE}
+    </head>
+    <!-- body -->
+    <body class="common">
+        <!-- load javascript -->
+        {$LOAD_JAVASCRIPT}
+        <!-- end of javascript	-->
+        <!-- layout -->
+        <div class="page">
+            <div class="header">
+                <img src="{$BASEURL}resource/doc/images/logo/logo.png" alt="" />
+                <div class="header-title">
+                    <h1>DIREKTORAT PERKAPALAN DAN KEPELAUTAN</h1>
+                    <h2>Pendaftaran Kapal Online</h2>
+                </div>
+                <div class="header-link">
+                    <ul class="languages">
+                        {foreach from=$rs_languages item=lang}
+                        <li><a href="{$config->site_url('home/welcome/change_lang/'|cat:$lang.lang_id|cat:'/'|cat:$nav_active)}" {if $languages.lang_id eq $lang.lang_id}class="active"{/if}><img src="{$BASEURL}/resource/doc/images/lang/{$lang.lang_icon}" alt="" />{$lang.lang_name}</a></li>
+                        {/foreach}
+                        <li class="info">
+                            {$tanggal}
+                        </li>
+                    </ul>
+                    <ul>
+                        {foreach from=$list_top_nav item=menu}
+                        <li>
+                            <a href="{$config->site_url($menu.nav_url)}" {if $menu.nav_id == $top_menu_selected}class="active"{/if}>{$menu.lang_label}</a>
+                        </li>
+                        {/foreach}
+                    </ul>
+                </div>
+            </div>
+            <div class="main-content">
+                <div class="breadcrum">                    
+                    <p class="info" style="font-weight: normal; font-size: 11px; font-family: tahoma; float: left;">
+                        <small>Pelayanan Izin Rute Penerbangan dan Persetujuan Terbang ( <em>Flight Approval</em> )</small><br />
+                        <small><img src="{$BASEURL}resource/doc/images/icon/contact.png" alt="" style="height: 12px;" />151 / (021) 151</small>
+                        <small><img src="{$BASEURL}resource/doc/images/icon/email.icon.png" alt="" style="height: 12px;" />info151@dephub.go.id</small>
+                        <small><img src="{$BASEURL}resource/doc/images/icon/twitter.icon.png" alt="" style="height: 14px;" /><a href="https://twitter.com/kemenhub151" target="_blank">@kemenhub151</a></small>
+                        <small><img src="{$BASEURL}resource/doc/images/icon/facebook.icon.png" alt="" style="height: 14px;" /><a href="https://www.facebook.com/pages/Kemenhub151/364857507021671" target="_blank">kemenhub151</a></small>
+                    </p>
+                    <p class="info">
+                        <small><img src="{$BASEURL}resource/doc/images/icon/call_center.png" alt="" style="height: 42px;" /></small>
+                    </p>
+                    <div class="clear"></div>
+                </div>
+                {include file="$template_content"}
+            </div>
+        </div>
+        <div class="footer">
+            <p>
+                {foreach from=$list_bottom_nav item=menu}
+                <a href="{$config->site_url($menu.nav_url)}" {if $menu.nav_id == $top_menu_selected}class="active"{/if}>{$menu.lang_label}</a>
+                {/foreach}
+            </p>
+            <p style="color: #666; font-size: 11px; font-family: tahoma; font-weight: bold;">
+                &copy; Copyright 2015 Pendaftaran Kapal Online - Direktorat Jenderal Perhubungan Udara
+            </p>
+        </div>
+        <!-- end of layout -->
+    </body>
+    <!-- end body -->
+</html>

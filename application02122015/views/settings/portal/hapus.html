@@ -1,0 +1,45 @@
+<div class="head-content">
+    <h3>Web Portal</h3>
+    <div class="head-content-nav">
+        <ul>
+            <li><a href="#" class="active">Hapus Data</a></li>
+            <li><a href="{$config->site_url('settings/adminportal/add')}"><img src="{$BASEURL}resource/doc/images/icon/add-icon.png" alt="" /> Add Data</a></li>
+            <li><a href="{$config->site_url('settings/adminportal')}">List Data</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('settings/adminportal/process_delete')}" method="post">
+    <input type="hidden" name="portal_id" value="{$result.portal_id|default:''}" />
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="2">Hapus Web Portal</th>
+        </tr>
+        <tr>
+            <td width="25%">Nama Portal *</td>
+            <td width="75%">{$result.portal_nm|default:''}</td>
+        </tr>
+        <tr>
+            <td>Judul Web *</td>
+            <td>{$result.site_title|default:''}</td>
+        </tr>
+        <tr>
+            <td>Deskripsi Web *</td>
+            <td>{$result.site_desc|default:''}</td>
+        </tr>
+        <tr>
+            <td>Meta Description *</td>
+            <td>{$result.meta_desc|default:''}</td>
+        </tr>
+        <tr>
+            <td>Meta Keyword *</td>
+            <td>{$result.meta_keyword|default:''}</td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="submit" name="save" value="Hapus" class="edit-button" /> </td>
+        </tr>
+    </table>
+</form>

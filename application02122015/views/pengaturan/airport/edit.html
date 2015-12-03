@@ -1,0 +1,85 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <a href="{$config->site_url('pengaturan/airport')}">Bandar Udara</a><span></span>
+        <small>Edit Data</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('pengaturan/airport')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" /> Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('pengaturan/airport/edit_process')}" method="post">
+    <input name="airport_id" type="hidden" value="{$result.airport_id|default:''}" />
+    <table class="table-input" width="100%" border="0">
+        <tr class="headrow">
+            <th colspan="4">Edit Data Bandar Udara</th>
+        </tr>
+        <tr>
+            <td width="15%">Nama Bandar Udara</td>
+            <td width="35%">
+                <input name="airport_nm" type="text" value="{$result.airport_nm|default:''}" size="35" maxlength="50" />
+                <small>* wajib diisi</small>
+            </td>
+            <td width="15%">Domestik / Internasional</td>
+            <td width="35%">
+                <select name="airport_st" class="airport_st">
+                    <option value="">--- Pilih ---</option>
+                    <option value="domestik" {if {$result.airport_st|default:''} == "domestik"}selected="selected"{/if}>DOMESTIK</option>
+                    <option value="internasional" {if {$result.airport_st|default:''} == "internasional"}selected="selected"{/if}>INTERNASIONAL</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>IATA</td>
+            <td>
+                <input name="airport_iata_cd" type="text" value="{$result.airport_iata_cd|default:''}" size="5" maxlength="3" />
+                <small>* wajib diisi</small>
+            </td>
+            <td>ICAO</td>
+            <td>
+                <input name="airport_icao_cd" type="text" value="{$result.airport_icao_cd|default:''}" size="5" maxlength="4" />
+                <small>* wajib diisi</small>
+            </td>
+        </tr>
+        <tr>
+            <td>Region</td>
+            <td>
+                <input name="airport_region" type="text" value="{$result.airport_region|default:''}" size="25" maxlength="50" />
+                <small>* wajib diisi</small>
+            </td>
+            <td>Country</td>
+            <td>
+                <input name="airport_country" type="text" value="{$result.airport_country|default:''}" size="25" maxlength="50" />
+                <small>* wajib diisi</small>
+            </td>
+        </tr>
+        <tr>
+            <td>Penyelenggara</td>
+            <td colspan="3">
+                <select name="airport_owner">
+                    <option value=""></option>
+                    <option value="UPT" {if $result.airport_owner eq 'UPT'}selected="selected"{/if}>UPT</option>
+                    <option value="Angkasa Pura I" {if $result.airport_owner eq 'Angkasa Pura I'}selected="selected"{/if}>Angkasa Pura I</option>
+                    <option value="Angkasa Pura II" {if $result.airport_owner eq 'Angkasa Pura II'}selected="selected"{/if}>Angkasa Pura II</option>
+                    <option value="Luar Negeri" {if $result.airport_owner eq 'Luar Negeri'}selected="selected"{/if}>LUAR NEGERI</option>
+                </select>
+                <small>* wajib diisi</small>
+            </td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="4">
+                <input type="submit" name="save" value="Simpan" class="submit-button" />
+                <input type="reset" name="save" value="Reset" class="reset-button" />
+            </td>
+        </tr>
+    </table>
+</form>

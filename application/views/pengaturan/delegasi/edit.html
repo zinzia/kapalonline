@@ -1,0 +1,71 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        // --
+        $(".kasubdit").select2({
+            placeholder: "-- Pilih Jenis Penerbangan --",
+            width: 450,
+            allowClear: true
+        });
+    });
+</script>
+<style type="text/css">
+    .kasubdit .select2-choice {
+        width: 440px !important;
+        font-weight: bold;
+    }
+    .kasubdit .select2-default {
+        width: 440px !important;
+        font-weight: bold;
+    }
+</style>
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <a href="{$config->site_url('pengaturan/delegasi')}">Delegasi</a><span></span>
+        <small>Edit Data</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('pengaturan/delegasi')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" /> Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('pengaturan/delegasi/edit_process')}" method="post" enctype="multipart/form-data">
+    <input name="field_id" type="hidden"  value="{$result.field_id|default:''}" />
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="4">Data Delegasi</th>
+        </tr>
+        <tr>
+            <td width="15%">Nama</td>
+            <td width="85%" colspan="3">
+                <select class="kasubdit" name="user_id">
+                    <option value=""></option>
+                    {foreach from=$rs_kasubdit item=data}
+                    <option value="{$data.user_id}" {if $data.user_id eq $result.user_id}selected="selected"{/if}>{$data.operator_name|upper} | {$data.jabatan|upper}</option>
+                    {/foreach}
+                </select>
+                <em>* wajib diisi</em>
+            </td>            
+        </tr>
+        <tr>
+            <td>Alasan Pendelegasian</td>
+            <td colspan="3">
+                <textarea name="delegation_reason" cols="50" rows="5">{$result.delegation_reason|default:''}</textarea>
+            </td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="4">
+                <input type="submit" name="save" value="Simpan" class="submit-button" />
+                <input type="reset" name="save" value="Reset" class="reset-button" />
+            </td>
+        </tr>
+    </table>
+</form>

@@ -1,0 +1,101 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Monitoring Permohonan</a><span></span>
+        <small>Izin Rute Penerbangan</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="search-box">
+    <h3><a href="#">Search</a></h3>
+    <form action="{$config->site_url('member/monitoring_izin/proses_cari')}" method="post">
+        <table class="table-search" width="100%" border="0">
+            <tr>
+                <th width="10%">Nomor Surat Permohonan</th>
+                <td width="16%">
+                    <input name="izin_request_letter" type="text" value="{$search.izin_request_letter|default:''}" size="20" maxlength="50" placeholder="-- semua --" style="text-align: center;" />
+                </td>
+                <th width="10%">Jenis Penerbangan</th>
+                <td width="17%">
+                    <select name="izin_flight" class="izin_flight">
+                        <option value="">-- semua --</option>
+                        <option value="domestik" {if $search.izin_flight|default:'' eq 'domestik'}selected="selected"{/if}>DOMESTIK</option>
+                        <option value="internasional" {if $search.izin_flight|default:'' eq 'internasional'}selected="selected"{/if}>INTERNASIONAL</option>
+                    </select>  
+                </td>
+                <th width="10%">Jenis Permohonan</th>
+                <td width="17%">
+                    <select name="izin_st">
+                        <option value="">-- semua --</option>
+                        <option value="baru" {if $search.izin_st|default:'' eq 'baru'}selected="selected"{/if}>BARU</option>
+                        <option value="perpanjangan" {if $search.izin_st|default:'' eq 'perpanjangan'}selected="selected"{/if}>PERPANJANGAN</option>
+                        <option value="pencabutan" {if $search.izin_st|default:'' eq 'pencabutan'}selected="selected"{/if}>PENCABUTAN</option>
+                        <option value="penundaan" {if $search.izin_st|default:'' eq 'penundaan'}selected="selected"{/if}>PENUNDAAN</option>
+                        <option value="perubahan" {if $search.izin_st|default:'' eq 'perubahan'}selected="selected"{/if}>PERUBAHAN</option>
+                        <option value="notam" {if $search.izin_st|default:'' eq 'notam'}selected="selected"{/if}>NOTAM</option>
+                        <option value="migrasi" {if $search.izin_st|default:'' eq 'migrasi'}selected="selected"{/if}>MIGRASI</option>
+                    </select>  
+                </td>
+                <td width='20%' align='right'>
+                    <input name="save" type="submit" value="Tampilkan" />
+                    <input name="save" type="submit" value="Reset" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info">Total ( <b style="color: red;">{$total|default:0}</b> ) Permohonan Yang Sedang Diproses!</li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+</div>
+<table class="table-view" width="100%">
+    <tr>
+        <th width='5%'>No</th>
+        <th width='10%'>Domestik / Internasional</th>
+        <th width='25%'>Jenis Permohonan</th>
+        <th width='10%'>Rute Penerbangan</th>
+        <th width='18%'>Surat<br/>Permohonan</th>
+        <th width='18%'>Didaftarkan Oleh</th>
+        <th width='14%'></th>
+    </tr>
+    {$no = 1}
+    {foreach from=$rs_id item=result}
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+        <td align="center">{$no++}.</td>
+        <td align="center">{$result.izin_flight|upper}</td>
+        <td>{$result.group_nm|upper}</td>
+        <td align="center"><b style="text-decoration: underline;">{$result.izin_rute_start|upper}</b> <br /> <b>{$result.izin_rute_end|upper}</b></td>
+        <td align="center">
+			{if $result.group_alias != 'migrasi'}
+            <span style="text-decoration: underline;">{$result.izin_request_letter|default:'Surat permohonan tidak diisikan'}</span><br />
+            {$dtm->get_full_date($result.izin_request_letter_date)|default:''}
+			{/if}
+        </td>
+        <td align="center">
+            <span style="text-decoration: underline;">{$result.operator_name|default:'-'}</span><br />
+            {$dtm->get_full_date($result.izin_request_date)|default:''}
+        </td>
+        <td align="center">
+            <a href="{$config->site_url('member/monitoring_izin/'|cat:$result.group_alias|cat:'/'|cat:$result.registrasi_id|default:'')}" class="button">
+                {if $result.selisih_hari == 0 && substr($result.selisih_waktu,0,2) == 00}
+                {substr($result.selisih_waktu,3,2)} Menit yang lalu
+                {else if $result.selisih_hari == 0}
+                {substr($result.selisih_waktu,0,2)} Jam yang lalu
+                {else}
+                {$result.selisih_hari} Hari yang lalu
+                {/if}
+            </a>
+        </td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="7">Belum ada permohonan Izin Rute Yang Diajukan!</td>
+    </tr>
+    {/foreach}
+</table>

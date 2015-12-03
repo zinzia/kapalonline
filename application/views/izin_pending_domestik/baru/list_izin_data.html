@@ -1,0 +1,123 @@
+<script type="text/javascript">
+    $(document).ready(function () {
+        // timepicker
+        $('.waktu').timepicker({
+            showPeriodLabels: false
+        });
+        // date picker
+        $(".tanggal").datepicker({
+            showOn: 'focus',
+            changeMonth: true,
+            changeYear: true,
+            buttonImage: '{$BASEURL}/resource/doc/images/icon/calendar.gif',
+            buttonImageOnly: false,
+            dateFormat: 'yy-mm-dd',
+        });
+    });
+</script>
+<div class="breadcrum">
+    <p>
+        <a href="#">Permohonan Direvisi</a><span></span>
+        <a href="{$config->site_url('member/pending_izin')}">Izin Rute Penerbangan</a><span></span>
+        <small>{$detail.group_nm}</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info">
+                    Surat Permohonan : <span style="text-decoration: underline;">{$detail.izin_request_letter|default:'-'}</span>, 
+                    <br />
+                    Tanggal : <span style="text-decoration: underline;">{$dtm->get_full_date($detail.izin_request_letter_date)|default:'-'}</span>, ( For {$detail.izin_season} )
+                    <br />
+                    Rute : <b>{$detail.izin_rute_start} / {$detail.izin_rute_end}</b>
+                    <br />
+                    {if $rute.pairing eq 'VV'}
+                    Jenis Layanan : <b>Vice Versa ( VV )</b>
+                    {elseif $rute.pairing eq 'OW'}
+                    Jenis Layanan : <b>One Way Services (OW)</b>
+                    {else}
+                    Jenis layanan penerbangan otomatis diupdate berdasarkan data pairing dibawah ini!
+                    {/if}
+                </li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('izin_pending_domestik/baru/list_rute/'|cat:$detail.registrasi_id)}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" />Back to Step 2 : List Data Penerbangan</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="clear"></div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr style="font-weight: bold;">
+        <td width="4%" align='center'>No</td>
+        <td width="8%" align='center'>Rute</td>
+        <td width="8%" align='center'>Tipe Pesawat</td>
+        <td width="8%" align='center'>Kapasitas Pesawat</td>
+        <td width="8%" align='center'>Nomor Penerbangan</td>
+        <td width="8%" align='center'>ETD <br />(waktu lokal)</td>
+        <td width="8%" align='center'>ETA <br />(waktu lokal)</td>
+        <td width="8%" align='center'>Hari Operasi</td>
+        <td width="6%" align='center'>RON</td>
+        <td width="8%" align='center'>Frekuensi</td>
+        <td width="9%" align='center'>Start</td>
+        <td width="9%" align='center'>End</td>
+        <td width="9%" align='center'></td>
+    </tr>
+    {$no = 1}
+    {foreach from=$rs_id item=data}
+    <tr>
+        <td align="center">{$no++}.</td>
+        <td align="center">{$data.rute_all|default:'-'}</td>
+        <td align="center">{$data.tipe|default:'-'}</td>
+        <td align="center">{$data.capacity|default:'-'}</td>
+        <td align="center">{$data.flight_no|default:'-'}</td>
+        <td align="center">{$data.etd|default:'-'|substr:0:5}</td>
+        <td align="center">{$data.eta|default:'-'|substr:0:5}</td>   
+        <td align="center">{$data.doop|default:'-'}</td>
+        <td align="center">{$data.roon|default:'-'}</td>
+        <td align="center">{$data.frekuensi}X</td>
+        <td align="center">{$dtm->get_full_date($data.start_date, 'ins')|upper}</td>
+        <td align="center">{$dtm->get_full_date($data.end_date, 'ins')|upper}</td>
+        <td align="center">
+            <a href="{$config->site_url('izin_pending_domestik/baru/izin_data_delete_process/'|cat:$detail.registrasi_id|cat:'/'|cat:$data.izin_id|cat:'/'|cat:$data.rute_id)}" class="button-hapus" onclick="return confirm('Apakah anda yakin akan menghapus baris berikut ini!');">Hapus</a>
+        </td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="13">Data rute belum diinputkan!</td>
+    </tr>
+    {/foreach}
+    <tr>
+        <td colspan="9" align="right">Perhitungan Jumlah Frekuensi / Minggu</td>
+        <td align="center"><b>{$total.frekuensi}X</b></td>
+        <td align="center"><b>{$dtm->get_full_date($rute.izin_start_date, 'ins')|upper|default:'-'}</b></td>
+        <td align="center"><b>{$dtm->get_full_date($rute.izin_expired_date, 'ins')|upper|default:'-'}</b></td>
+        <td align="center"></td>
+    </tr>
+</table>
+{if $rute.is_used_score eq 2}
+<!-- include html -->
+{include file="izin_pending_domestik/baru/form_iasm.html"}
+<!-- end of include html -->
+{/if}
+{if $rute.is_used_score eq 1}
+<!-- include html -->
+{include file="izin_pending_domestik/baru/form_mixed.html"}
+<!-- end of include html -->
+{/if}
+{if $rute.is_used_score eq 0}
+<h4>Gunakan form dibawah ini untuk memasukkan data rute penerbangan</h4>
+<!-- include html -->
+{include file="izin_pending_domestik/baru/form_non_iasm.html"}
+<!-- end of include html -->
+{/if}

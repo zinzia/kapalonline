@@ -1,0 +1,125 @@
+<script type="text/javascript">
+    $(document).ready(function () {
+        /*
+         * COMBO BOX
+         */
+        $(".airlines").select2({
+            placeholder: "Pilih Airlines",
+            allowClear: true,
+            width: 270
+        });
+    });
+</script>
+<style type="text/css">
+    .select2-choice {
+        width: 260px !important;
+    }
+    .select2-default {
+        width: 260px !important;
+    }
+</style>
+<div class="breadcrum">
+    <p>
+        <a href="#">Data Monitoring</a><span></span>
+        <small>Izin Rute Penerbangan</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="search-box">
+    <h3><a href="#">Search</a></h3>
+    <form action="{$config->site_url('task/monitoring_izin/proses_cari')}" method="post">
+        <table class="table-search" width="100%" border="0">
+            <tr>
+                <th width="15%">Airlines</th>
+                <td width="10%">
+                    <select name="airlines_id" class="airlines">
+                        <option value=""></option
+                        {foreach from=$rs_airlines item=data}
+                        <option value="{$data.airlines_id}"  {if $data.airlines_id eq $search.airlines_id|default:''}selected="selected"{/if}>{$data.airlines_nm|upper}</option>
+                        {/foreach}
+                    </select>
+                </td>
+                <th width="15%">Posisi</th>
+                <td width="10%">
+                    <select name="role_id">
+                        <option value="">-- semua posisi --</option>
+                        {foreach from=$rs_roles item=data}
+                        <option value="{$data.role_id}" {if {$search.role_id|default:''} eq $data.role_id}selected="selected"{/if}>{$data.role_nm}</option>
+                        {/foreach}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th width="15%">Nomor Permohonan</th>
+                <td width="10%">
+                    <input name="izin_request_letter" type="text" value="{$search.izin_request_letter|default:''}" size="40" maxlength="50" placeholder="-- semua --" />
+                </td>
+                <th width="15%">Jenis Penerbangan</th>
+                <td width="10%">
+                    <select name="izin_flight" class="izin_flight">
+                        <option value="">-- semua --</option>
+                        <option value="domestik" {if $search.izin_flight|default:'' eq 'domestik'}selected="selected"{/if}>DOMESTIK</option>
+                        <option value="internasional" {if $search.izin_flight|default:'' eq 'internasional'}selected="selected"{/if}>INTERNASIONAL</option>
+                    </select>  
+                </td>
+                <td width='25%' align='left'>
+                    <input name="save" type="submit" value="Tampilkan" />
+                    <input name="save" type="submit" value="Reset" />
+                </td>
+            </tr>            
+        </table>
+    </form>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info">Total ( <b style="color: red;">{$total|default:0}</b> ) Permohonan Yang Sedang Diproses!</li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+</div>
+<table class="table-view" width="100%">
+    <tr>
+        <th width='5%'>No</th>
+        <th width='10%'>Domestik / Internasional</th>
+        <th width='20%'>Jenis Permohonan</th>
+        <th width='20%'>Nomor Surat<br/>Permohonan</th>
+        <th width='11%'>Tanggal<br/>Kirim </th>
+        <th width='19%'>Pengirim</th>
+        <th width='15%'>Status Proses</th>
+    </tr>
+    {$no = 1}
+    {foreach from=$rs_id item=result}
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+        <td align="center">{$no++}.</td>
+        <td align="center">{$result.izin_flight|upper}</td>
+        <td>{$result.group_nm|upper}</td>
+        <td align="center">
+            <span style="text-decoration: underline;">{$result.izin_request_letter|upper}</span><br />
+            {$dtm->get_full_date($result.izin_request_letter_date)}
+        </td>
+        <td align="center">
+            {$dtm->get_full_date($result.izin_request_date)}
+        </td>
+        <td align="center">{$result.operator_name|upper}</td>
+        <td align="center">
+            <a href="{$config->site_url('task/monitoring_izin/'|cat:$result.group_alias|cat:'/'|cat:$result.registrasi_id|default:'')}" class="button">
+                {if $result.selisih_hari == 0 && substr($result.selisih_waktu,0,2) == 00}
+                {substr($result.selisih_waktu,3,2)} Menit yang lalu
+                {else if $result.selisih_hari == 0}
+                {substr($result.selisih_waktu,0,2)} Jam yang lalu
+                {else}
+                {$result.selisih_hari} Hari yang lalu
+                {/if}
+            </a>
+        </td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="7">Belum ada permohonan Izin Rute Yang Diajukan!</td>
+    </tr>
+    {/foreach}
+</table>

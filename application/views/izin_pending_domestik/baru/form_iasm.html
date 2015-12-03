@@ -1,0 +1,148 @@
+<form action="{$config->site_url('izin_pending_domestik/baru/rute_data_search_process')}" method="post">
+    <input type="hidden" name="registrasi_id" value="{$detail.registrasi_id|default:''}">
+    <input type="hidden" name="izin_id" value="{$rute.izin_id|default:''}">
+    <table class="table-info" width='100%'>
+        <tr>
+            <th>Input Data Rute Berdasarkan Slot Dibawah ini!</th>
+        </tr>            
+        <tr>
+            <td align='center'>
+                <select name="rute_all">
+                    <option value="{$detail.izin_rute_start}" {if $detail.izin_rute_start eq $search.rute_all}selected="selected"{/if}>{$detail.izin_rute_start}</option>
+                    <option value="{$detail.izin_rute_end}" {if $detail.izin_rute_end eq $search.rute_all}selected="selected"{/if}>{$detail.izin_rute_end}</option>
+                </select>
+                <input name="season_code" type="text" value="{$season_cd}" size="5" maxlength="3" style="text-align: center;" readonly="readonly" />
+                <input name="services_code" type="text" value="{$service_type}" size="5" maxlength="1" style="text-align: center;" readonly="readonly"  />
+                <input name="flight_no" type="text" value="{$search.flight_no|default:''}" size="10" maxlength="6" placeholder="Filght Number" style="text-align: center;" />
+                <input name="save" type="submit" value="View" class="button-edit" />
+                <input name="save" type="submit" value="Reset" class="button-edit" />
+            </td>
+        </tr>
+    </table>
+</form>
+<div class="clear"></div>
+<form action="{$config->site_url('izin_pending_domestik/baru/rute_add_process_iasm')}" method="post">
+    <input type="hidden" name="registrasi_id" value="{$detail.registrasi_id|default:''}">
+    <input type="hidden" name="izin_id" value="{$rute.izin_id|default:''}">
+    <div style="float: left; width: 49%;">
+        <table class="table-view" width='100%'>
+			<tr style="font-weight: bold;">
+				<td align="center"> Rute </td> 
+				<td align="center"> Tipe</td> 
+				<td align="center"> Nomor</td> 
+				<td align="center"> ETD </td> 
+				<td align="center"> DOS </td> 
+				<td align="center"> RON </td> 
+				<td align="center"> Start / End</td> 
+				<td> </td>
+			</tr>		
+            {$no = 1}
+            {foreach from=$rs_depart item=data}
+            {if $data->serviceTypeDeparture neq ' ' && $data->nextStation eq $rute_to && ($search.flight_no eq '' || $data->serviceNoDeparture|string_format:"%.2f" eq $search.flight_no)}
+            {$used = $m_slot_check->is_slot_used_departure(array($com_user.airlines_id, ($data->airportCode|cat:'-'|cat:$data->nextStation), $data->aircraftType, $data->numSeats, $data->serviceNoDeparture, ($data->clearedTimeDeparture|substr:0:2)|cat:':'|cat:($data->clearedTimeDeparture|substr:2:2)|cat:':00', $data->doop, ($data->turnaroundDays|default:'0'), $data->startDate|substr:0:10, $data->endDate|substr:0:10))}
+            {$local = $m_slot_check->get_slot_local_time($data->clearedTimeDeparture, $data->doop, ($data->turnaroundDays|default:'0'), $local_time_from.airport_utc_sign, $local_time_from.airport_utc, ($data->startDate|substr:0:10), ($data->endDate|substr:0:10))}
+            <!-- parameters -->
+            <input type="hidden" name="departure_rute_all_{$no}" value="{$data->airportCode|cat:'-'|cat:$data->nextStation}" />
+            <input type="hidden" name="departure_aircraft_type_{$no}" value="{$data->aircraftType}" />
+            <input type="hidden" name="departure_capacity_{$no}" value="{$data->numSeats}" />
+            <input type="hidden" name="departure_flight_no_{$no}" value="{$data->serviceNoDeparture}" />
+            <input type="hidden" name="departure_etd_{$no}" value="{($data->clearedTimeDeparture|substr:0:2)|cat:':'|cat:($data->clearedTimeDeparture|substr:2:2)|cat:':00'}" />
+            <input type="hidden" name="departure_doop_{$no}" value="{$data->doop}" />
+            <input type="hidden" name="departure_roon_{$no}" value="{$data->turnaroundDays|default:0}" />
+            <input type="hidden" name="departure_start_date_{$no}" value="{$data->startDate|substr:0:10}" />
+            <input type="hidden" name="departure_end_date_{$no}" value="{$data->endDate|substr:0:10}" />
+            <!-- end of parameters -->
+            <tr>  
+                <td align="center" width='15%'><b>{$data->airportCode}</b>-{$data->nextStation}</td>
+                <td align="center" width='10%'>{$data->aircraftType}</td>
+                <td align="center" width='10%'>{$data->serviceNoDeparture}</td>
+                <td align="center" width='10%'>{$local.local_time|substr:0:5}</td>
+                <td align="center" width='15%'>{$local.dos}</td>
+                <td align="center" width='5%'>{$data->turnaroundDays|default:0}</td>
+                <td align="center" width='30%' style="font-size: 10px;">
+                    {$dtm->get_full_date($local.start_date|substr:0:10, 'ins')|upper}
+                    /
+                    {$dtm->get_full_date($local.end_date|substr:0:10, 'ins')|upper}
+                </td>
+                <td align="center" width='5%'>
+                    {if $used eq '0'}
+                    <input type="radio" name="departure_izin_data_slot" value="{$no}" />
+                    {/if}
+                </td>
+            </tr>
+            {$no = $no + 1}
+            {/if}
+            {foreachelse}
+            <tr>
+                <td colspan="8">Tidak ditemukan data slot departure!</td>
+            </tr>
+            {/foreach}
+        </table>
+    </div>
+    <div style="float: right; width: 49%;">
+        <table class="table-view" width='100%'>
+            <tr style="font-weight: bold;">
+				<td align="center"> Rute </td> 
+				<td align="center"> Tipe</td> 
+				<td align="center"> Nomor</td> 
+				<td align="center"> ETA </td> 
+				<td align="center"> DOS </td> 
+				<td align="center"> RON </td> 
+				<td align="center"> Start / End</td> 
+				<td> </td>
+			</tr>
+            {$no = 1}
+            {foreach from=$rs_arrive item=data}
+            {if $data->serviceTypeArrival neq ' ' && $data->lastStation eq $rute_from && ($search.flight_no eq '' || $data->serviceNoArrival|string_format:"%.2f" eq $search.flight_no)}
+            {$used = $m_slot_check->is_slot_used_arrival(array($com_user.airlines_id, ($data->lastStation|cat:'-'|cat:$data->airportCode), $data->aircraftType, $data->numSeats, $data->serviceNoArrival, ($data->clearedTimeArrival|substr:0:2)|cat:':'|cat:($data->clearedTimeArrival|substr:2:2)|cat:':00', $data->doop, ($data->turnaroundDays|default:'0'), $data->startDate|substr:0:10, $data->endDate|substr:0:10))}
+            {$local = $m_slot_check->get_slot_local_time($data->clearedTimeArrival, $data->doop, '0', $local_time_to.airport_utc_sign, $local_time_to.airport_utc, ($data->startDate|substr:0:10), ($data->endDate|substr:0:10))}
+            <!-- parameters -->
+            <input type="hidden" name="arrival_rute_all_{$no}" value="{$data->lastStation|cat:'-'|cat:$data->airportCode}" />
+            <input type="hidden" name="arrival_aircraft_type_{$no}" value="{$data->aircraftType}" />
+            <input type="hidden" name="arrival_capacity_{$no}" value="{$data->numSeats}" />
+            <input type="hidden" name="arrival_flight_no_{$no}" value="{$data->serviceNoArrival}" />
+            <input type="hidden" name="arrival_eta_{$no}" value="{($data->clearedTimeArrival|substr:0:2)|cat:':'|cat:($data->clearedTimeArrival|substr:2:2)|cat:':00'}" />
+            <input type="hidden" name="arrival_doop_{$no}" value="{$data->doop}" />
+            <input type="hidden" name="arrival_roon_{$no}" value="{$data->turnaroundDays|default:0}" />
+            <input type="hidden" name="arrival_start_date_{$no}" value="{$data->startDate|substr:0:10}" />
+            <input type="hidden" name="arrival_end_date_{$no}" value="{$data->endDate|substr:0:10}" />
+            <!-- end of parameters -->
+            <tr>  
+                <td align="center" width='15%'>{$data->lastStation}-<b>{$data->airportCode}</b></td>
+                <td align="center" width='10%'>{$data->aircraftType}</td>
+                <td align="center" width='10%'>{$data->serviceNoArrival}</td>
+                <td align="center" width='10%'>{$local.local_time|substr:0:5}</td>
+                <td align="center" width='15%'>{$local.dos}</td>
+                <td align="center" width='5%'>{$data->turnaroundDays|default:0}</td>
+                <td align="center" width='30%' style="font-size: 10px;">
+                    {$dtm->get_full_date($local.start_date|substr:0:10, 'ins')|upper}
+                    /
+                    {$dtm->get_full_date($local.end_date|substr:0:10, 'ins')|upper}
+                </td>
+                <td align="center" width='5%'>
+                    {if $used eq '0'}
+                    <input type="radio" name="arrival_izin_data_slot" value="{$no}" />
+                    {/if}
+                </td>
+            </tr>
+            {$no = $no + 1}
+            {/if}
+            {foreachelse}
+            <tr>
+                <td colspan="8">Tidak ditemukan data slot arrival!</td>
+            </tr>
+            {/foreach}
+        </table>
+    </div>
+    <div class="clear"></div>
+    <table class="table-form" width='100%'>
+        <tr class="submit-box">
+            <td colspan="2">
+                Pastikan data yang anda masukkan adalah data yang benar!
+            </td>
+            <td colspan="2" align='right'>
+                <input type="submit" name="save" value="Process" class="submit-button" />
+            </td>
+        </tr>
+    </table>
+</form>

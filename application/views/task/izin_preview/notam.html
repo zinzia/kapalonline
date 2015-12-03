@@ -1,0 +1,243 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Task Manager Izin Rute</a><span></span>
+        <a href="{$config->site_url('task/izin_rute')}">{$com_user.role_nm|upper}</a><span></span>
+        <small>Preview Surat</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('task/izin_preview/download_notam/'|cat:$result.registrasi_id)}"><img src="{$BASEURL}resource/doc/images/icon/todolist.png" alt="" /> Download</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info"><b style="color: blue;">PENERBITAN {$result.group_nm|upper}</b></li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+</div>
+<table class="table-form" width="100%">
+    <tr>
+        <td width='10%'>Nomor</td>
+        <td width='1%'>:</td>
+        <td width='49%'>{$result.izin_published_letter}</td>
+        <td width='5%'></td>
+        <td width='35%'>Jakarta, {$dtm->get_full_date($result.izin_published_date)}</td>
+    </tr>
+    <tr>
+        <td>Klasifikasi</td>
+        <td>:</td>
+        <td>PENTING</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Lampiran</td>
+        <td>:</td>
+        <td>{$lampiran} ( {$terbilang} ) Lembar</td>
+        <td></td>
+        <td>Kepada</td>
+    </tr>
+    <tr>
+        <td style="vertical-align: top;">Perihal</td>
+        <td style="vertical-align: top;">:</td>
+        <td style="vertical-align: top;">
+            {$result.group_nm} 
+            {if $result.izin_flight eq 'domestik'}Dalam Negeri{else}Luar Negeri{/if}
+        </td>
+        <td style="vertical-align: top;">Yth:</td>
+        <td>
+            <u>PERIKSA ALAMAT TERLAMPIR</u>
+            <br />
+        </td>
+    </tr>
+    <tr>
+        <td colspan="5">&nbsp;</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td colspan="3">
+            <ol style="margin: 0; padding: 0; line-height: 24px;">
+                <li>Menunjuk :
+                    <ol style="margin: 0 0 0 20px; padding: 0; line-height: 24px; list-style-type: lower-alpha;">
+                        <li>
+                            Peraturan Menteri Perhubungan Nomor {$km.pref_value} dan peraturan perundang - undangan yang terkait dengan penerbangan;
+                        </li>
+                        {foreach from=$surat_persetujuan item=data}
+                        <li>
+                            Surat Direktorat Jenderal Perhubungan Udara Nomor: {$data.nomor} tanggal {$dtm->get_full_date($data.tanggal)};
+                        </li>
+                        {/foreach}
+                        <li>
+                            Surat dari {$result.airlines_nm} Nomor: {$result.izin_request_letter} Tanggal {$dtm->get_full_date($result.izin_request_letter_date)}
+                            perihal Permohonan {$result.group_nm} {if $result.izin_flight eq 'domestik'}Dalam Negeri{else}Luar Negeri{/if}, yang diajukan pada tanggal {$dtm->get_date_only($result.mdd)};
+                        </li>
+                        {$no = 1}
+                        {foreach from=$rs_slot item=data}
+                        <li>{$data.slot_subject} Nomor {$data.slot_number} tanggal {$dtm->get_full_date($data.slot_date)} perihal {$data.slot_desc}{if $no < $total_slot};{else},{/if}{$no = $no + 1}</li>
+                        {/foreach}
+                    </ol>
+                    dengan hormat disampaikan bahwa Direktorat Jenderal Perhubungan Udara dapat memberikan izin perubahan jadwal rute penerbangan {if $result.pax_cargo eq "cargo"}cargo{/if} berjadwal {$result.airlines_nm} dikarenakan NOTAM, sesuai dengan jadwal penerbangan sebagaimana terlampir.
+                </li>
+                <li>
+                    Dalam pelaksanaan penerbangan sebagaimana tersebut diatas, {$result.airlines_nm} diwajibkan mematuhi peraturan dan ketentuan perundang - undangan yang berlaku tentang keselamatan dan keamanan penerbangan.
+                </li>
+                {foreach from=$rs_memos item=data}
+                <li>{$data.memo|default:''}</li>
+                {/foreach}
+                <li>
+                    Dimohon kepada
+                    {$no = 1}
+                    {foreach from=$rs_redaksional item=data}
+                        {$data.pref_value}{if $no < $total_redaksional},{/if}
+                        {$no = $no + 1}
+                    {/foreach}
+                    untuk meneruskan surat persetujuan ini kepada jajaran di lingkungan wilayah kerjanya untuk dilakukan pengawasan dalam pelaksanaannya.
+                </li>
+                <li>
+                    Demikian disampaikan, atas perhatiannya diucapkan terima kasih.
+                </li>
+            </ol>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="5">&nbsp;</td>
+    </tr>
+    <tr>
+        <td colspan="3"></td>
+        <td align='center' colspan="2">
+            <b>
+                a.n. DIREKTUR JENDERAL PERHUBUNGAN UDARA
+                <br />
+                DIREKTUR ANGKUTAN UDARA
+            </b>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="3">
+            <b style="text-decoration: underline;">Kepada Yth :</b>
+            <ol>
+                {if $result.airlines_nationality eq 'nasional'}
+                <li>Direktur Utama {$result.airlines_nm}</li>
+                {else}
+                <li>Kepala Perwakilan {$result.airlines_nm}</li>
+                {/if}
+                {foreach from=$rs_editorial_kepada item=data}
+                    <li>{$data.redaksional_nm}</li>
+                {/foreach}
+            </ol>
+            <b style="text-decoration: underline;">Tembusan :</b>
+            <ol>
+                {foreach from=$rs_editorial_tembusan item=data}
+                    <li>{$data.redaksional_nm}</li>
+                {/foreach}
+            </ol>
+        </td>
+        <td align='center' colspan="2" style="padding-top:100px; vertical-align:top;">
+            <br />
+            <b style="text-decoration: underline;">{$result.published_by}</b>
+            <br />
+            {$result.operator_pangkat|default:'-'}
+            <br />
+            NIP. {$result.operator_nip|default:'-'}
+        </td>
+    </tr>
+</table>
+<div id="table-data" style="margin: 0 0 5px 0; padding: 10px; border: 1px solid #ddd; font-family: helvetica;">
+    <table class="table-form" width="100%">
+        <tr>
+            <td colspan="5">Lampiran Surat Direktorat Jenderal Perhubungan Udara</td>
+        </tr>
+        <tr>
+            <td width='10%'>Nomor</td>
+            <td width='1%'>:</td>
+            <td width='49%'>{$result.izin_published_letter}</td>
+            <td width='5%'></td>
+            <td width='35%'></td>
+        </tr>
+        <tr>
+            <td>Tanggal</td>
+            <td>:</td>
+            <td>{$dtm->get_full_date($result.izin_published_date)}</td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+    <h3 style="text-align: center;">{$result.group_nm}</h3>
+    <p class="caption">
+        <b>{$result.airlines_nm}</b>
+    </p>
+    <br />
+    <table class="table-view" width="100%" style="font-size: 12px; font-family: helvetica; color: #333;">
+        <tr>
+            <td width="5%" rowspan="2" align='center'>No</td>
+            <td width="15%" rowspan="2" align='center'>Rute<br />Penerbangan</td>
+            <td width="10%" rowspan="2" align='center'>Status Perubahan</td>
+            <td width="10%" rowspan="2" align='center'>Tipe<br />Pesawat</td>
+            <td width="10%" rowspan="2" align='center'>Nomor<br />Penerbangan</td>
+            <td width="10%" colspan="2" align='center'>Jadwal Penerbangan <br />(Waktu Lokal)</td>
+            <td width="10%" rowspan="2" align='center'>Frekuensi /<br /> Minggu</td>
+            <td width="10%" rowspan="2" align='center'>Hari<br /> Operasi</td>
+            <td width="20%" rowspan="2" align='center'>Periode</td>
+        </tr>
+        <tr>
+            <td width="5%" align='center'>ETD</td>
+            <td width="5%" align='center'>ETA</td>
+        </tr>
+        {$i = 0}
+        {$no = 1}
+        {$kode_frekuensi = ''}
+        {$temp_rute = ''}
+
+        {foreach from=$rs_id item=data}
+        {if !empty($rs_old[$i])}
+            {if $temp_rute neq $data.rute_all}
+            <tr>
+                {if $kode_frekuensi neq $data.kode_frekuensi}
+                <td rowspan="{$data.rowspan|default:'0' + $rs_old[$i].rowspan|default:'0'}" align="center">
+                    {$no++}.
+                </td>
+                {$kode_frekuensi = $data.kode_frekuensi}
+                {/if}
+                <td align="center">{$rs_old[$i].rute_all}</td>
+                <td align="center">SEMULA</td>
+                <td align="center">{$rs_old[$i].tipe}</td>
+                <td align="center">{if $rs_old[$i].flight_no|count_characters > 4}{$rs_old[$i].flight_no}{else}{$data.airlines_iata_cd}{$rs_old[$i].flight_no}{/if}</td>
+                <td align="center">{$rs_old[$i].etd|substr:0:5}</td>
+                <td align="center">{$rs_old[$i].eta|substr:0:5}</td> 
+                <td align="center">{$rs_old[$i].frekuensi}X</td>
+                <td align="center">{$rs_old[$i].doop}</td>
+                <td align="center">{$dtm->get_full_date($rs_old[$i].start_date)}<br />{$dtm->get_full_date($rs_old[$i].end_date)}</td> 
+            </tr>
+            {/if}
+        {/if}
+        <tr>            
+            <td align="center">{$data.rute_all}</td>
+            <td align="center">MENJADI</td>
+            <td align="center" {if $rs_old[$i].tipe neq $data.tipe}style="color: red; font-weight: bold;"{/if}>{$data.tipe}</td>
+            <td align="center" {if $rs_old[$i].flight_no neq $data.flight_no}style="color: red; font-weight: bold;"{/if}>{if $data.flight_no|count_characters > 4}{$data.flight_no}{else}{$data.airlines_iata_cd}{$data.flight_no}{/if}</td>
+            <td align="center" {if $rs_old[$i].etd neq $data.etd}style="color: red; font-weight: bold;"{/if}>{$data.etd|substr:0:5}</td>
+            <td align="center" {if $rs_old[$i].eta neq $data.eta}style="color: red; font-weight: bold;"{/if}>{$data.eta|substr:0:5}</td> 
+            <td align="center" {if $rs_old[$i].frekuensi neq $data.frekuensi}style="color: red; font-weight: bold;"{/if}>{$data.frekuensi}X</td>
+            <td align="center" {if $rs_old[$i].doop neq $data.doop}style="color: red; font-weight: bold;"{/if}>{$data.doop}</td>
+            {if $rs_old[$i].start_date neq $data.start_date}
+            <td align="center">{$dtm->get_full_date($data.start_date)}<br />{$dtm->get_full_date($data.end_date)}</td> 
+            {/if}
+        </tr>
+        {if $temp_rute neq $data.rute_all}
+        {$i = $i + 1}
+        {/if}
+        {$temp_rute = $data.rute_all}
+        {/foreach}
+    </table>
+</div>

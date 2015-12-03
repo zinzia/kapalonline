@@ -1,0 +1,109 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <a href="{$config->site_url('pengaturan/airlines')}">Operator Penerbangan</a><span></span>
+        <small>Delete Data</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('pengaturan/airlines')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" /> Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('pengaturan/airlines/delete_process')}" method="post" onsubmit="return confirm('Apakah anda yakin akan menghapus data berikut ini?')">
+    <input name="airlines_id" type="hidden" value="{$result.airlines_id|default:''}" />
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="2">Delete Operator Penerbangan</th>
+        </tr>
+        <tr>
+            <th colspan="2">Apakah anda yakin akan menghapus data dibawah ini?</th>
+        </tr>
+        <tr>
+            <td width="20%">Nama Operator</td>
+            <td width="80%">
+                {$result.airlines_nm|default:''}
+            </td>
+        </tr>
+        <tr>
+            <td>Nama Brand</td>
+            <td>
+                {$result.airlines_brand|default:''}
+            </td>
+        </tr>
+        <tr>
+            <td>IATA Code</td>
+            <td>
+                {$result.airlines_iata_cd|default:''}
+            </td>
+        </tr>
+        <tr>
+            <td>ICAO Code</td>
+            <td>
+                {$result.airlines_icao_cd|default:''}
+            </td>
+        </tr>
+        <tr>
+            <td>Nomor Kontak</td>
+            <td>
+                {$result.airlines_contact|default:''}
+            </td>
+        </tr>
+        <tr>
+            <td>Website</td>
+            <td>
+                {$result.airlines_website|default:''}
+            </td>
+        </tr>
+        <tr>
+            <td>Alamat</td>
+            <td>
+                {$result.airlines_address|default:''}
+            </td>
+        </tr>
+        <tr>
+            <td>Tipe</td>
+            <td>
+                {$result.airlines_type|upper|replace:'_':''}
+            </td>
+        </tr>
+        <tr>
+            <td>Jenis Penerbangan</td>
+            <td>
+                {$result.airlines_flight_type|upper|replace:'_':' '}
+            </td>
+        </tr>
+        <tr>
+            <td>Status Pengoperasian</td>
+            <td>
+                {$result.airlines_st|upper|replace:'_':' '}
+            </td>
+        </tr>
+        <tr>
+            <td>Milik Perusahaan</td>
+            <td>
+                {$result.airlines_nationality|upper|replace:'_':' '}
+            </td>
+        </tr>
+        <tr>
+            <td>Jenis SIUP</td>
+            <td>
+                {if $airlines_siup[1] eq "berjadwal"}[BERJADWAL]{/if}
+                {if $airlines_siup[2] eq "tidak berjadwal"}[TIDAK BERJADWAL]{/if}
+                {if $airlines_siup[3] eq "bukan niaga"}[BUKAN NIAGA]{/if}
+            </td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="2">
+                <input type="submit" name="save" value="Delete" class="reset-button" />
+            </td>
+        </tr>
+    </table>
+</form>

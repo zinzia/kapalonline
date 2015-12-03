@@ -1,0 +1,46 @@
+<div class="head-content">
+    <h3>Role Management</h3>
+    <div class="head-content-nav">
+        <ul>
+            <li><a href="{$config->site_url('settings/adminrole/add')}" class="active"><img src="{$BASEURL}resource/doc/images/icon/add-icon.png" alt="" /> Add Data</a></li>
+            <li><a href="{$config->site_url('settings/adminrole')}">List Data</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('settings/adminrole/process_add')}" method="post">
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="2">Tambah Role</th>
+        </tr>
+        <tr>
+            <td width="25%">Web Portal *</td>
+            <td width="75%">
+                <select name="portal_id">
+                    <option value=""></option>
+                    {foreach from=$rs_id item=data}
+                    <option value="{$data.portal_id}" {if {$result.portal_id|default:''} == $data.portal_id}selected="selected"{/if}>{$data.portal_nm}</option>
+                    {/foreach}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Role Name *</td>
+            <td><input type="text" name="role_nm" maxlength="30" size="50" value="{$result.role_nm|default:''}" /> </td>
+        </tr>
+        <tr>
+            <td>Role Description *</td>
+            <td><input type="text" name="role_desc" maxlength="70" size="100" value="{$result.role_desc|default:''}" /> </td>
+        </tr>
+        <tr>
+            <td>Default Page *</td>
+            <td><input type="text" name="default_page" maxlength="50" size="50" value="{$result.default_page|default:''}" /> </td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="submit" name="save" value="Simpan" class="edit-button" /> </td>
+        </tr>
+    </table>
+</form>

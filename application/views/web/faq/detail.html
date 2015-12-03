@@ -1,0 +1,90 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Web Management</a><span></span>
+        <a href="{$config->site_url('web/faq')}">FAQ</a><span></span>
+        <small>{$result.category_nm|upper}</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('web/faq/')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" /> Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('web/faq/add_question_process')}" method="post" enctype="multipart/form-data">
+    <input name="category_id" type="hidden" value="{$result.category_id|default:''}" />
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="2">Category Detail</th>
+        </tr>
+        <tr>
+            <td width='15%'><b>Kategori</b></td>
+            <td width='85%'>
+                <b>: {$result.category_nm|default:''}</b>
+            </td>
+        </tr>
+        <tr>
+            <td><b>Deskripsi</b></td>
+            <td>
+                <b>: {$result.category_desc|default:''}</b>
+            </td>
+        </tr>
+        <tr>
+            <td><b>Urutan</b></td>
+            <td>
+                <b>: {$result.category_seq|default:''}</b>
+            </td>
+        </tr>
+    </table>
+    <br>
+    <div class="navigation">
+        <div class="pageRow">
+            <div class="pageNav">
+                <ul>
+                    <li class="info"><strong>{$total|default:'0'} Records</strong></li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="navigation-button">
+            <ul>
+                <li><a href="{$config->site_url('web/faq/add_question/'|cat:$result.category_id)}"><img src="{$BASEURL}resource/doc/images/icon/add-icon.png" alt="" /> Add Data</a></li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <table class="table-view" width="100%">
+        <tr class="headrow">
+            <th width="4%">No</th>
+            <th width="20%">Pertanyaan</th>
+            <th width="35%">Jawaban</th>
+            <th width="5%">Urutan</th>
+            <th width="5%">Hit</th>
+            <th width="11%"></th>
+        </tr>
+        {$no = 1}
+        {foreach from=$rs_id item=result}
+        <tr>
+            <td align='center'>{$no++}.</td>
+            <td><b>{$result.faq_question|upper}</b></td>
+            <td>{$result.faq_answer|upper}</td>
+            <td align="center">{$result.faq_seq}</td>
+            <td align="center">{$result.faq_hit}</td>
+            <td align="center">
+                <a href="{$config->site_url('web/faq/edit_question/'|cat:$result.faq_id|cat:'/'|cat:$result.category_id)}" class="button-edit">Edit</a>
+                <a href="{$config->site_url('web/faq/delete_question_process/'|cat:$result.faq_id|cat:'/'|cat:$result.category_id)}" class="button-hapus" onclick="return confirm('Apakah anda yakin akan menghapus data berikut ini?');">Hapus</a>
+            </td>
+        </tr>    
+        {foreachelse}
+        <tr>
+            <td colspan="5">Data not found!</td>
+        </tr>
+        {/foreach}
+    </table>
+</form>

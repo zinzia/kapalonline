@@ -1,0 +1,72 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <small>Preferences</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('pengaturan/pengajuan/')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" /> Back</a></li>
+        </ul>
+        <div class="clear"></div>
+    </div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('pengaturan/pengajuan/pengajuan_add_process')}" method="post">
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="2">Tambah Data Batas Pengajuan</th>
+        </tr>
+        <tr>
+            <td width='20%'>Jenis Penerbangan</td>
+            <td width='80%'>
+                <select name="data_type" class="data_flight">
+                    <option value=""></option>
+                    <option value="berjadwal" {if $result.data_type|default:'' eq 'berjadwal'}selected="selected"{/if}>BERJADWAL</option>
+                    <option value="tidak berjadwal" {if $result.data_type|default:'' eq 'tidak berjadwal'}selected="selected"{/if}>TIDAK BERJADWAL</option>
+                    <option value="bukan niaga" {if $result.data_type|default:'' eq 'bukan niaga'}selected="selected"{/if}>BUKAN NIAGA</option>
+                </select>
+                <select name="data_flight" class="data_flight">
+                    <option value=""></option>
+                    <option value="domestik" {if $result.data_flight|default:'' eq 'domestik'}selected="selected"{/if}>DOMESTIK</option>
+                    <option value="internasional" {if $result.data_flight|default:'' eq 'internasional'}selected="selected"{/if}>INTERNASIONAL</option>
+                </select>
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr>
+            <td>Remark</td>
+            <td>
+                <select name="services_cd" class="services_cd">
+                    <option value=""></option>
+                    {foreach from=$rs_id item=data}
+                    <option value="{$data.services_cd|default:''}" {if $result.services_cd|default:'' eq $data.services_cd|default:''}selected="selected"{/if}>{$data.services_nm|default:''}</option>
+                    {/foreach}
+                </select>
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr>
+            <td>Batas</td>
+            <td><input type="text" name="batasan" size="3" maxlength="3" value="{$data.batasan|default:''}" onkeyup="angka(this);"></td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="2">
+                <input type="submit" name="save" value="Simpan" class="submit-button" />
+                <input type="reset" name="save" value="Reset" class="reset-button" />
+            </td>
+        </tr>
+    </table>
+</form>
+
+<script type="text/javascript">
+    function angka(e) {
+        if (!/^[0-9]+$/.test(e.value)) {
+            e.value = e.value.substring(0, e.value.length - 1);
+        }
+    }
+</script>

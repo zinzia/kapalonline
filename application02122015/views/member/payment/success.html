@@ -1,0 +1,90 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Penagihan dan Pembayaran</a><span></span>
+        <small>Flight Approval</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="sub-nav-content">
+    <ul>
+        <li><a href="{$config->site_url('member/payment')}">Create Invoices</a></li>
+        <li><a href="{$config->site_url('member/payment/pending')}">Waiting For Payment</a></li>
+        <li><a href="{$config->site_url('member/payment/failed')}">Payment Failed</a></li>
+        <li><a href="{$config->site_url('member/payment/success')}" class="active">PAYMENT SUCCESS</a></li>
+    </ul>
+</div>
+<div class="clear"></div>
+<div class="sub-content">
+    <!-- notification template -->
+    {include file="base/templates/notification.html"}
+    <!-- end of notification template-->
+    <div class="search-box">
+        <h3><a href="#">Search</a></h3>
+        <form action="{$config->site_url('member/payment/proses_cari_success')}" method="post">
+            <table class="table-search" width="100%" border="0">
+                <tr>
+                    <th width="15%">Kode Billing</th>
+                    <td width="50%">
+                        <input name="virtual_account" type="text" value="{$search.virtual_account|default:''}" size="30" maxlength="30" />
+                    </td>
+                    <td align="right" width="35%">
+                        <input name="save" type="submit" value="Tampilkan" />
+                        <input name="save" type="submit" value="Reset" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info"><strong>{$pagination.start|default:'0'} - {$pagination.end|default:'0'}</strong> dari <strong>{$pagination.total|default:'0'}</strong> Pembayaran yang berhasil</li>
+                {$pagination.data|default:''}
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <table class="table-view" width="100%">
+        <tr>
+            <th width='4%'>No</th>
+            <th width='13%'>Kode Billing</th>
+            <th width='18%'>Tanggal Penagihan</th>
+            <th width='18%'>Tanggal<br />Update Pembayaran</th>
+            <th width='10%'>Jumlah<br />Flight Approval</th>          
+            <th width='10%'>Jumlah<br />Tagihan</th>
+            <th width='12%'>Nomor<br />Kuitansi</th>
+            <th width='15%'></th>
+        </tr>
+        {$no = 1}
+        {$total = 0}
+        {$jml = 0}
+        {foreach from=$rs_id item=result}
+        <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+            <td align="center">{$no++}.</td>
+            <td align="center">{$result.virtual_account}</td>
+            <td align="center">{$dtm->get_full_date($result.inv_date, 'ins')|upper}</td>
+            <td align="center">{$dtm->get_full_date($result.tgl_update, 'ins')|upper}</td>
+            <td align="center">{$result.total_fa}</td>
+            <td align="right">{$result.inv_total|default:0|number_format:0:",":"."}</td>
+            <td align="center">{$result.no_kuitansi}</td>
+            <td align="center">
+                <a href="{$config->site_url('member/payment/cetak_kwitansi/'|cat:$result.inv_id|default:0)}" class="button">Cetak Bukti Pembayaran</a>
+            </td>
+        </tr>
+        {$total = $total + $result.inv_total}
+        {$jml = $jml + $result.total_fa}
+        {foreachelse}
+        <tr>
+            <td colspan="8">Data not found!</td>
+        </tr>
+        {/foreach}
+        <tr>
+            <td colspan="4" align="center">TOTAL</td>
+            <td align="center"><b>{$jml|default:0|number_format:0:",":"."}</b></td>
+            <td align="right"><b>{$total|default:0|number_format:0:",":"."}</b></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+</div>
+

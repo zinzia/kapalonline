@@ -1,0 +1,179 @@
+<!-- javascript -->
+<script type="text/javascript">
+    function toggle(source) {
+        var checkboxes = document.getElementsByName("data_id[]");
+        for (var i = 0, n = checkboxes.length; i < n; i++) {
+            checkboxes[i].checked = source.checked;
+        }
+        ;
+    }
+</script>
+<div class="breadcrum">
+    <p>
+        <a href="#">Penagihan dan Pembayaran</a><span></span>
+        <a href="#">Flight Approval</a><span></span>
+        <small>History Pembayaran Permohonan FA</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="content-dashboard">
+    <h4>
+        <a class="group down" href="#">
+            Rekapitulasi Penagihan dan Pembayaran Flight Approval
+        </a>
+    </h4>
+    <div class="clear"></div>
+    <div class="group-box down" style="">
+        <div class="map-box">
+            <p>
+                <a href="#">
+                    <img alt="" src="{$BASEURL}resource/doc/images/icon/payment.success.png">
+                    Pembayaran Berhasil<br>
+                    <small>Domestik : <b>{$rs_rekap_bayar.success_dom|default:0}</b> pembayaran</small><br/>
+                    <small>Internasional : <b>{$rs_rekap_bayar.success_int|default:0}</b> pembayaran</small>
+                </a>
+            </p>
+        </div>
+        <div class="map-box">
+            <p>
+                <a href="#">
+                    <img alt="" src="{$BASEURL}resource/doc/images/icon/payment.pending.png">
+                    Pembayaran Pending<br>
+                    <small>Domestik : <b>{$rs_rekap_bayar.pending_dom|default:0}</b> pembayaran</small><br/>
+                    <small>Internasional : <b>{$rs_rekap_bayar.pending_int|default:0}</b> pembayaran</small>
+                </a>
+            </p>
+        </div>
+        <div class="map-box">
+            <p>
+                <a href="#">
+                    <img alt="" src="{$BASEURL}resource/doc/images/icon/payment.warning.png">
+                    Kelebihan Bayar<br>
+                    <small>Domestik : <b>{$rs_rekap_bayar.lebih_bayar_dom|default:0}</b> pembayaran</small><br/>
+                    <small>Internasional : <b>{$rs_rekap_bayar.lebih_bayar_int|default:0}</b> pembayaran</small>
+                </a>
+            </p>
+        </div>
+        <div class="map-box">
+            <p>
+                <a href="#">
+                    <img alt="" src="{$BASEURL}resource/doc/images/icon/payment.failed.png">
+                    Kekurangan Bayar<br>
+                    <small>Domestik : <b>{$rs_rekap_bayar.kurang_bayar_dom|default:0}</b> pembayaran</small><br/>
+                    <small>Internasional : <b>{$rs_rekap_bayar.kurang_bayar_int|default:0}</b> pembayaran</small>
+                </a>
+            </p>
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="sub-nav-content">
+    <ul>
+        <li><a href="{$config->site_url('report/payment')}">Waiting List Pembayaran Permohonan FA</a></li>
+        <li><a class="active" href="{$config->site_url('report/payment/history')}">History Pembayaran Permohonan FA</a></li>
+    </ul>
+</div>
+<div class="clear"></div>
+<div class="sub-content">
+    <!-- notification template -->
+    {include file="base/templates/notification.html"}
+    <!-- end of notification template-->
+    <div class="search-box">
+        <h3><a href="#">Search</a></h3>
+        <form action="{$config->site_url('report/payment/proses_cari_history')}" method="post">
+            <table class="table-search" width="100%" border="0">
+                <tr>
+                    <th width="10%">Nomor VA</th>
+                    <td width="31%">
+                        <input name="va" type="text" value="{$search.va|default:''}" size="30" maxlength="30" />
+                        <select name="status">
+                            <option value="">Semua</option>
+                            <option value="pending" {if $search.status|default:'' eq 'pending'}selected="selected"{/if}>Pending</option>
+                            <option value="success" {if $search.status|default:'' eq 'success'}selected="selected"{/if}>Success</option>
+                            <option value="fail" {if $search.status|default:'' eq 'fail'}selected="selected"{/if}>Failed</option>
+                        </select>
+                    </td>
+                    <td align="right">
+                        <input name="save" type="submit" value="Tampilkan" />
+                        <input name="save" type="submit" value="Reset" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div class="navigation">
+        <div class="pageRow">
+            <div class="pageNav">
+                <ul>
+                    <li class="info">Total&nbsp;<strong>{$total|default:0}</strong>&nbsp;Record&nbsp;</li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="navigation">
+            <div class="navigation-button">
+                <ul>
+                    <li><a href="{$config->site_url('report/payment/download_history/')}"><img src="{$BASEURL}resource/doc/images/icon/download-icon.png" alt="" /> Download Excel</a></li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <form action="{$config->site_url('report/payment/form_payment')}" method="post">
+        <table class="table-view" width="100%">
+            <tr>
+                <th width='4%'>No</th>
+                <th width='10%'>Nomor VA</th>
+                <th width='20%'>Tanggal Invoice</th>
+                <th width='20%'>Tanggal Pembayaran</th>
+                <th width='5%'>Status</th>
+                <th width='4%'>Jml</th>
+                <th width='10%'>Remarks</th>                
+                <th width='10%'>Jml Tagihan</th>
+                <th width='15%'></th>
+            </tr>
+            {$no = 1}
+            {$total=0}
+            {foreach from=$rs_id item=result}
+            <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+                <td align="center">{$no++}.</td>
+                <td>{$result.virtual_account}</td>
+                <td align="center">{$dtm->get_full_date($result.inv_date)|upper}</td>
+                <td align="center">{$dtm->get_full_date($result.tgl_transaksi)|upper|default:'-'}</td>
+                <td align="center">
+                    {if $result.inv_st eq 'success'}
+                    <img src="{$BASEURL}resource/doc/images/icon/icon.done.png" title="SUCCESS"/>
+                    {else if $result.inv_st eq 'pending'}
+                    <img src="{$BASEURL}resource/doc/images/icon/pending.png" title="PENDING"/>
+                    {else if $result.inv_st eq 'fail'}
+                    <img src="{$BASEURL}resource/doc/images/icon/icon.reject.png" title="FAILED"/>
+                    {/if}
+                </td>
+                <td align="center"><a href="#">{$result.jml_dibayar|default:'0'}</a></td>
+                <td align="center">
+                    {$result.remark|default:'-'}
+                </td>
+                <td align="right">{$result.inv_total|default:0|number_format:0:",":"."}</td>
+                <td align="center">
+                    {if $result.inv_st eq 'success'}
+                    <a href="{$config->site_url('report/payment/cetak_kwitansi/'|cat:$result.inv_id|default:0)}" class="button-edit">Cetak Kwitansi</a>
+                    {else}
+                    <a href="{$config->site_url('report/payment/cetak_invoice/'|cat:$result.virtual_account|default:0)}" class="button-edit">Cetak Invoice</a>
+                    {/if}
+                </td>
+            </tr>
+            {$total=$total+$result.inv_total}
+            {foreachelse}
+            <tr>
+                <td colspan="8">Data not found!</td>
+            </tr>
+            {/foreach}
+            <tr>
+                <td colspan="6">TOTAL</td>
+                <td align="right"><b>{$total|default:0|number_format:0:",":"."}</b></td>
+                <td></td>
+            </tr>
+        </table>
+    </form>
+</div>
+

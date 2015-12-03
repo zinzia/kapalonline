@@ -1,0 +1,114 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Penerbitan Izin Rute / FA</a><span></span>
+        <a href="{$config->site_url('stakeholder/published_izin')}">Izin Rute Penerbangan</a><span></span>
+        <small>{$result.airlines_nm}</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info"><b style="color: blue;">PENERBITAN {$result.group_nm|upper}</b></li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('stakeholder/published_izin')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" /> Back</a></li>
+            <li><a href="{$config->site_url('stakeholder/published_izin/download_migrasi/'|cat:$result.registrasi_id)}"><img src="{$BASEURL}resource/doc/images/icon/todolist.png" alt="" /> Download</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div id="table-data" style="margin: 0 0 5px 0; padding: 10px; border: 1px solid #ddd; font-family: helvetica;">
+    <table class="table-form" width="100%">
+        <tr>
+            <td colspan="5">Lampiran Surat Direktorat Jenderal Perhubungan Udara</td>
+        </tr>
+        <tr>
+            <td width='10%'>Nomor</td>
+            <td width='1%'>:</td>
+            <td width='49%'>{$result.izin_published_letter}</td>
+            <td width='5%'></td>
+            <td width='35%'></td>
+        </tr>
+        <tr>
+            <td>Tanggal</td>
+            <td>:</td>
+            <td>{$dtm->get_full_date($result.izin_published_date)}</td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+    <h3 style="text-align: center;">{$result.group_nm}</h3>
+    <p class="caption">
+        <b>{$result.airlines_nm}</b>
+    </p>
+    <br />
+    <table class="table-view" width="100%">
+        <tr style="font-weight: bold;">
+            <td width="4%" align='center'>No</td>
+            <td width="10%" align='center'>Rute</td>
+            <td width="9%" align='center'>Tipe<br />Pesawat</td>
+            <td width="10%" align='center'>Nomor<br />Penerbangan</td>
+            <td width="9%" align='center'>ETD <br />( LT )</td>
+            <td width="9%" align='center'>ETA <br />( LT )</td>
+            <td width="10%" align='center'>Hari <br />Operasi</td>
+            <td width="10%" align='center'>Frekuensi</td>
+            <td width="10%" align='center'>Total <br />Frekuensi</td>
+            <td width="19%" align='center'>Tanggal <br />Efektif</td>
+        </tr>
+        {foreach from=$rs_id key=no item=rute}
+        {$i = 1}
+        {$rowspan = $rute|count}
+            {foreach from=$rute item=data}
+            <tr {$row_style[$data.rute_all]}>
+                {if $rowspan <= 1}
+                <td align="center" style="color: black;">{$no}.</td>
+                {elseif $i eq 1}
+                <td align="center" rowspan="{$rowspan}" style="color: black;">{$no}.</td>
+                {/if}
+                <td align="center">{$data.rute_all|default:'-'}</td>
+                <td align="center">{$data.tipe|default:'-'}</td>
+                <td align="center">{if ($data.flight_no|strip)|count_characters > 4}{$data.flight_no}{else}{$data.airlines_iata_cd}{$data.flight_no|default:'-'}{/if}</td>
+                <td align="center">{$data.etd|default:'-'|substr:0:5}</td>
+                <td align="center">{$data.eta|default:'-'|substr:0:5}</td>   
+                <td align="center">{$data.doop|default:'-'}</td>
+                <td align="center">{$data.frekuensi}X</td>
+                {if $rowspan <= 1}
+                <td align="center">
+                    {$pairing[$data.izin_id]} / 
+                    {$frekuensi[$data.izin_id]}X
+                </td>
+                {elseif $i eq 1}
+                <td align="center" rowspan="{$rowspan}">
+                    {$pairing[$data.izin_id]} / 
+                    {$frekuensi[$data.izin_id]}X
+                </td>
+                {/if}
+                <td align="center">{$dtm->get_full_date($data.start_date, 'ins')|upper} / {$dtm->get_full_date($data.end_date, 'ins')|upper}</td>                
+            </tr>
+            {$i = $i + 1}
+            {foreachelse}
+            <tr>
+                <td align="center" style="color: black;">{$no}.</td>
+                <td colspan="11">Data rute belum diinputkan!</td>
+            </tr>
+            {/foreach}
+        {foreachelse}
+        <tr>
+            <td colspan="12">Data rute belum diinputkan!</td>
+        </tr>
+        {/foreach}
+        <tr>
+            <td colspan="8" align="right">Perhitungan Jumlah Frekuensi / Minggu</td>
+            <td align="center"><b>{$total.frekuensi}X</b></td>
+            <td align="center">
+                <b>{$dtm->get_full_date($total.start_date, 'ins')|upper}</b> / <b>{$dtm->get_full_date($total.end_date, 'ins')|upper}</b>
+            </td>
+        </tr>
+    </table>
+</div>

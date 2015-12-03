@@ -1,0 +1,29 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Task Manager Izin Rute</a><span></span>
+        <small>Upload Draft Telaah Regulator</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('task/telaah_regulator/upload_process/')}" method="post" enctype="multipart/form-data">
+    <table class="table-input" width="100%">
+        <tr>
+            <th colspan="2">Dokumen Draft Telaah Regulator</th>
+        </tr>
+        <tr>
+            <td width="15%">Nama Draft Telaah</td>
+            <td width="60%"><a href="{$config->site_url({'task/telaah_regulator/download'})}">draft_telaah.docx</a></td>
+        </tr>
+        <tr>
+            <td width="15%">Upload Draft Telaah</td>
+            <td width="60%"><input type="file" name="draft_telaah" /></td>
+        </tr>
+        <tr>
+            <td width="15%"></td>
+            <td width="60%"><input type="submit" name="save" value="Upload" class="submit-button" /></td>
+        </tr>
+    </table>
+</form>

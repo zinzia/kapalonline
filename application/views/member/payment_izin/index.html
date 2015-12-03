@@ -1,0 +1,163 @@
+<!-- javascript -->
+<script type="text/javascript">
+    function toggle(source) {
+        var checkboxes = document.getElementsByName("izin_id[]");
+        for (var i = 0, n = checkboxes.length; i < n; i++) {
+            checkboxes[i].checked = source.checked;
+        }
+    }
+    $(document).ready(function() {
+        $('#create').click(function(){
+            uploadProcess();
+        });
+        function uploadProcess(){
+            $.ajax({
+                type: "POST",
+                url:"{$config->site_url('member/payment_izin/create_invoices_process')}",
+                cache:false,
+                beforeSend: function(){
+                    $.blockUI({ css: { 
+                            border: 'none', 
+                            padding: '15px',
+                            '-webkit-border-radius': '10px', 
+                            '-moz-border-radius': '10px', 
+                            opacity: 1, 
+                            color: '#fff' 
+                        },
+                        message: '<h2 id="delay"></h2>'
+                    });
+                    $("#delay").runningDot({
+                        "speed": 500,
+                        "maxDots": 3,
+                        "message": 'Process Generate Invoice'
+                    });
+                },
+                success:function(data){
+                    $.unblockUI(); 
+                    $("#delay").runningDot("Stop");
+                }
+
+            });
+            return false;
+        }
+    });
+</script>
+<div class="breadcrum">
+    <p>
+        <a href="#">Penagihan dan Pembayaran</a><span></span>
+        <small>Izin Rute Penerbangan</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="sub-nav-content">
+    <ul>
+        <li><a href="{$config->site_url('member/payment_izin')}" class="active">CREATE INVOICES</a></li>
+        <li><a href="{$config->site_url('member/payment_izin/pending')}">Waiting for Payment</a></li>
+        <li><a href="{$config->site_url('member/payment_izin/failed')}">Payment Failed</a></li>
+        <li><a href="{$config->site_url('member/payment_izin/success')}">Payment Success</a></li>
+    </ul>
+</div>
+<div class="clear"></div>
+<div class="sub-content">
+<div class="notification green">
+    <p><strong>PERHATIAN :</strong></p>
+    <span style="float: right;display: block;margin-right: 50px;"><img width="72px" src="{$BASEURL}resource/doc/images/icon/warning.png"/></span>
+    <ol><li>1. Pilih daftar pengajuan yg akan dibuat invoice dari daftar pengajuan di bawah</li> 
+        <li>2. Dimohon untuk memilih pengajuan yg batas pembayarannya berdekatan<br/> (Misal : <i>01 April 2015 Jam 10:20:30 dan 02 April 2015 Jam 17:30:12</i>) </li>
+        <li>3. Tanggal expired kode billing akan dihitung berdasarkan tanggal batas bayar terdekat</li>
+        <li>4. Bayarlah sesuai dengan nominal yg tertera pada invoice sebelum <b>kode billing expired </b></li>
+        <li>5. Jika Kode billing sudah <b>expired</b>, maka pemohon <b>harus melakukan pembuatan invoice kembali</b></li>
+    </ol>
+    <div class="clear"></div>
+</div>
+    <!-- notification template -->
+    {include file="base/templates/notification.html"}
+    <!-- end of notification template-->
+    <div class="search-box">
+        <h3><a href="#">Search</a></h3>
+        <form action="{$config->site_url('member/payment_izin/proses_cari')}" method="post">
+            <table class="table-search" width="100%" border="0">
+                <tr>
+                    <th width="15%">Published Number</th>
+                    <td width="50%">
+                        <input name="izin_published_letter" type="text" value="{$search.izin_published_letter|default:''}" size="30" maxlength="30" />
+                        <select name="data_flight">
+                            <option value="domestik" {if $search.data_flight|default:'' eq 'domestik'}selected="selected"{/if}>DOMESTIK</option>
+                            <option value="internasional" {if $search.data_flight|default:'' eq 'internasional'}selected="selected"{/if}>INTERNASIONAL</option>
+                        </select>
+                    </td>
+                    <td width="35%" align="right">
+                        <input name="save" type="submit" value="Tampilkan" />
+                        <input name="save" type="submit" value="Reset" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div class="navigation">
+        <div class="pageRow">
+            <div class="pageNav">
+                <ul>
+                    <li class="info">Total Ijin Rute yang telah diterbitkan&nbsp;<strong style="text-decoration: underline;">{$total|default:0} Ijin Rute</strong>&nbsp;&nbsp;</li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+        </div>
+        {if !empty($total_draft)}
+        <div class="navigation-button">
+            <ul>
+                <li><a href="{$config->site_url('member/payment_izin/open')}">{$total_draft} Draft Invoices / Failed Process</a></li>
+            </ul>
+        </div>
+        {/if}
+        <div class="clear"></div>
+    </div>
+    <form action="{$config->site_url('member/payment_izin/create_invoices_process')}" method="post">
+        <table class="table-view" width="100%">
+            <tr>
+                <th width='5%'>No</th>
+                <th width='20%'>Published Number</th>
+                <th width='15%'>Berjadwal / <br />Tidak Berjadwal</th>
+                <th width='15%'>Domestik / <br />Internasional</th>
+                <th width='10%'>Jumlah<br />Tagihan</th>
+                <th width='15%'>Tanggal Terbit</th>
+                <th width='15%'>Batas Bayar</th>
+                <th width='5%'>
+                    <input type="checkbox" onclick="toggle(this)" />
+                </th>
+            </tr>
+            {$no = 1}
+            {foreach from=$rs_id item=result}
+            <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+                <td align="center">{$no++}.</td>
+                <td align="center">{$result.izin_published_letter}</td>
+                <td align="center">{$result.izin_type|upper}</td>
+                <td align="center">{$result.izin_flight|upper}</td>
+                <td align="right">{$result.total_invoice|default:0|number_format:0:",":"."}</td>
+                <td align="center">{$dtm->get_full_date($result.izin_published_date)|upper}</td>
+                <td align="center">{$dtm->get_full_date($result.payment_due_date)|upper}</td>
+                <td align="center">
+                    <input type="checkbox" name="izin_id[]" value="{$result.registrasi_id|default:''}">
+                </td>
+            </tr>
+            {foreachelse}
+            <tr>
+                <td colspan="8">Data not found!</td>
+            </tr>
+            {/foreach}
+        </table>
+        <table class="table-form" width='100%'>
+            <tr class="submit-box">
+                <td>
+                    Pilihlah data Izin Rute yang telah diterbitkan diatas untuk dibuatkan penagihannya!
+                </td>
+                <td align='right'>
+                    {if !empty($total)}
+                    <input type="submit" name="save" value="Create Invoices" class="reset-button" id="create"/>
+                    {/if}
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+

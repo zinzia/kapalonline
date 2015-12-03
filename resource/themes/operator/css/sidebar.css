@@ -1,0 +1,109 @@
+/* CSS Document */
+/* created by chow-2011 */
+
+.sidebar {
+    float: left;
+    margin: 0;
+    padding: 5px 0 0 0;
+    width: 220px;
+    overflow: hidden;
+}
+
+/* sidebar menu */
+
+.side-menu {
+    margin: 0;
+    padding: 0;
+    width: auto;
+}
+
+.side-menu ul {
+    margin: 0;
+    padding: 0;
+}
+
+side-menu li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.side-menu a {
+    margin: 0;
+    padding: 8px 10px;
+    color: #656667;
+    display: block;
+    text-decoration: none;
+    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+    font-size: 11px;
+}
+
+.side-menu a:hover {
+    color: #DF496F;
+    background-color: #FAF88B;
+}
+
+.side-menu a.side-active {
+    color: #424242;
+    background-color: #F7ECBC;
+    border-top: 1px solid #EFCF8F;
+    border-bottom: 1px solid #EFCF8F;
+}
+
+.side-menu a.parent {
+    background-image: url("../img/arrow-right-menu.png");
+    background-position: 180px center;
+    background-repeat: no-repeat;
+}
+
+.side-menu a.down {
+    background-image: url("../img/arrow-right-menu-down.png");
+    background-position: 180px center;
+    background-repeat: no-repeat;
+}
+
+.side-menu a img {
+    margin: 0 5px 0 0;
+    padding: 0;
+    border: none;
+    vertical-align: bottom;
+    height: 16px;
+}
+
+.side-menu ul.side-menu-child {
+    display: none;
+}
+
+.side-menu ul.show {
+    display: block;
+}
+
+.side-menu ul.side-menu-child li {
+
+}
+
+.side-menu ul.side-menu-child li a {
+    display: block;
+    margin: 0;
+    padding: 8px 10px 8px 35px;
+    color: #666;
+    text-decoration: none;
+    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+    font-size: 11px;
+    background-image: url("../img/side-menu-a-child.png");
+    background-position: 15px center;
+    background-repeat: no-repeat;
+}
+
+.side-menu ul.side-menu-child li a:hover {
+    background-color: #FCFA78;
+}
+
+.side-menu ul.side-menu-child li a.side-active {
+    color: #E16627;
+    background-image: url("../img/side-menu-a-child-active.png");
+    background-position: 15px center;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+}

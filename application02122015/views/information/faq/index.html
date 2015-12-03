@@ -1,0 +1,91 @@
+<h3>Frequently Asked Questions - Tanya Jawab</h3>
+<div class="content">
+    <p>
+        Halaman ini berisikan pertanyaan yang sering ditanyakan serta jawabannya. 
+        Anda dapat mencari pertanyaan yang sesuai dengan apa yang Anda butuhkan serta jawabannya.
+    </p>
+</div>
+<div class="faq">
+    <div class="faq-sidebar">
+        <form action="{$config->site_url('information/faq/proses_cari')}" method="post" autocomplete="false">
+            <input type="hidden" name="{$token_nm}" value="{$token}"/>
+            <div class="faq-search">
+                <input type="text" name="search_faq" size="20" maxlength="50" placeholder="Isikan kata kunci disini" autocomplete="false"/>
+                <button class="search-button" name="save">Cari</button><button class="search-button" name="save">Reset</button>
+            </div>
+            <div class="faq-sidebar-content">
+                {foreach from=$rs_category item=category}
+                <div>
+                    <h2>{$category.category_nm|upper}</h2>
+                    <ul>
+                        {for $foo=0 to COUNT($rs_faq)}
+                        {if $rs_faq.$foo.category_id eq $category.category_id}
+                        <li><a style="cursor: pointer;" class="anchor" title="{$rs_faq.$foo.faq_title}" onclick="faq({$rs_faq.$foo.faq_id})">{$rs_faq.$foo.faq_title}</a></li>
+                        {/if}
+                        {/for}
+                    </ul>
+                </div>
+                {/foreach}
+            </div>
+    </div>
+    <div class="faq-content">
+        <div id="result">
+            {foreach from=$rs_category item=category}
+            <h1>{$category.category_nm|upper}</h1>
+            {for $foo=0 to COUNT($rs_faq)}
+            {if $rs_faq.$foo.category_id eq $category.category_id}
+            <h2>{$rs_faq.$foo.faq_title}</h2>
+            <div class="faq-sub-content">
+                <dl>
+                    <dt>Tanya :</dt>
+                    <dd>
+                        <b>{$rs_faq.$foo.faq_question}</b>
+                    </dd>
+                    <dt>Jawab :</dt>
+                    <dd>
+                        {$rs_faq.$foo.faq_answer}
+                    </dd>
+                </dl>    
+            </div>
+            {/if}
+            {/for}
+            {foreachelse}
+            <h2>FAQ Not Found</h2>
+            <div class="faq-sub-content">
+                <dl>
+                    Please refine your search keyword
+                </dl>    
+            </div>
+            {/foreach}
+        </div>
+        </form>
+    </div>
+</div>
+<div class="clear"></div>
+<div class="content">
+    <p align="right">
+        Anda mempunyai pertanyaan lebih lanjut? Silakan hubungi <b>Info Pelayanan : (021) 29784022</b>
+    </p>
+</div>
+
+<!-- faq -->
+<script type="text/javascript">
+    function faq(faq_id) {
+        $.ajaxSetup({
+            cache: false
+        });
+        var sendData = {
+            faq_id: faq_id,
+        };
+        $.ajax({
+            type: "POST",
+            url: "{$BASEURL}index.php/information/faq/search_faq/",
+            dataType: "json",
+            data: sendData,
+            success: function (results) {
+                $('#result').empty();
+                $('#result').html(results);
+            },
+        });
+    }
+</script>

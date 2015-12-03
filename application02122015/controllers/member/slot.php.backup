@@ -1,0 +1,97 @@
+<?php
+
+if (!defined('BASEPATH'))
+    exit('No direct script access allowed');
+// load base class if needed
+require_once( APPPATH . 'controllers/base/MemberBase.php' );
+
+class slot extends ApplicationBase {
+
+    // constructor
+    public function __construct() {
+        // parent constructor
+        parent::__construct();
+        // load model
+        $this->load->model('m_izin');
+        $this->load->model('m_airport');
+        // load library
+        $this->load->library('tnotification');
+        $this->load->library('pagination');
+        //load helper
+        $this->load->library('score');
+    }
+
+    // index
+    public function index() {
+        // set page rules
+        $this->_set_page_rule("R");
+        // set template content
+        $this->smarty->assign("template_content", "member/slot/index.html");
+        // load javascript
+        $this->smarty->load_javascript("resource/js/jquery/jquery-ui-1.9.2.custom.min.js");
+        $this->smarty->load_javascript("resource/js/jquery/jquery.ui.timepicker.js");
+        $this->smarty->load_javascript("resource/js/select2-3.4.5/select2.min.js");
+        // load style ui
+        $this->smarty->load_style("jquery.ui/redmond/jquery-ui-1.8.13.custom.css");
+        $this->smarty->load_style("jquery.ui/redmond/jquery.ui.timepicker.css");
+        $this->smarty->load_style("select2/select2.css");
+        // get search parameter
+        $search = $this->tsession->userdata('search_slot_time');
+        // search parameters
+        list($rute_orig, $rute_dest) = explode("-", $search['rute_all']);
+        $rute_orig = trim($rute_orig);
+        $rute_dest = trim($rute_dest);
+        $start_date = $search['start_date'];
+        $end_date = $search['end_date'];
+        $this->smarty->assign("search", $search);
+        if ($rute_orig != "" && $rute_dest != ""){
+            $params = array($rute_orig);
+            $rs_airport1 = $this->m_airport->get_airport_by_code($params);
+            $params = array($rute_dest);
+            $rs_airport2 = $this->m_airport->get_airport_by_code($params);
+            if (@intval($rs_airport1['is_used_score']) !== 1 && @intval($rs_airport2['is_used_score']) !== 1){
+                $this->tnotification->set_error_message("Bandara yang dicari belum ada didalam sistem SCORE!");
+            } else {
+                try {            
+                    $client = new SCORE_Service();
+                    //request
+                    $params = new getConfirmedSlot($this->com_user['airlines_iata_cd'], $rute_orig, $rute_dest, $start_date, $end_date, "*");
+                    $score = $client->getConfirmedFullSlot($params, @intval($rs_airport1['airport_utc']), @intval($rs_airport2['airport_utc']));
+					// var_dump($params);
+                } catch (Exception $error) {
+                    if (ENVIRONMENT == "testing") {
+                        var_dump($error); die;
+                    }
+                    unset($score);
+                }
+            }
+        }
+        $this->smarty->assign("score", $score);
+        $this->smarty->assign("total", count($score));
+        // notification
+        $this->tnotification->display_notification();
+        $this->tnotification->display_last_field();
+        // output
+        parent::display();
+    }
+
+    // proses pencarian
+    public function proses_cari() {
+        // set page rules
+        $this->_set_page_rule("R");
+        // data
+        if ($this->input->post('save') == "Reset") {
+            $this->tsession->unset_userdata('search_slot_time');
+        } else {
+            $params = array(
+                "rute_all" => $this->input->post("rute_all"),
+                "start_date" => $this->input->post("start_date"),
+                "end_date" => $this->input->post("end_date")
+            );
+            $this->tsession->set_userdata("search_slot_time", $params);
+        }
+        // redirect
+        redirect("member/slot");
+    }
+
+}

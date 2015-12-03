@@ -1,0 +1,239 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        // date picker
+        $(".tanggal_pengajuan_from").datepicker({
+            showOn: 'both',
+            buttonImage: '{$BASEURL}/resource/doc/images/icon/calendar.gif',
+            buttonImageOnly: true,
+            dateFormat: 'yy-mm-dd',
+            maxDate: {$hari_pengajuan.batasan|default:'0'},
+            onClose: function( selectedDate ) {
+                $( ".tanggal_to" ).datepicker( "option", "minDate", selectedDate );
+            }
+        }).datepicker("setDate", "{$search.tanggal_pengajuan_from|default:'new Date()'}");
+        $(".tanggal_pengajuan_to").datepicker({
+            showOn: 'both',
+            buttonImage: '{$BASEURL}/resource/doc/images/icon/calendar.gif',
+            buttonImageOnly: true,
+            dateFormat: 'yy-mm-dd',
+            maxDate: {$hari_pengajuan.batasan|default:'0'},
+        }).datepicker("setDate", "{$search.tanggal_pengajuan_to|default:'new Date()'}");
+        $(".tanggal_penerbangan_from").datepicker({
+            showOn: 'both',
+            buttonImage: '{$BASEURL}/resource/doc/images/icon/calendar.gif',
+            buttonImageOnly: true,
+            dateFormat: 'yy-mm-dd',
+            onClose: function( selectedDate ) {
+                $( ".tanggal_to" ).datepicker( "option", "minDate", selectedDate );
+            }
+        }).datepicker("setDate", "{$search.tanggal_penerbangan_from|default:'new Date()'}");
+        $(".tanggal_penerbangan_to").datepicker({
+            showOn: 'both',
+            buttonImage: '{$BASEURL}/resource/doc/images/icon/calendar.gif',
+            buttonImageOnly: true,
+            dateFormat: 'yy-mm-dd',
+        }).datepicker("setDate", "{$search.tanggal_penerbangan_to|default:'new Date()'}");
+        // --
+        $(".data_flight").select2({
+            placeholder: "-- Semua --",
+            width: 170,
+            allowClear: true
+        });
+        $(".airlines_nm").select2({
+            placeholder: "-- Semua --",
+            width: 300,
+            allowClear: true
+        });
+        $(".data_st").select2({
+            placeholder: "-- Semua --",
+            width: 140,
+            allowClear: true
+        });
+        $(".services_cd").select2({
+            placeholder: "-- Semua --",
+            width: 150,
+            allowClear: true
+        });
+    });
+</script>
+<style type="text/css">
+    .data_flight .select2-choice {
+        width: 160px !important;
+        font-weight: bold;
+    }
+    .data_flight .select2-default {
+        width: 160px !important;
+        font-weight: bold;
+    }
+    .airlines_nm .select2-choice {
+        width: 290px !important;
+        font-weight: bold;
+    }
+    .airlines_nm .select2-default {
+        width: 290px !important;
+        font-weight: bold;
+    }
+    .data_st .select2-choice {
+        width: 130px !important;
+        font-weight: bold;
+    }
+    .data_st .select2-default {
+        width: 130px !important;
+        font-weight: bold;
+    }
+    .services_cd .select2-choice {
+        width: 140px !important;
+        font-weight: bold;
+    }
+    .services_cd .select2-default {
+        width: 140px !important;
+        font-weight: bold;
+    }
+</style>
+<div class="breadcrum">
+    <p>
+        <a href="#">Data Monitoring</a><span></span>
+        <small>Flight Approval</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="search-box">
+    <h3><a href="#">Search</a></h3>
+    <form action="{$config->site_url('helpdesk/monitoring/proses_cari')}" method="post">
+        <table class="table-search" width="100%" border="0">
+            <tr>
+                <th width="5%">Airlines</th>
+                <td width="40%">
+                    <select name="airlines_nm" class="airlines_nm">
+                        <option value=""></option>
+                        {foreach from=$rs_airlines item=value}
+                        <option value="{$value.airlines_nm|default:''}" {if $search.airlines_nm|default:'' eq $value.airlines_nm|default:''}selected="selected"{/if}>{$value.airlines_nm|default:''}</option>
+                        {/foreach}
+                    </select>
+                </td>
+                <th width="10%">No Document</th>
+                <td width="15%">
+                    <input type="text" name="document_no" value="{$search.document_no|default:''}" size="25" />
+                </td>
+                <td rowspan="4" align="right">
+                    <input name="save" type="submit" value="Tampilkan" />
+                    <input name="save" type="submit" value="Reset" />
+                </td>
+            </tr>
+            <tr>
+                <th>Pengajuan</th>
+                <td>
+                    <input name="tanggal_pengajuan_from" type="text" value="{$search.tanggal_pengajuan_from|default:''}" size="15" class="tanggal_pengajuan_from" style="text-align:center;" />
+                    s/d
+                    <input name="tanggal_pengajuan_to" type="text" value="{$search.tanggal_pengajuan_to|default:''}" size="15" class="tanggal_pengajuan_to" style="text-align:center;" />
+                </td>
+                <th>No FA</th>
+                <td>
+                    <input type="text" name="document_no" value="{$search.document_no|default:''}" size="25" />
+                </td>
+            </tr>
+            <tr>
+                <th>Penerbangan</th>
+                <td>
+                    <input name="tanggal_penerbangan_from" type="text" value="{$search.tanggal_penerbangan_from|default:''}" size="15" class="tanggal_penerbangan_from" style="text-align:center;" />
+                    s/d
+                    <input name="tanggal_penerbangan_to" type="text" value="{$search.tanggal_penerbangan_to|default:''}" size="15" class="tanggal_penerbangan_to" style="text-align:center;" />
+                </td>
+                <th>Remark</th>
+                <td>
+                    <select name="services_cd" class="services_cd">
+                        <option value=""></option>
+                        {foreach from=$rs_services item=data}
+                        <option value="{$data.services_cd|default:''}" {if $search.services_cd|default:'' eq $data.services_cd|default:''}selected="selected"{/if}>{$data.services_nm|default:''}</option>
+                        {/foreach}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>Jenis</th>
+                <td>
+                    <select name="data_type" class="data_flight">
+                        <option value=""></option>
+                        <option value="berjadwal" {if $search.data_type|default:'' eq 'berjadwal'}selected="selected"{/if}>BERJADWAL</option>
+                        <option value="tidak berjadwal" {if $search.data_type|default:'' eq 'tidak berjadwal'}selected="selected"{/if}>TIDAK BERJADWAL</option>
+                        <option value="bukan niaga" {if $search.data_type|default:'' eq 'bukan niaga'}selected="selected"{/if}>BUKAN NIAGA</option>
+                    </select>
+                    <select name="data_flight" class="data_flight">
+                        <option value=""></option>
+                        <option value="domestik" {if $search.data_flight|default:'' eq 'domestik'}selected="selected"{/if}>DOMESTIK</option>
+                        <option value="internasional" {if $search.data_flight|default:'' eq 'internasional'}selected="selected"{/if}>INTERNASIONAL</option>
+                    </select>
+                </td>
+                <th>Status</th>
+                <td>
+                    <select name="data_st" class="data_st">
+                        <option value=""></option>
+                        <option value="waiting" {if $search.data_st|default:'' eq 'waiting'}selected="selected"{/if}>PROSES</option>
+                        <option value="approved" {if $search.data_st|default:'' eq 'approved'}selected="selected"{/if}>DISETUJUI</option>
+                        <option value="reject" {if $search.data_st|default:'' eq 'reject'}selected="selected"{/if}>DITOLAK</option>
+                    </select>  
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info">{$pagination.data|default:''}&nbsp;Total&nbsp;<strong>{$pagination.total|default:0}</strong>&nbsp;Record&nbsp;</li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width='4%'>No</th>
+        <th width='8%'>Nomor</th>
+        <th width='20%'>Operator</th>
+        <th width='25%'>Jenis Permohonan</th>
+        <th width='10%'>Berjadwal / <br />Tidak Berjadwal</th>
+        <th width='10%'>Domestik / <br />Internasional</th>
+        <th width='10%'>Status</th>
+        <th width='13%'></th>
+    </tr>
+    {$no = 1}
+    {foreach from=$rs_id item=result}
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+        <td align="center">{$no++}.</td>
+        <td align="center">{$result.document_no}</td>
+        <td>{$result.airlines_nm|upper}</td>
+        <td>{$result.group_nm}</td>
+        <td align="center">{$result.data_type|upper}</td>
+        <td align="center">{$result.data_flight|upper}</td>
+        <td align="center">
+            {if $result.data_st|default:'' eq 'approved'}
+                Disetujui
+            {elseif $result.data_st eq 'rejected'}
+                Ditolak
+            {else}
+                Proses
+            {/if}
+        </td>
+        <td align="center">
+            <a href="{$config->site_url('helpdesk/monitoring/detail/'|cat:$result.data_id|default:'')}" class="button-edit">
+                {if $result.selisih_hari == 0 && substr($result.selisih_waktu,0,2) == 00}
+                {substr($result.selisih_waktu,3,2)} minutes ago
+                {else if $result.selisih_hari == 0}
+                {substr($result.selisih_waktu,0,2)} hour ago
+                {else}
+                {$result.selisih_hari} day ago
+                {/if}
+            </a>
+        </td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="8">Data not found!</td>
+    </tr>
+    {/foreach}
+</table>

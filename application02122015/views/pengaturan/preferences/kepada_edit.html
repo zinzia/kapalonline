@@ -1,0 +1,46 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <small>Preferences</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('pengaturan/preferences/')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" /> Back</a></li>
+        </ul>
+        <div class="clear"></div>
+    </div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('pengaturan/preferences/kepada_edit_process')}" method="post">
+    <input type="hidden" name="redaksional_id" value="{$result.redaksional_id|default:''}">
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="2">Tambah Data Kepada</th>
+        </tr>
+        <tr>
+            <td width='20%'>Kepada</td>
+            <td width='80%'>
+                <input type="text" name="redaksional_nm" maxlength="255" size="100" value="{$result.redaksional_nm|default:''}" /> 
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td>
+                <input type="text" name="redaksional_mail" maxlength="255" size="50" value="{$result.redaksional_mail|default:''}" /> 
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="2">
+                <input type="submit" name="save" value="Simpan" class="submit-button" />
+                <input type="reset" name="save" value="Reset" class="reset-button" />
+            </td>
+        </tr>
+    </table>
+</form>

@@ -1,0 +1,19 @@
+<h3>{$reg_list}</h3>
+<div class="content">
+    <table class="table-regulation" width="100%">
+        {foreach from=$rs_regulation item=regulation}
+        <tr>
+            <td width="5%"><img src="{$BASEURL}resource/doc/images/logo/pdf.jpg" alt="" /></td>
+            <td width="25%">{$regulation.judul}</td>
+            <td width="45%">{$regulation.deskripsi}</td>
+            <td width="15%">{$regulation.download|default:0} diunduh</td>
+            <td width="10%"><a href="{$config->site_url('information/regulation/download/'|cat:$regulation.data_id|default:'')}">Download</a></td>
+        </tr>
+        {foreachelse}
+        <tr>
+            <td>There is no file uploaded!</td>
+        </tr>
+        {/foreach}
+    </table>
+</div>
+<br />

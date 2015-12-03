@@ -1,0 +1,118 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Slot Time</a><span></span>
+        <small>Confirmed Slot Schedule</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="search-box">
+    <h3><a href="#">Search</a></h3>
+    <form action="{$config->site_url('member/slot/proses_cari')}" method="post">
+        <table class="table-search" width="100%" border="0">
+            <tr>
+                <th width="5%">From</th>
+                <td width="10%">
+                    <input name="rute_from" type="text" value="{$search.rute_from|default:''}" size="10" maxlength="3" placeholder="ex : CGK" style="text-align: center;" />
+                </td>
+                <th width="5%">To</th>
+                <td width="10%">
+                    <input name="rute_to" type="text" value="{$search.rute_to|default:''}" size="10" maxlength="3" placeholder="ex : DPS" style="text-align: center;" />
+                </td>
+                <th width="10%">Season Code</th>
+                <td width="15%">
+                    <input name="season_code" type="text" value="{$search.season_code|default:''}" size="10" maxlength="3" placeholder="ex : S15" style="text-align: center;" />
+                </td>
+                <th width="15%">Services Type</th>
+                <td width="10%">
+                    <input name="services_code" type="text" value="{$search.services_code|default:''}" size="5" maxlength="1" placeholder="ex : J" style="text-align: center;" />
+                </td>
+                <td width='20%' align='right'>
+                    <input name="save" type="submit" value="Tampilkan" />
+                    <input name="save" type="submit" value="Reset" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info">Total ( <b style="color: red;">{$total|default:0}</b> ) Confirmed Slot have been found</li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+</div>
+<table class="table-view" width="100%">
+    <tr style="font-weight: bold;">
+        <td width="5%" align='center'>No</<td>
+        <td width="11%" align='center'>Rute</td>
+        <td width="8%" align='center'>Tipe<br />Pesawat</td>
+        <td width="8%" align='center'>Nomor<br />Penerbangan</td>
+        <td width="8%" align='center'>ETD<br />(waktu lokal)</td>
+        <td width="8%" align='center'>ETA<br />(waktu lokal)</td>
+        <td width="8%" align='center'>Hari<br />Operasi</td>
+        <td width="8%" align='center'>RON</td>
+        <td width="8%" align='center'>Frekuensi</td>
+        <td width="8%" align='center'>Services<br />Type</td>
+        <td width="20%" align='center'>Tanggal Efektif</td>
+    </tr>
+    {$no = 1}
+    {foreach from=$rs_id item=data}    
+    {if $data->serviceTypeArrival neq ' '}
+    <tr>        
+        {if $data->serviceTypeArrival neq ' ' && $data->serviceTypeDeparture neq ' '}
+        <td align="center" rowspan="2">{$no++}.</td>
+        {else}
+        <td align="center">{$no++}.</td>
+        {/if}
+        <td align="center">{$data->lastStation}-<b>{$data->airportCode}</b></td>
+        <td align="center">{$data->aircraftType}</td>
+        <td align="center">{$data->serviceNoArrival}</td>
+        <td align="center">-</td>
+        <td align="center">{$dtm->get_local_time_from_utc($data->clearedTimeArrival, $local_time.airport_utc_sign, $local_time.airport_utc)}</td>
+        <td align="center">{$data->doop}</td>
+        <td align="center">{$data->turnaroundDays|default:0}</td>
+        <td align="center">{$dtm->get_frequensi_dos($data->doop)} X</td>
+        <td align="center">{$data->serviceTypeArrival}</td>
+        <td align="center">
+            {$dtm->get_full_date($data->startDate|substr:0:10, 'ins')|upper}
+            /
+            {$dtm->get_full_date($data->endDate|substr:0:10, 'ins')|upper}
+        </td>
+    </tr>
+    {/if}
+    {if $data->serviceTypeDeparture neq ' '}
+    <tr>        
+        {if $data->serviceTypeArrival neq ' ' && $data->serviceTypeDeparture neq ' '}
+
+        {else}
+        <td align="center">{$no++}.</td>  
+        {/if}
+        <td align="center"><b>{$data->airportCode}</b>-{$data->nextStation}</td>
+        <td align="center">{$data->aircraftType}</td>
+        <td align="center">{$data->serviceNoDeparture}</td>
+        <td align="center">{$dtm->get_local_time_from_utc($data->clearedTimeDeparture, $local_time.airport_utc_sign, $local_time.airport_utc)}</td>
+        <td align="center">-</td>
+        <td align="center">{$data->doop}</td>
+        <td align="center">{$data->turnaroundDays|default:0}</td>
+        <td align="center">{$dtm->get_frequensi_dos($data->doop)} X</td>
+        <td align="center">{$data->serviceTypeDeparture}</td>
+        <td align="center">
+            {$dtm->get_full_date($data->startDate|substr:0:10, 'ins')|upper}
+            /
+            {$dtm->get_full_date($data->endDate|substr:0:10, 'ins')|upper}
+        </td>
+    </tr>
+    {/if}
+    {foreachelse}
+    <tr>
+        <td colspan="11">Isikan parameter pencarian diatas ini secara lengkap! ( Services Type = kosong untuk menampilkan semua jenis penerbangan )</td>
+    </tr>
+    {/foreach}
+</table>
